@@ -1,0 +1,20 @@
+AJAX File Browser - 3scriptz.com
+
+Language: PHP5, Javascript, DOM, Platform: linux, windows, freebsd, sun, Version: 1.0, Date: 11/10/2006
+
+ 
+
+This is a file browser made in PHP5 so you will need this for it to work. It's all Ajax so you'll get a directory tree without having to make read all the directories at once. It's been made so that you can incorporate it in your scripts with minimum hassle.
+
+
+
+Step 1: Upload the files on your server.
+
+Step 2: Edit the config.php file to allow selected file extensions and select the path you want to read
+
+That's all!!!
+
+
+A template is provided in index.php. The code is pretty self explanatory so you can edit it quite easily to suit your specifications.
+
+ 

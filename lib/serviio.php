@@ -1,7 +1,10 @@
 <?php
-# http://www.gen-x-design.com/archives/making-restful-requests-in-php/
+/**
+* http://www.gen-x-design.com/archives/making-restful-requests-in-php/
+*/
 
-class ServiioService extends RestRequest {
+class ServiioService extends RestRequest
+{
 
     protected $host;
     protected $port;
@@ -43,20 +46,24 @@ class ServiioService extends RestRequest {
     public $presentationLanguage;
     public $showParentCategoryTitle;
 
-    /************************************************/
-    public function __construct ($host,$port) {
+    /**
+     */
+    public function __construct ($host, $port)
+    {
         parent::flush();
         $this->host = $host;
         $this->port = $port;
     }
 
-    /************************************************/
-    public function getStatus() {
+    /**
+     */
+    public function getStatus()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/status');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get status";
             return false;
         }
@@ -69,35 +76,103 @@ class ServiioService extends RestRequest {
             $name = (string)$item->name;
             $profileId = (string)$item->profileId;
             $status = (string)$item->status;
-            $this->renderers[$uuid] = array($ipAddress,$name,$profileId,$status);
+            $this->renderers[$uuid] = array($ipAddress, $name, $profileId, $status);
         }
-        return array($serverStatus,$this->renderers,$ip);
+        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "ip"=>$ip);
     }
 
-    /************************************************/
-    public function getPing() {
+    /**
+     */
+    public function getServiceStatus()
+    {
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/service-status');
+        parent::setVerb('GET');
+        parent::execute();
+        $xml = simplexml_load_string(parent::getResponseBody());
+        if ($xml===false) {
+            $this->error = "Cannot get service status";
+            return false;
+        }
+        $serviceStarted = (string)$xml->serviceStarted;
+        return array($serviceStarted);
+    }
+
+    /**
+     */
+    public function getLibraryStatus()
+    {
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/library-status');
+        parent::setVerb('GET');
+        parent::execute();
+        $xml = simplexml_load_string(parent::getResponseBody());
+        if ($xml===false) {
+            $this->error = "Cannot get library status";
+            return false;
+        }
+        $libraryUpdatesCheckerRunning = (string)$xml->libraryUpdatesCheckerRunning;
+        $libraryAdditionsCheckerRunning = (string)$xml->libraryAdditionsCheckerRunning;
+        $lastAddedFileName = (string)$xml->lastAddedFileName;
+        $numberOfAddedFiles = (string)$xml->numberOfAddedFiles;
+        return array("libraryUpdatesCheckerRunning"=>$libraryUpdatesCheckerRunning,
+                     "libraryAdditionsCheckerRunning"=>$libraryAdditionsCheckerRunning,
+                     "lastAddedFileName"=>$lastAddedFileName,
+                     "numberOfAddedFiles"=>$numberOfAddedFiles);
+    }
+
+    /**
+     */
+    public function getReferenceData($property)
+    {
+        /* INCOMPLETE */
+        /* INCOMPLETE */
+        /* INCOMPLETE */
+        /* INCOMPLETE */
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/'.$property);
+        parent::setVerb('GET');
+        parent::execute();
+        $xml = simplexml_load_string(parent::getResponseBody());
+        if ($xml===false) {
+            $this->error = "Cannot get reference data";
+            return false;
+        }
+        $this->pvalues = array();
+        foreach ($xml->pvalues->pvalue as $item) {
+            $name = (string)$item->name;
+            $value = (string)$item->value;
+            $this->pvalues[$name] = array($name, $value);
+        }
+        return array($this->pvalues);
+    }
+
+    /**
+     */
+    public function getPing()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/ping');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get ping";
             return false;
         }
-        if($xml->errorCode == 0) {
+        if ($xml->errorCode == 0) {
             return true;
         } else {
             return false;
         }
     }
 
-    /************************************************/
-    public function getServiceStatus() {
+    /**
+     */
+    /*
+    public function getServiceStatus()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/service-status');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get service status";
             return false;
         }
@@ -105,27 +180,34 @@ class ServiioService extends RestRequest {
         XMLToArrayFlat($xml, $xmlarray, '', true); 
         return $xmlarray;
     }
+    */
 
-    /************************************************/
-    public function getApplication() {
+    /**
+     */
+    public function getApplication()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/application');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get application";
             return false;
         }
-        return (string)$xml->version;
+        $currentVersion = (string)$xml->version;
+        $updateVersionAvailable = (string)$xml->updateVersionAvailable;
+        return array("version"=>$currentVersion, "updateVersionAvailable"=>$updateVersionAvailable);
     }
 
-    /************************************************/
-    public function getRepository() {
+    /**
+     */
+    public function getRepository()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/repository');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get repository";
             return false;
         }
@@ -145,7 +227,7 @@ class ServiioService extends RestRequest {
                 }
                 $descriptiveMetadataSupported = (string)$item->descriptiveMetadataSupported;
                 $scanForUpdates = (string)$item->scanForUpdates;
-                $sf[$id] = array($folderPath,$supportedFileTypes,$descriptiveMetadataSupported,$scanForUpdates);
+                $sf[$id] = array($folderPath, $supportedFileTypes, $descriptiveMetadataSupported, $scanForUpdates);
             }
         }
         $repo[0] = $sf;
@@ -165,7 +247,7 @@ class ServiioService extends RestRequest {
                 $thumbnailUrl = (string)$item->thumbnailUrl;
                 $repositoryName = (string)$item->repositoryName;
                 $enabled = (string)$item->enabled;
-                $or[$id] = array($repositoryType,$contentUrl,$fileType,$thumbnailUrl,$repositoryName,$enabled);
+                $or[$id] = array($repositoryType, $contentUrl, $fileType, $thumbnailUrl, $repositoryName, $enabled);
             }
         }
         $repo[1] = $or;
@@ -177,15 +259,15 @@ class ServiioService extends RestRequest {
         return $repo;
     }
 
-    // /rest/library-status
-
-    /************************************************/
-    public function getProfiles() {
+    /**
+     */
+    public function getProfiles()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/profiles');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get profiles";
             return false;
         }
@@ -199,13 +281,15 @@ class ServiioService extends RestRequest {
         return $profiles;
     }
 
-    /************************************************/
-    public function getMetadata() {
+    /**
+     */
+    public function getMetadata()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/metadata');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get metadata";
             return false;
         }
@@ -223,16 +307,18 @@ class ServiioService extends RestRequest {
         $this->metadataLanguage = $metadataLanguage;
         $this->retrieveOriginalTitle = $retrieveOriginalTitle;
         $this->descriptiveMetadataExtractor = $descriptiveMetadataExtractor;
-        return array($audioLocalArtExtractorEnabled,$videoLocalArtExtractorEnabled,$videoOnlineArtExtractorEnabled,$videoGenerateLocalThumbnailEnabled,$metadataLanguage,$descriptiveMetadataExtractor,$retrieveOriginalTitle);
+        return array($audioLocalArtExtractorEnabled, $videoLocalArtExtractorEnabled, $videoOnlineArtExtractorEnabled, $videoGenerateLocalThumbnailEnabled, $metadataLanguage, $descriptiveMetadataExtractor, $retrieveOriginalTitle);
     }
 
-    /************************************************/
-    public function getDescriptiveMetadataExtractors() {
+    /**
+     */
+    public function getDescriptiveMetadataExtractors()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/descriptiveMetadataExtractors');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get descriptive metadata extractors";
             return false;
         }
@@ -246,13 +332,15 @@ class ServiioService extends RestRequest {
         return $result;
     }
 
-    /************************************************/
-    public function getBrowsingCategoriesLanguages() {
+    /**
+     */
+    public function getBrowsingCategoriesLanguages()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/browsingCategoriesLanguages');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get browsing categories languages";
             return false;
         }
@@ -266,13 +354,15 @@ class ServiioService extends RestRequest {
         return $result;
     }
 
-    /************************************************/
-    public function getTranscoding() {
+    /**
+     */
+    public function getTranscoding()
+    {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/transcoding');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get transcoding";
             return false;
         }
@@ -286,17 +376,19 @@ class ServiioService extends RestRequest {
         $this->transcodingFolderLocation = $transcodingFolderLocation;
         $this->transcodingEnabled = $transcodingEnabled;
         $this->bestVideoQuality = $bestVideoQuality;
-        return array($audioDownmixing,$threadsNumber,$transcodingFolderLocation,$transcodingEnabled,$bestVideoQuality);
+        return array($audioDownmixing, $threadsNumber, $transcodingFolderLocation, $transcodingEnabled, $bestVideoQuality);
     }
 
-    /************************************************/
-    public function getCpuCores() {
+    /**
+     */
+    public function getCpuCores()
+    {
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/cpu-cores');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get CPU cores";
             return false;
         }
@@ -312,14 +404,16 @@ class ServiioService extends RestRequest {
         return $numberOfCPUCores;
     }
 
-    /************************************************/
-    public function getPresentation() {
+    /**
+     */
+    public function getPresentation()
+    {
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/presentation');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get presentation";
             return false;
         }
@@ -333,9 +427,9 @@ class ServiioService extends RestRequest {
                 $subId = (string)$item->id; // => A_F
                 $subTitle = (string)$item->title; // => Folders
                 $subVisibility = (string)$item->visibility; // => DISPLAYED
-                $subCategories[$subId] = array($subTitle,$subVisibility);
+                $subCategories[$subId] = array($subTitle, $subVisibility);
             }
-            $categories[$id] = array($title,$visibility,$subCategories);
+            $categories[$id] = array($title, $visibility, $subCategories);
         }
         $presentationLanguage = (string)$xml->language;
         $showParentCategoryTitle = (string)$xml->showParentCategoryTitle;
@@ -344,14 +438,16 @@ class ServiioService extends RestRequest {
         return $categories;
     }
 
-    /************************************************/
-    public function getCategoryVisibilityTypes() {
+    /**
+     */
+    public function getCategoryVisibilityTypes()
+    {
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/categoryVisibilityTypes');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->error = "Cannot get presentation";
             return false;
         }
@@ -362,16 +458,10 @@ class ServiioService extends RestRequest {
         return $types;
     }
 
-
-
-
-
-
-
-
-
-    /************************************************/
-    public function putStatus($profiles,$ip) {
+    /**
+     */
+    public function putStatus($profiles, $ip)
+    {
         // create the xml document
         $xmlDoc = new DOMDocument();
 
@@ -393,120 +483,159 @@ class ServiioService extends RestRequest {
             $Rend->appendChild($xmlDoc->createElement("profileId", $renderer[3]));
         }
 
-//        header("Content-Type: text/plain");
-//        $xmlDoc->formatOutput = true;
-//        $requestBody = $xmlDoc->saveXML();
-//        echo $requestBody;
-//        die();
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        echo $requestBody;
+        die();
+        */
 
-/*
-    $requestBody = '<?xml version="1.0" encoding="UTF-8" ?>
-<status>
-  <boundIPAddress>'.$ip.'</boundIPAddress>
-  <renderers>';
-        foreach ($profiles as $renderer) {
-            $requestBody.= '
-    <renderer>
-      <uuid>'.$renderer[0].'</uuid>
-      <ipAddress>'.$renderer[1].'</ipAddress>
-      <name>'.$renderer[2].'</name>
-      <profileId>'.$renderer[3].'</profileId>
-    </renderer>';
-    }
-        $requestBody.= '
-  </renderers>
-</status>';
-*/
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/status');
         parent::setVerb('PUT');
-        parent::setRequestBody($xmlDoc->SaveXML());
+        parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->warning = "Cannot put status";
             return false;
         }
         return (string)$xml->errorCode;
     }
 
-    /************************************************/
-    public function postAction($action) {
-        // Nasty bug http://restlet.tigris.org/issues/show_bug.cgi?id=1186
-        $requestBody = '<?xml version="1.0" encoding="UTF-8" ?>
-    <action>
-      <name>'.$action.'</name>
-    </action>';
+    /**
+     */
+    public function postAction($action)
+    {
+        // create the xml document
+        $xmlDoc = new DOMDocument();
+
+        // add encoding
+        $xmlDoc->encoding = "UTF-8";
+
+        //create the root element
+        $root = $xmlDoc->appendChild($xmlDoc->createElement("action"));
+
+        // create sub element
+        $root->appendChild($xmlDoc->createElement("name", $action));
+
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        echo $requestBody;
+        die();
+        */
+
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/action');
         parent::setVerb('POST');
-        parent::setRequestBody($requestBody);
+        parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         $str = parent::getResponseBody();
-        if (strpos($str,'<title>Status page</title>')) {
-            $str = strstr($str,'<h3>');
-            $this->warning = substr($str,0,strpos($str,'</body>'));
+        if (strpos($str, '<title>Status page</title>')) {
+            $str = strstr($str, '<h3>');
+            $this->warning = substr($str, 0, strpos($str, '</body>'));
             return false;
         }
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->warning = "Cannot post action: ".$action;
             return false;
         }
         return (string)$xml->errorCode;
     }
     
-    /************************************************/
-    public function putTranscoding($transcoding,$location,$cores,$audio,$quality) {
-        $requestBody = '<?xml version="1.0" encoding="UTF-8" ?>
-<transcoding>
-  <audioDownmixing>'.$audio.'</audioDownmixing>
-  <threadsNumber>'.$cores.'</threadsNumber>
-  <transcodingFolderLocation>'.$location.'</transcodingFolderLocation>
-  <bestVideoQuality>'.$quality.'</bestVideoQuality>
-  <transcodingEnabled>'.$transcoding.'</transcodingEnabled>
-</transcoding>';
+    /**
+     */
+    public function putTranscoding($transcoding, $location, $cores, $audio, $quality)
+    {
+        // create the xml document
+        $xmlDoc = new DOMDocument();
+
+        // add encoding
+        $xmlDoc->encoding = "UTF-8";
+
+        //create the root element
+        $root = $xmlDoc->appendChild($xmlDoc->createElement("transcoding"));
+
+        // create sub element
+        $root->appendChild($xmlDoc->createElement("audioDownmixing", $audio));
+        $root->appendChild($xmlDoc->createElement("threadsNumber", $cores));
+        $root->appendChild($xmlDoc->createElement("transcodingFolderLocation", $location));
+        $root->appendChild($xmlDoc->createElement("bestVideoQuality", $quality));
+        $root->appendChild($xmlDoc->createElement("transcodingEnabled", $transcoding));
+
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        echo $requestBody;
+        die();
+        */
+
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/transcoding');
         parent::setVerb('PUT');
-        parent::setRequestBody($requestBody);
+        parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->warning = "Cannot put transcoding";
             return false;
         }
-        return (string)$xml->errorCode;    
+        return (string)$xml->errorCode;
     }
 
-    /************************************************/
-    public function putMetadata($audioLocalArtExtractorEnabled,$videoLocalArtExtractorEnabled,$videoOnlineArtExtractorEnabled,
-    $videoGenerateLocalThumbnailEnabled,$metadataLanguage,$descriptiveMetadataExtractor,$retrieveOriginalTitle) {
-        $requestBody = '<?xml version="1.0" encoding="UTF-8" ?>
-<metadata>
-  <audioLocalArtExtractorEnabled>'.$audioLocalArtExtractorEnabled.'</audioLocalArtExtractorEnabled>
-  <videoLocalArtExtractorEnabled>'.$videoLocalArtExtractorEnabled.'</videoLocalArtExtractorEnabled>
-  <videoOnlineArtExtractorEnabled>'.$videoOnlineArtExtractorEnabled.'</videoOnlineArtExtractorEnabled>
-  <videoGenerateLocalThumbnailEnabled>'.$videoGenerateLocalThumbnailEnabled.'</videoGenerateLocalThumbnailEnabled>
-  <metadataLanguage>'.$metadataLanguage.'</metadataLanguage>
-  <retrieveOriginalTitle>'.$retrieveOriginalTitle.'</retrieveOriginalTitle>
-  <descriptiveMetadataExtractor>'.$descriptiveMetadataExtractor.'</descriptiveMetadataExtractor>
-</metadata>';
+    /**
+     */
+    public function putMetadata($audioLocalArtExtractorEnabled, $videoLocalArtExtractorEnabled, $videoOnlineArtExtractorEnabled,
+    $videoGenerateLocalThumbnailEnabled, $metadataLanguage, $descriptiveMetadataExtractor, $retrieveOriginalTitle)
+    {
+        // create the xml document
+        $xmlDoc = new DOMDocument();
+
+        // add encoding
+        $xmlDoc->encoding = "UTF-8";
+
+        //create the root element
+        $root = $xmlDoc->appendChild($xmlDoc->createElement("metadata"));
+
+        // create sub element
+        $root->appendChild($xmlDoc->createElement("audioLocalArtExtractorEnabled", $audioLocalArtExtractorEnabled));
+        $root->appendChild($xmlDoc->createElement("videoLocalArtExtractorEnabled", $videoLocalArtExtractorEnabled));
+        $root->appendChild($xmlDoc->createElement("videoOnlineArtExtractorEnabled", $videoOnlineArtExtractorEnabled));
+        $root->appendChild($xmlDoc->createElement("videoGenerateLocalThumbnailEnabled", $videoGenerateLocalThumbnailEnabled));
+        $root->appendChild($xmlDoc->createElement("metadataLanguage", $metadataLanguage));
+        $root->appendChild($xmlDoc->createElement("retrieveOriginalTitle", $retrieveOriginalTitle));
+        $root->appendChild($xmlDoc->createElement("descriptiveMetadataExtractor", $descriptiveMetadataExtractor));
+
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        echo $requestBody;
+        die();
+        */
+
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/metadata');
         parent::setVerb('PUT');
-        parent::setRequestBody($requestBody);
+        parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->warning = "Cannot put metadata";
             return false;
         }
         return (string)$xml->errorCode;    
     }
 
-    /************************************************/
-    public function putRepository($repo) {
+    /**
+     */
+    public function putRepository($repo)
+    {
         //create the xml document
         $xmlDoc = new DOMDocument();
 
@@ -522,8 +651,9 @@ class ServiioService extends RestRequest {
         /* FOLDERS */
         foreach ($repo[0] as $id=>$entry) {
             $Folder = $sharedFolders->appendChild($xmlDoc->createElement("sharedFolder"));
-            if ($id <= $entry[4])
+            if ($id <= $entry[4]) {
                 $Folder->appendChild($xmlDoc->createElement("id", $id));
+            }
             $Folder->appendChild($xmlDoc->createElement("folderPath", $entry[0]));
 
             $supportedFileTypes = $Folder->appendChild($xmlDoc->createElement("supportedFileTypes"));
@@ -559,12 +689,13 @@ class ServiioService extends RestRequest {
         $root->appendChild($xmlDoc->createElement("onlineFeedExpiryInterval", $this->onlineFeedExpiryInterval));
         $root->appendChild($xmlDoc->createElement("onlineContentPreferredQuality", $this->onlineContentPreferredQuality));
 
-
-//    header("Content-Type: text/plain");
-//    $xmlDoc->formatOutput = true;
-//    $requestBody = $xmlDoc->saveXML();
-//    echo $requestBody;
-//    die();
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        echo $requestBody;
+        die();
+        */
 
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/repository');
@@ -572,7 +703,7 @@ class ServiioService extends RestRequest {
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->warning = "Cannot put repository";
             return false;
         }
@@ -580,43 +711,55 @@ class ServiioService extends RestRequest {
         return (string)$xml->errorCode;        
     }
 
-    /************************************************/
-    public function putPresentation($categories,$presentationLanguage,$showParentCategoryTitle) {
-        $requestBody = '<?xml version="1.0" encoding="UTF-8" ?>
-<presentation>
-  <categories>';
+    /**
+     */
+    public function putPresentation($categories, $presentationLanguage, $showParentCategoryTitle)
+    {
+        //create the xml document
+        $xmlDoc = new DOMDocument();
+
+        // add encoding
+        $xmlDoc->encoding = "UTF-8";
+
+        //create the root element
+        $root = $xmlDoc->appendChild($xmlDoc->createElement("presentation"));
+
+        //create a tutorial element
+        $Categories = $root->appendChild($xmlDoc->createElement("categories"));
+
+        /* CATEGORIES */
         foreach ($categories as $id=>$category) {
-            $id = str_replace("'","",$id);
-            $requestBody.= '
-    <browsingCategory>
-      <id>'.$id.'</id>
-      <visibility>'.$category[1].'</visibility>
-      <subCategories>';
-            foreach ($category[2] as $subId=>$subCategory) {
-                $subId = str_replace("'","",$subId);
-                $requestBody.= '
-        <browsingCategory>
-    <id>'.$subId.'</id>
-    <visibility>'.$subCategory[1].'</visibility>
-    <subCategories/>
-    </browsingCategory>';
+            $id = str_replace("'", "", $id);
+            $Category = $Categories->appendChild($xmlDoc->createElement("browsingCategory"));
+            $Category->appendChild($xmlDoc->createElement("id", $id));
+            $Category->appendChild($xmlDoc->createElement("visibility", $category[1]));
+
+            $subCategories = $Category->appendChild($xmlDoc->createElement("subCategories"));
+            foreach ($category[2] as $subId=>$subcategory) {
+                $subId = str_replace("'", "", $subId);
+                $subCategory = $subCategories->appendChild($xmlDoc->createElement("browsingCategory"));
+                $subCategory->appendChild($xmlDoc->createElement("id", $subId));
+                $subCategory->appendChild($xmlDoc->createElement("visibility", $subcategory[1]));
             }
-            $requestBody.= '
-      </subCategories>
-    </browsingCategory>';
         }
-        $requestBody.= '
-  </categories>
-  <language>'.$presentationLanguage.'</language>
-  <showParentCategoryTitle>'.$showParentCategoryTitle.'</showParentCategoryTitle>
-</presentation>';
+        $root->appendChild($xmlDoc->createElement("language", $presentationLanguage));
+        $root->appendChild($xmlDoc->createElement("showParentCategoryTitle", $showParentCategoryTitle));
+
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        echo $requestBody;
+        die();
+        */
+
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/presentation');
         parent::setVerb('PUT');
-        parent::setRequestBody($requestBody);
+        parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
-        if($xml===false) {
+        if ($xml===false) {
             $this->warning = "Cannot put presentation";
             return false;
         }
@@ -624,23 +767,17 @@ class ServiioService extends RestRequest {
     }
 }
 
-/************************************************/
-/************************************************/
-/************************************************/
-/************************************************/
-/************************************************/
-//
-//$xmlarray = array(); // this will hold the flattened data
-//XMLToArrayFlat($xml, $xmlarray, '', true); 
-//print_r($xmlarray);
-
-/************************************************/
-function getPostVar($var,$def="") {
+/**
+ */
+function getPostVar($var, $def="")
+{
     return isset($_POST[$var])?$_POST[$var]:$def;
 }
 
-/************************************************/
-function XMLToArrayFlat($xml, &$return, $path='', $root=false) { 
+/**
+ */
+function XMLToArrayFlat($xml, &$return, $path='', $root=false)
+{
     $children = array();
     if ($xml instanceof SimpleXMLElement) {
         $children = $xml->children();
@@ -648,14 +785,14 @@ function XMLToArrayFlat($xml, &$return, $path='', $root=false) {
             $path .= '/'.$xml->getName();
         }
     }
-    if (count($children) == 0){
+    if (count($children) == 0) {
         $return[$path] = (string)$xml;
         return;
     }
     $seen=array();
     foreach ($children as $child => $value) {
         $childname = ($child instanceof SimpleXMLElement)?$child->getName():$child;
-        if (!isset($seen[$childname])){
+        if (!isset($seen[$childname])) {
             $seen[$childname]=0;
         }
         $seen[$childname]++;
@@ -663,8 +800,10 @@ function XMLToArrayFlat($xml, &$return, $path='', $root=false) {
     }
 }
 
-/************************************************/
-function tr($token, $def="") {
+/**
+ */
+function tr($token, $def="")
+{
     global $language, $translation;
     if (strlen($language)==2 && file_exists("i18n/messages_${language}.properties")) {
         // OK
@@ -680,20 +819,20 @@ function tr($token, $def="") {
             while (($buffer = fgets($handle, 4096)) !== false) {
                 $buffer = trim($buffer);
                 if ($append) {
-                    if (substr($buffer,strlen($buffer)-1,1)!="\\") {
+                    if (substr($buffer, strlen($buffer)-1, 1)!="\\") {
                         $append=false;
                     }
-                    $translation[$key].= str_replace("\\","\n",$buffer);
+                    $translation[$key].= str_replace("\\", "\n", $buffer);
                     continue;
                 }
                 $pos = strpos($buffer, "=");
                 if ($pos!==false) {
-                    $key = trim(substr($buffer,0,$pos));
-                    $val = trim(substr($buffer,$pos+1));
-                    if (substr($val,strlen($val)-1,1)=="\\") {
+                    $key = trim(substr($buffer, 0, $pos));
+                    $val = trim(substr($buffer, $pos+1));
+                    if (substr($val, strlen($val)-1, 1)=="\\") {
                         $append = true;
                     }
-                    $translation[$key] = str_replace("\\","\n",$val);
+                    $translation[$key] = str_replace("\\", "\n", $val);
                 }
             }
             if (!feof($handle)) {
@@ -702,7 +841,7 @@ function tr($token, $def="") {
             fclose($handle);
         }
     }
-    return array_key_exists($token,$translation)?$translation[$token]:($def==""?$token:$def);
+    return array_key_exists($token, $translation)?$translation[$token]:($def==""?$token:$def);
 }
 
 ?>

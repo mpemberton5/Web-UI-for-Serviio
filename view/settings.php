@@ -1,4 +1,4 @@
-<form method="post" action="?">
+<form method="post" action="">
 <input type="hidden" name="tab" value="settings">
 <fieldset>
 <legend><?php echo tr('tab_console_settings','Console settings')?></legend>

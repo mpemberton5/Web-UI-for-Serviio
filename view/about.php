@@ -1,9 +1,9 @@
 <div align="center">
 <img src="images/logo.png" alt="serviio">
 <br>
-<b>Serviio v <?php echo $version?></b>
+<b>Serviio v <?php $ret = $serviio->getApplication(); echo $ret['version'];?></b>
 <br>
-<?php echo tr('tab_about_text','DLNA media streaming server<br>Copyright 2009-2011 Petr Nejedly<br>
+<?php echo tr('tab_about_text','DLNA media streaming server<br>Copyright 2009-2012 Petr Nejedly<br>
 Web UI for Serviio originally written by AcidumIrae with updates by mpemberton5<br>
 <a href="http://serviio.org">http://serviio.org</a><br><br>
 This product may use movie metadata provided bt <a href="http://www.themoviedb.org/">TheMovieDb.org</a>, please consider contributing to the database.<br>

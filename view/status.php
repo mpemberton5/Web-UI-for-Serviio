@@ -103,7 +103,7 @@ function deleteRow(tableID) {
 
 // -->
 </SCRIPT>
-<form method="post" action="?">
+<form method="post" action="">
 <input type="hidden" name="tab" value="status">
 <fieldset>
 <legend><?php echo tr('tab_status_server_status','Server Status')?></legend>
@@ -129,7 +129,7 @@ function deleteRow(tableID) {
 	    <td><?php echo tr('tab_status_renderer_table_device_name','Device Name')?></td>
 	    <td><?php echo tr('tab_status_renderer_table_profile','Profile')?></td>
 	</tr>
-<?php foreach ($renderers as $id=>$renderer) { ?>
+<?php foreach ($statusResponse["renderers"] as $id=>$renderer) { ?>
 	<tr>
 		<td><input type="hidden" name="renderer_<?php echo $id?>" value="<?php echo $id?>"><input type="checkbox" name="chk" value="<?php echo $id?>"><input type="hidden" name="name_<?php echo $id?>" value="<?php echo $renderer[1]?>"><input type="hidden" name="ipAddress_<?php echo $id?>" value="<?php echo $renderer[0]?>"></td>
 	    <td><?php echo status_icon($renderer[3])?></td>	
@@ -166,7 +166,7 @@ profiles['<?php echo $key?>'] = '<?php echo $val?>';
 <fieldset>
 <legend><?php echo tr('tab_status_network_settings','Network Settings')?></legend>
 <?php echo tr('tab_status_bound_ip_address','Bound IP address (leave empty for default):')?> 
-<input type="text" name="ip" value="<?php echo $ip?>" maxlength="16">
+<input type="text" name="ip" value="<?php echo $statusResponse["ip"]?>" maxlength="16">
 </fieldset>
 <div align="right">
 <input type="submit" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">

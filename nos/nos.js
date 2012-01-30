@@ -4,7 +4,7 @@ function publish() {
     var mt = getRadioVal('mediaType');
     var turl = document.getElementById('thumbnailURL');
     var Dname = document.getElementById('Dname');
-    parent.parent.populateData(olft.value,sURL.value,mt,turl.value,'true',Dname.value);
+    parent.parent.populateLibData(olft.value,sURL.value,mt,turl.value,'true',Dname.value);
     // populateData(onlineFeedType,sourceURL,mediaType,thumbnailURL,posted,displayName)
     //parent.parent.populateData('FEED','http://www.ted.com/talks/rss','VIDEO','','true');
     parent.parent.GB_hide();

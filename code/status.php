@@ -29,9 +29,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 	$message = $serviio->warning;
     }
 }
-//$status = $serviio->getServiceStatus();
-list($serverStatus,$renderers,$ip) = $serviio->getStatus();
-if ($serverStatus=="STARTED") {
+$statusResponse = $serviio->getStatus();
+if ($statusResponse["serverStatus"] == "STARTED") {
     $statusText = "<font color='green'>".tr('tab_status_status_running','Running')."</font>";
     $startDisabled = "disabled";
     $stopDisabled = "";

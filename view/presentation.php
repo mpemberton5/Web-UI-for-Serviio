@@ -1,4 +1,4 @@
-<form method="post" action="?" name="presentation">
+<form method="post" action="" name="presentation">
 <input type="hidden" name="tab" value="presentation">
 <?php echo tr('tab_presentation_description','You can modify the categories of the browsing menu on your device. Choose categories to be visible, \'transparent\' or disabled.')?>
 <br>

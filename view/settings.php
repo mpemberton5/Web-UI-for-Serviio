@@ -13,6 +13,6 @@
 <br>
 <div align="right">
 <input type="submit" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-<input type="submit" name="save" value="<?php echo tr('button_save','Save')?>" onclick="return confirm('Are you sure you want to save changes?')">
+<input type="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
 </div>
 </form>

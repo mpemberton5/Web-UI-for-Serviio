@@ -39,14 +39,24 @@ $appInfo = $serviio->getApplication();
 
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 
-<link rel="stylesheet" type="text/css" href="ajaxtabs/ajaxtabs.css" />
-<script type="text/javascript" src="ajaxtabs/ajaxtabs.js">
+<link rel="stylesheet" type="text/css" href="css/ajaxtabs.css" />
+<script type="text/javascript" src="js/ajaxtabs.js">
 /***********************************************
  * * Ajax Tabs Content script v2.2- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
  * * This notice MUST stay intact for legal use
  * * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
  * ***********************************************/
 </script>
+
+<link rel="stylesheet" type="text/css" href="css/tabcontent.css" />
+<script type="text/javascript" src="js/tabcontent.js">
+/***********************************************
+ * * Tab Content script v2.2- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+ * * This notice MUST stay intact for legal use
+ * * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+ * ***********************************************/
+</script>
+
 <script type="text/javascript" language="javascript">
 function switchSectionM(section) {
     document.getElementById('video').style.fontWeight = 'normal';
@@ -352,8 +362,18 @@ $(document).ready(function(){
 
     function CheckStatuses() {
         $.getJSON("monitor.php", function(json){
-            $("#lucr").text(json.libraryUpdatesCheckerRunning); 
-            $("#lacr").text(json.libraryAdditionsCheckerRunning); 
+            if (json.libraryUpdatesCheckerRunning == 'true') {
+                //$("#lucr").text(json.libraryUpdatesCheckerRunning); 
+                $("#lucr").html("<img src='images/bullet_green.png'>");
+            } else {
+                $("#lucr").html("<img src='images/bullet_red.png'>");
+            }
+            if (json.libraryAdditionsCheckerRunning == 'true') {
+                //$("#lacr").text(json.libraryAdditionsCheckerRunning); 
+                $("#lacr").html("<img src='images/bullet_green.png'>");
+            } else {
+                $("#lacr").html("<img src='images/bullet_red.png'>");
+            }
             $("#lafn").text(json.lastAddedFileName); 
             $("#nofa").text(json.numberOfAddedFiles); 
             var now = new Date();
@@ -422,12 +442,39 @@ var indexes=new ddajaxtabs("indextabs", "indexdivcontainer")
 indexes.setpersist(true)
 indexes.setselectedClassTarget("link") //"link" or "linkparent"
 indexes.init()
+indexes.onajaxpageload=function(pageurl) {
+    if (pageurl.indexOf("content.php?tab=status")!=-1) {
+        var ssTabs=new ddtabcontent("serverstatustab")
+        ssTabs.setpersist(true)
+        ssTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        ssTabs.init()
+        var rpTabs=new ddtabcontent("rendererprofiletab")
+        rpTabs.setpersist(true)
+        rpTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        rpTabs.init()
+        var nsTabs=new ddtabcontent("networksettingtab")
+        nsTabs.setpersist(true)
+        nsTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        nsTabs.init()
+    }
+    if (pageurl.indexOf("content.php?tab=library")!=-1) {
+        var libTabs=new ddtabcontent("librarytabs")
+        libTabs.setpersist(false)
+        libTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        libTabs.init()
+        var libsTabs=new ddtabcontent("librarystatustabs")
+        libsTabs.setpersist(true)
+        libsTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        libsTabs.init()
+    }
+    if (pageurl.indexOf("content.php?tab=metadata")!=-1) {
+        var libTabs=new ddtabcontent("metadatatabs")
+        libTabs.setpersist(false)
+        libTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        libTabs.init()
+    }
+}
 </script>
-
-
-
-
-
 
 
 <hr>

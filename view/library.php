@@ -1,26 +1,29 @@
 <form method="post" action="" name="library">
     <input type="hidden" name="tab" value="library">
     <br>
-    <fieldset>
-        <legend align="left">&nbsp; <a href="#" onclick="return switchLibSection('sharedfolders')"><span id="sharedfolders" style="font-weight:bold;"><?php echo tr('tab_folders_repositories_panel','Shared folders')?></span></a> |
-        <a href="#" onclick="return switchLibSection('onlinesources')"><span id="onlinesources" ><?php echo tr('tab_online_sources_repositories_panel','Online Sources')?></span></a> &nbsp;</legend>
-        <div id="sharedfoldersHolder" style="display:block">
 
+    <ul id="librarytabs" class="shadetabs">
+    <li><a href="#" rel="libtab1" class="selected">Shared Folders</a></li>
+    <li><a href="#" rel="libtab2">Online Sources</a></li>
+    </ul>
+    <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
+
+        <div id="libtab1" class="tabcontent">
             <?php echo tr('tab_folders_description','Select folders that you want to monitor for media files. Also select type of media files to be shared for each folder. The library can be automatically monitored for new additions and updates to currently shared files.')?><br>
             <br>
             <table>
                 <tr valign="top">
                     <td>
                         <table width="100%" id="libraryTableFolders">
-                            <tr align="center">
-                                <td width="20"><img src="images/bullet_red.png" alt="<?php echo tr('button_remove','Remove')?>"></td>
-                                <td align="left"><?php echo tr('tab_folders_respository_table_folder','Folder')?></td>
-                                <td width="20"><img src="images/film.png" alt="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>" title="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>"></td>
-                                <td width="20"><img src="images/music-beam.png" alt="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>" title="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>"></td>
-                                <td width="20"><img src="images/camera-black.png" alt="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>" title="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>"></td>
-                                <td width="20"><img src="images/document-attribute-m.png" alt="<?php echo tr('tab_folders_repository_table_retrieve_descriptive_metadata','Retrieve descriptive metadata')?>" title="<?php echo tr('tab_folders_repository_table_retrieve_descriptive_metadata','Retrieve descriptive metadata')?>"></td>
-                                <td width="20"><img src="images/arrow-circle.png" alt="<?php echo tr('tab_folders_repository_table_scan_for_update','Scan for file additions and updates')?>" title="<?php echo tr('tab_folders_repository_table_scan_for_update','Scan for file additions and updates')?>"></td>
-                            </tr>
+                            <thead align="center">
+                                <th width="20">&nbsp;</th>
+                                <th align="left" width="400"><?php echo tr('tab_folders_respository_table_folder','Folder')?></th>
+                                <th align="center" width="30"><img src="images/film.png" alt="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>" title="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>"></th>
+                                <th align="center" width="30"><img src="images/music-beam.png" alt="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>" title="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>"></th>
+                                <th align="center" width="30"><img src="images/camera-black.png" alt="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>" title="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>"></th>
+                                <th align="center" width="30"><img src="images/document-attribute-m.png" alt="<?php echo tr('tab_folders_repository_table_retrieve_descriptive_metadata','Retrieve descriptive metadata')?>" title="<?php echo tr('tab_folders_repository_table_retrieve_descriptive_metadata','Retrieve descriptive metadata')?>"></th>
+                                <th align="center" width="30"><img src="images/arrow-circle.png" alt="<?php echo tr('tab_folders_repository_table_scan_for_update','Scan for file additions and updates')?>" title="<?php echo tr('tab_folders_repository_table_scan_for_update','Scan for file additions and updates')?>"></th>
+                            </thead>
                             <?php $midA = 1; foreach ($repo[0] as $id=>$entry) { if ($id>$midA) { $midA = $id; } ?>
                             <tr align="center">
                                 <td>
@@ -54,20 +57,20 @@
             <input type="checkbox" name="addhidden" value="1"<?php echo $serviio->searchHiddenFiles=="true"?" checked":""?>> <?php echo tr('tab_folders_include_hidden','Include hidden files')?>
         </div>
 
-        <div id="onlinesourcesHolder" style="display:none">
+        <div id="libtab2" class="tabcontent">
             <?php echo tr('tab_online_sources_description','Define online source that you would like to access. Online sources are constantly monitored for updates and cached for a period of time. It might take a moment for new sources to appear on your device.')?><br>
             <br>
             <table>
                 <tr valign="top">
                     <td>
                         <table width="100%" id="libraryTableOnlineSources">
-                            <tr align="center">
-                                <td width="20"><img src="images/bullet_red.png" alt="<?php echo tr('button_remove','Remove')?>"></td>
-                                <td align="left"><?php echo tr('tab_online_sources_respository_table_url','Url')?></td>
-                                <td width="20"><img src="images/film.png" alt="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>" title="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>"></td>
-                                <td width="20"><img src="images/music-beam.png" alt="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>" title="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>"></td>
-                                <td width="20"><img src="images/camera-black.png" alt="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>" title="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>"></td>
-                            </tr>
+                            <thead align="center">
+                                <th width="20">&nbsp;</th>
+                                <th align="left" width="400"><?php echo tr('tab_online_sources_respository_table_url','Name / URL')?></th>
+                                <th align="center" width="30"><img src="images/film.png" alt="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>" title="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>"></th>
+                                <th align="center" width="30"><img src="images/music-beam.png" alt="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>" title="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>"></th>
+                                <th align="center" width="30"><img src="images/camera-black.png" alt="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>" title="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>"></th>
+                            </thead>
                             <?php $midB = 1; foreach ($repo[1] as $id=>$entry) { if ($id>$midB) { $midB = $id; } ?>
                             <tr align="center">
                                 <td>
@@ -126,17 +129,21 @@
                 <option value="HIGH"<?php echo $serviio->onlineContentPreferredQuality=="HIGH"?" selected":""?>>High</option>
             </select>
         </div>
-    </fieldset>
+    </div>
 
-    <br>
-    <fieldset>
-        <legend><?php echo tr('tab_folders_library_status_panel','Library refresh')?></legend>
-        <input type="checkbox" name="autoupdate" value="1"<?php echo $serviio->automaticLibraryUpdate=="true"?" checked":""?>> <?php echo tr('tab_folders_automatic_update','Keep library automatically updated')?>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        Refresh interval (minutes): <input type="text" name="minutes" value="<?php echo $serviio->automaticLibraryUpdateInterval?>" maxlength="3" size="3">
-        <br>
-        <input type="submit" name="force" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" onclick="return confirm('Are you sure you want to force refresh?')">
-    </fieldset>
+    <ul id="librarystatustabs" class="shadetabs">
+    <li><a href="#" rel="libstab1" class="selected">Library Status</a></li>
+    </ul>
+    <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
+        <div id="libstab1" class="tabcontent">
+            <input type="checkbox" name="autoupdate" value="1"<?php echo $serviio->automaticLibraryUpdate=="true"?" checked":""?>> <?php echo tr('tab_folders_automatic_update','Keep library automatically updated')?>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            Refresh interval (minutes): <input type="text" name="minutes" value="<?php echo $serviio->automaticLibraryUpdateInterval ?>" maxlength="3" size="3">
+            <br>
+            <input type="submit" name="force" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" />
+        </div>
+    </div>
+
     <div align="right">
         <input type="submit" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
         <input type="submit" name="save" value="<?php echo tr('button_save','Save')?>" />

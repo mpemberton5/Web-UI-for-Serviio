@@ -27,8 +27,8 @@ include("../lib/serviio.php");
                 <td><?php echo tr('new_online_source_type','Source type:')?></td>
                 <td><select id="onlineFeedType" name="onlineFeedType">
                        <option value="FEED" SELECTED>Online RSS/Atom feed</option>
-                       <option value="LIVE_STREAM" SELECTED>Live Stream</option>
-                       <option value="WEB_RESOURCE" SELECTED>Other Web Resources</option>
+                       <option value="LIVE_STREAM">Live Stream</option>
+                       <option value="WEB_RESOURCE">Other Web Resources</option>
                     </select></td>
             </tr>
             <tr>

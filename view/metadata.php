@@ -1,13 +1,17 @@
 <form method="post" action="" name="metadata">
     <input type="hidden" name="tab" value="metadata" />
     <input type="hidden" name="section" value="<?php echo $section?>" />
+    <br>
     <?php echo tr('tab_metadata_description','Media files metadata is constantly monitored and stored. By default all embedded metadata (tags) are extracted from media files. Please select additional extracting methods.')?>
     <br>
     <br>
-    <fieldset>
-        <legend align="left">&nbsp; <a href="#" onclick="return switchSectionM('video')"><span id="video" <?php echo $section!="audio"?'style="font-weight:bold;"':''?>><?php echo tr('file_type_video','Video')?></span></a> | 
-        <a href="#" onclick="return switchSectionM('audio')"><span id="audio" <?php echo $section=="audio"?'style="font-weight:bold;"':''?>><?php echo tr('file_type_audio','Audio')?></span></a> &nbsp;</legend>
-        <div id="videoHolder" style="display:<?php echo $section!='audio'?'block':'none'?>">
+
+<ul id="metadatatabs" class="shadetabs">
+<li><a href="#" rel="meta1" class="selected"><?php echo tr('file_type_video','Video')?></a></li>
+<li><a href="#" rel="meta2"><?php echo tr('file_type_audio','Audio')?></a></li>
+</ul>
+<div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
+    <div id="meta1" class="tabcontent">
             <input type="checkbox" name="thumbnails" value="1"<?php echo $serviio->videoGenerateLocalThumbnailEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_enable_local_thumbnail','Generate thumbnails for local videos')?>
             <br>
             <input type="checkbox" name="cover_search" value="1"<?php echo $serviio->videoLocalArtExtractorEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_local_poster','Look for a local DVD cover image or poster (e.g. dvdcover.jpg, movie.jpg, etc.)')?>
@@ -35,12 +39,12 @@
                     <?php } ?>
                 </select> &nbsp; <input type="checkbox" name="orig_title" value="1"<?php echo $serviio->retrieveOriginalTitle=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_use_original_title','Use original title')?>
             </fieldset>
-        </div>
-        <div id="audioHolder" style="display:<?php echo $section=='audio'?'block':'none'?>">
+    </div>
+    <div id="meta2" class="tabcontent">
             <input type="checkbox" name="audio_cover" value="1"<?php echo $serviio->audioLocalArtExtractorEnabled=="true"?" checked":""?>> 
             <?php echo tr('tab_metadata_audio_local_art','Look for a local album art image (e.g. folder.jpg, cover.jpg, front_cover.jpg, etc.)')?>
-        </div>
-    </fieldset>
+    </div>
+</div>
 
     <div align="right">
         <input type="submit" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">

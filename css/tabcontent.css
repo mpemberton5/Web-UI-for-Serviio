@@ -158,7 +158,7 @@ background: black url(../images/indentbg2.gif) center center repeat-x;
 }
 
 
-.tabcontentstyle{ /*style of tab content oontainer*/
+.tabcontentstyle{ /*style of tab content container*/
 border: 1px solid gray;
 width: 450px;
 margin-bottom: 1em;

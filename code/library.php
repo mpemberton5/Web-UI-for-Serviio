@@ -39,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
                     $items,
                     $id>$lastOSId?false:true,
                     getPostVar("os_name_${id}", ""),
-                    getPostVar("os_stat_${id}", "")
+                    getPostVar("os_stat_${id}", ""),
+                    getPostVar("os_thumb_${id}", "")
                     );
             }
         }

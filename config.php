@@ -1,7 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('error_reporting', E_ALL);
 $language = "en";
+$webUIver = "1.0";
+$debugLevel = "none"; // none, debug
+$debugLoc = "none"; // none, screen
 $serviio_host = "127.0.0.1";
 $serviio_port = "23423";
 $version_req = "0.6.1";

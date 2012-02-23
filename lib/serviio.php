@@ -83,6 +83,13 @@ class ServiioService extends RestRequest
 
     /**
      */
+    public function getSystemStatus() {
+        $arr = $this->getStatus();
+        return $this->getLibraryStatus() + array("serverStatus"=>$arr["serverStatus"]);
+    }
+
+    /**
+     */
     public function getServiceStatus()
     {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/service-status');
@@ -94,7 +101,7 @@ class ServiioService extends RestRequest
             return false;
         }
         $serviceStarted = (string)$xml->serviceStarted;
-        return array($serviceStarted);
+        return array("serviceStarted"=>$serviceStarted);
     }
 
     /**
@@ -496,17 +503,18 @@ class ServiioService extends RestRequest
         parent::setVerb('PUT');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->warning = "Cannot put status";
-            return false;
-        }
-        return (string)$xml->errorCode;
+        return print_r(parent::getResponseBody());
+//        $xml = simplexml_load_string(parent::getResponseBody());
+//        if ($xml===false) {
+//            $this->warning = "Cannot put status";
+//            return false;
+//        }
+//        return (string)$xml->errorCode;
     }
 
     /**
      */
-    public function postAction($action)
+    public function postAction($action, $params = null)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -519,6 +527,12 @@ class ServiioService extends RestRequest
 
         // create sub element
         $root->appendChild($xmlDoc->createElement("name", $action));
+
+        if ($params != null) {
+            foreach ($params as $param) {
+                $root->appendChild($xmlDoc->createElement("parameter", $param));
+            }
+        }
 
         /*
         header("Content-Type: text/plain");
@@ -533,6 +547,7 @@ class ServiioService extends RestRequest
         parent::setVerb('POST');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
+        return print_r(parent::getResponseBody());
         $str = parent::getResponseBody();
         if (strpos($str, '<title>Status page</title>')) {
             $str = strstr($str, '<h3>');
@@ -546,7 +561,7 @@ class ServiioService extends RestRequest
         }
         return (string)$xml->errorCode;
     }
-    
+
     /**
      */
     public function putTranscoding($transcoding, $location, $cores, $audio, $quality)
@@ -580,12 +595,13 @@ class ServiioService extends RestRequest
         parent::setVerb('PUT');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->warning = "Cannot put transcoding";
-            return false;
-        }
-        return (string)$xml->errorCode;
+        return print_r(parent::getResponseBody());
+//        $xml = simplexml_load_string(parent::getResponseBody());
+//        if ($xml===false) {
+//            $this->warning = "Cannot put transcoding";
+//            return false;
+//        }
+//        return (string)$xml->errorCode;
     }
 
     /**
@@ -624,12 +640,13 @@ class ServiioService extends RestRequest
         parent::setVerb('PUT');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->warning = "Cannot put metadata";
-            return false;
-        }
-        return (string)$xml->errorCode;    
+        return print_r(parent::getResponseBody());
+//        $xml = simplexml_load_string(parent::getResponseBody());
+//        if ($xml===false) {
+//            $this->warning = "Cannot put metadata";
+//            return false;
+//        }
+//        return (string)$xml->errorCode;    
     }
 
     /**
@@ -680,7 +697,7 @@ class ServiioService extends RestRequest
                 $Folder->appendChild($xmlDoc->createElement("repositoryType", $entry[0]));
                 $Folder->appendChild($xmlDoc->createElement("contentUrl", str_replace("&", "&amp;", $entry[1])));
                 $Folder->appendChild($xmlDoc->createElement("fileType", $entry[2]));
-                $Folder->appendChild($xmlDoc->createElement("thumbnailUrl"));
+                $Folder->appendChild($xmlDoc->createElement("thumbnailUrl", $entry[6]));
                 $Folder->appendChild($xmlDoc->createElement("repositoryName", $entry[4]));
                 $Folder->appendChild($xmlDoc->createElement("enabled", $entry[5]));
             }
@@ -702,13 +719,14 @@ class ServiioService extends RestRequest
         parent::setVerb('PUT');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->warning = "Cannot put repository";
-            return false;
-        }
-
-        return (string)$xml->errorCode;        
+        return print_r(parent::getResponseBody());
+//        $xml = simplexml_load_string(parent::getResponseBody());
+//        if ($xml===false) {
+//            $this->warning = "Cannot put repository";
+//            return false;
+//        }
+//
+//        return (string)$xml->errorCode;        
     }
 
     /**
@@ -758,12 +776,13 @@ class ServiioService extends RestRequest
         parent::setVerb('PUT');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->warning = "Cannot put presentation";
-            return false;
-        }
-        return (string)$xml->errorCode;
+        return print_r(parent::getResponseBody());
+//        $xml = simplexml_load_string(parent::getResponseBody());
+//        if ($xml===false) {
+//            $this->warning = "Cannot put presentation";
+//            return false;
+//        }
+//        return (string)$xml->errorCode;
     }
 }
 

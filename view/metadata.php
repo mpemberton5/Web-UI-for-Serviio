@@ -1,4 +1,4 @@
-<form method="post" action="" name="metadata">
+<form method="post" action="" id="metadataform" name="metadata">
     <input type="hidden" name="tab" value="metadata" />
     <input type="hidden" name="section" value="<?php echo $section?>" />
     <br>
@@ -30,7 +30,7 @@
                 </select>
                 <br>
                 <input type="checkbox" name="download_cover" value="1"<?php echo $serviio->videoOnlineArtExtractorEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_online_retrieve_poster','Retrieve DVD cover image or poster if available')?><br>
-                <div align="center"><input type="submit" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('Are you sure you want to force rescan video metadata?')"></div>
+                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('Are you sure you want to force rescan video metadata?')"></div>
                 <br>
                 <?php echo tr('tab_metadata_metadata_languages_description','Some metadata extractors enable retrieving metadata in a certain language. Select the preferred language.')?><br>
                 <select name="metadata_language">
@@ -47,7 +47,8 @@
 </div>
 
     <div align="right">
-        <input type="submit" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-        <input type="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
+        <span id="savingMsg" class="savingMsg"></span>
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
+        <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
     </div>
 </form>

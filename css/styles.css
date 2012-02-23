@@ -35,14 +35,12 @@ A:visited {
 }
 
 #pageHeader #headerContent {
-    width:1008px;
     text-align:left;
     margin:0 auto;
 }
 
 #pageHeader #headerContent #optionBar {
     white-space:nowrap;
-    width:1008px;
     height:28px;
     line-height:28px;
     font-size:11px;

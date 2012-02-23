@@ -1,4 +1,4 @@
-<form method="post" action="" name="library">
+<form method="post" action="" id="libraryform" name="library">
     <input type="hidden" name="tab" value="library">
     <br>
 
@@ -14,10 +14,10 @@
             <table>
                 <tr valign="top">
                     <td>
-                        <table width="100%" id="libraryTableFolders">
+                        <table width="100%" id="libraryTableFolders" name="libraryTableFolders">
                             <thead align="center">
                                 <th width="20">&nbsp;</th>
-                                <th align="left" width="400"><?php echo tr('tab_folders_respository_table_folder','Folder')?></th>
+                                <th align="left" width="400"><?php echo tr('tab_folders_repository_table_folder','Folder')?></th>
                                 <th align="center" width="30"><img src="images/film.png" alt="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>" title="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>"></th>
                                 <th align="center" width="30"><img src="images/music-beam.png" alt="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>" title="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>"></th>
                                 <th align="center" width="30"><img src="images/camera-black.png" alt="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>" title="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>"></th>
@@ -40,14 +40,15 @@
                             </tr>
                             <?php } ?>
                         </table>
-                        <input type="hidden" name="lastFId" value="<?php echo $midA?>">
+                        <input type="hidden" id="lastFId" name="lastFId" value="<?php echo $midA?>">
                     </td>
                     <td width="100">
-                        <input type="button" name="addlocal" value="<?php echo tr('tab_folders_button_add_local','Add local...')?>" onclick="localPath='';return GB_showCenter('Add local path', '../../afb/index.php',500,500,addLibLocalPath);">
+                        <button id="addFolder"><?php echo tr('tab_folders_button_add_local','Add local...')?></button>
+                        <!--<input type="button" name="addlocal" value="<?php echo tr('tab_folders_button_add_local','Add local...')?>" onclick="localPath='';return GB_showCenter('Add local path', '../../afb/index.php',500,500,addLibLocalPath);">-->
                         <br>
                         <input type="button" name="addpath" value="<?php echo tr('tab_folders_button_add_remote','Add path...')?>" onclick="addLibRow('libraryTableFolders',null)">
                         <br>
-                        <input type="button" name="remove" value="<?php echo tr('button_remove','Remove')?>" onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">
+                        <input type="button" name="remove" value="<?php echo tr('button_remove','Remove Selected')?>" onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">
                     </td>
                 </tr>
             </table>
@@ -63,29 +64,48 @@
             <table>
                 <tr valign="top">
                     <td>
-                        <table width="100%" id="libraryTableOnlineSources">
+                        <table width="100%" id="libraryTableOnlineSources" name="libraryTableOnlineSources">
                             <thead align="center">
                                 <th width="20">&nbsp;</th>
-                                <th align="left" width="400"><?php echo tr('tab_online_sources_respository_table_url','Name / URL')?></th>
-                                <th align="center" width="30"><img src="images/film.png" alt="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>" title="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>"></th>
-                                <th align="center" width="30"><img src="images/music-beam.png" alt="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>" title="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>"></th>
-                                <th align="center" width="30"><img src="images/camera-black.png" alt="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>" title="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>"></th>
+                                <th align="center" width="100"><?php echo tr('tab_online_sources_repository_table_refresh','Refresh')?></th>
+                                <th align="center" width="100"><?php echo tr('tab_online_sources_repository_table_enabled','Enabled')?></th>
+                                <th align="left" width="100"><?php echo tr('tab_online_sources_repository_table_type','Type')?></th>
+                                <th align="left" width="400"><?php echo tr('tab_online_sources_repository_table_url','Name / URL')?></th>
+                                <th align="center" width="80"><?php echo tr('tab_online_source_repository_table_mediatype','Media Type')?></th>
                             </thead>
                             <?php $midB = 1; foreach ($repo[1] as $id=>$entry) { if ($id>$midB) { $midB = $id; } ?>
                             <tr align="center">
                                 <td>
-                                    <input type="hidden" name="onlinesource_<?php echo $id?>" value="<?php echo $id?>">
                                     <input type="checkbox" name="chk" value="<?php echo $id?>">
-                                    <input type="hidden" name="os_type_<?php echo $id?>" value="<?php echo $entry[0]?>">
-                                    <input type="hidden" name="os_url_<?php echo $id?>" value="<?php echo $entry[1]?>">
-                                    <input type="hidden" name="os_name_<?php echo $id?>" value="<?php echo $entry[4]?>">
-                                    <input type="hidden" name="os_stat_<?php echo $id?>" value="<?php echo $entry[5]?>">
+                                    <input type="hidden" name="onlinesource_<?php echo $id?>" value="<?php echo $id?>">
+                                    <input type="hidden" id="os_type_<?php echo $id?>" name="os_type_<?php echo $id?>" value="<?php echo $entry[0]?>">
+                                    <input type="hidden" id="os_url_<?php echo $id?>" name="os_url_<?php echo $id?>" value="<?php echo $entry[1]?>">
+                                    <input type="hidden" id="os_media_<?php echo $id?>" name="os_media_<?php echo $id?>" value="<?php echo $entry[2]?>">
+                                    <input type="hidden" id="os_thumb_<?php echo $id?>" name="os_thumb_<?php echo $id?>" value="<?php echo $entry[3]?>">
+                                    <input type="hidden" id="os_name_<?php echo $id?>" name="os_name_<?php echo $id?>" value="<?php echo $entry[4]?>">
+                                    <input type="hidden" id="os_stat_<?php echo $id?>" name="os_stat_<?php echo $id?>" value="<?php echo $entry[5]?>">
                                 </td>
-                                <td align="left"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></td>
+                                <td align="center" ><a style="background-color: yellow;" class="refresh-link" os_no="<?php echo $id?>" href="">&nbsp;Refresh&nbsp;</a></td>
+                                <td>
+                                    <div class="os_switch" id="os_switch_<?php echo $id?>" style="cursor: pointer; ">
+                                        <div class="iphone_switch_container" style="height:27px; width:94px; position: relative; overflow: hidden">
+                                            <img class="iphone_switch" style="height: 27px; width: 94px; background-image: url(images/iphone_switch_16.png); background-position: 0px 50%; " src="images/iphone_switch_container_off.png">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td align="left"><span id="os_type_v_<?php echo $id?>" name="os_type_v_<?php echo $id?>"><?php echo $entry[0]?></span></td>
+                                <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
 
-                                <?php for ($i=0;$i<count($types);$i++) { $type = $types[$i]; ?>
-                                <td><input type="checkbox" name="os_<?php echo $type."_".$id?>" value="1"<?php echo $type===$entry[2]?" checked":""?>></td>
-                                <?php } ?>
+                                <td style="vertical-align: top;" width="30"><span id="os_media_v_<?php echo $id?>">
+                                    <?php if ($entry[2] == "VIDEO") {?>
+                                        <img src="images/film.png" alt="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>
+                                    <?php } else if ($entry[2] == "AUDIO") {?>
+                                        <img src="images/music-beam.png" alt="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>
+                                    <?php } else if ($entry[2] == "IMAGE") {?>
+                                        <img src="images/camera-black.png" alt="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>
+                                    <?php } ?>
+                                </span></td>
+
                             </tr>
                             <?php } ?>
                             <?php /* screen - Enter detail of online source
@@ -97,12 +117,18 @@
                                 Display Name: (textbox)           (repositoryName)
                                 Media type: Video / Audio / Image (mediaType)
                                 Thumbnail URL: (textbox readonly) (thumbnailURL)
+
+                                <?php for ($i=0;$i<count($types);$i++) { $type = $types[$i]; ?>
+                                <td><input type="radio" name="os_<?php echo $id?>" value="<?php echo $type?>"<?php echo $type===$entry[2]?" checked":""?>></td>
+                                <?php } ?>
                             */?>
                         </table>
-                        <input type="hidden" name="lastOSId" value="<?php echo $midB?>">
+                        <input type="hidden" id="lastOSId" name="lastOSId" value="<?php echo $midB?>">
                     </td>
                     <td width="100">
-                        <input type="button" name="add_os" value="<?php echo tr('button_add','Add')?>" onclick="onlineFeedType='';sourceURL='';mediaType='';thumbnailURL='';posted='';displayName='';return GB_showCenter('Add online source', '../../nos/new.php',300,550,addLibOnlineSource);">
+                        <input type="button" id="add_os" name="add_os" value="<?php echo tr('button_add','Add')?>" />
+                        <br>
+                        <input type="button" id="edit_os" name="edit_os" value="<?php echo tr('button_edit','Edit')?>" />
                         <br>
                         <input type="button" name="remove_os" value="<?php echo tr('button_remove','Remove')?>" onclick="if(confirm('Are you sure you want to remove selected online source?')) { deleteLibRow('libraryTableOnlineSources'); }">
                     </td>
@@ -139,13 +165,109 @@
             <input type="checkbox" name="autoupdate" value="1"<?php echo $serviio->automaticLibraryUpdate=="true"?" checked":""?>> <?php echo tr('tab_folders_automatic_update','Keep library automatically updated')?>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             Refresh interval (minutes): <input type="text" name="minutes" value="<?php echo $serviio->automaticLibraryUpdateInterval ?>" maxlength="3" size="3">
-            <br>
-            <input type="submit" name="force" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" />
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <input type="submit" id="refresh" name="refresh" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" />
+            <span id="forceRefreshMsg" class="forceRefreshMsg"></span>
         </div>
     </div>
 
     <div align="right">
-        <input type="submit" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-        <input type="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
+        <span id="savingMsg" class="savingMsg"></span>
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
+        <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
     </div>
 </form>
+
+<div id="dialog-form" title="Select Folder">
+    <form>
+        <fieldset>
+            <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="72" />
+            <div id="smallbrowser"></div>
+        </fieldset>
+    </form>
+</div>
+<div id="Add_OS_Item" title="Add Online Source">
+    <fieldset>
+        <?php echo tr('new_online_source_description','Enter details of the required online source. Select the source type, enter URL of the source and pick type of media the source provides.')?>
+        <br>
+        <br>
+        <form>
+            <table>
+            <tr>
+                <td><?php echo tr('new_online_source_enabled','Enabled:')?></td>
+                <td><input type="checkbox" id="newEnabled" name="newEnabled" /></td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_type','Source type:')?></td>
+                <td>
+                    <select id="newOnlineFeedType" name="newOnlineFeedType">
+                        <option value="FEED" SELECTED>Online RSS/Atom feed</option>
+                        <option value="LIVE_STREAM">Live Stream</option>
+                        <option value="WEB_RESOURCE">Other Web Resources</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_url','Source URL:')?></td>
+                <td><input type="text" id="newSourceURL" name="newSourceURL" size="60" /></td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_name','Display Name:')?></td>
+                <td><input type="text" id="newName" name="newName" size="60" /></td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_media_type','Media Type:')?></td>
+                <td><input type="radio" id="newMediaType" name="newMediaType" value="VIDEO" /> Video
+                    <input type="radio" id="newMediaType" name="newMediaType" value="AUDIO" /> Audio
+                    <input type="radio" id="newMediaType" name="newMediaType" value="IMAGE" /> Image
+                </td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_thumbnail_url','Thumbnail URL:')?></td>
+                <td><input type="text" id="newThumbnailURL" name="newThumbnailURL" size="60" /></td>
+            </tr>
+        </table>
+        </form>
+    </fieldset>
+</div>
+<div id="Edit_OS_Item" title="Edit Online Source">
+    <fieldset>
+        <?php echo tr('new_online_source_description','Enter details of the required online source. Select the source type, enter URL of the source and pick type of media the source provides.')?>
+        <br>
+        <br>
+        <form>
+            <input type="hidden" id="osID" name="osID" />
+            <table>
+            <tr>
+                <td><?php echo tr('new_online_source_type','Source type:')?></td>
+                <td>
+                    <select id="editOnlineFeedType" name="editOnlineFeedType">
+                        <option value="FEED" SELECTED>Online RSS/Atom feed</option>
+                        <option value="LIVE_STREAM">Live Stream</option>
+                        <option value="WEB_RESOURCE">Other Web Resources</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_url','Source URL:')?></td>
+                <td><input type="text" id="editSourceURL" name="editSourceURL" size="60" /></td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_name','Display Name:')?></td>
+                <td><input type="text" id="editName" name="editName" size="60" /></td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_media_type','Media Type:')?></td>
+                <td><input type="radio" id="editMediaType" name="editMediaType" value="VIDEO" /> Video
+                    <input type="radio" id="editMediaType" name="editMediaType" value="AUDIO" /> Audio
+                    <input type="radio" id="editMediaType" name="editMediaType" value="IMAGE" /> Image
+                </td>
+            </tr>
+            <tr>
+                <td><?php echo tr('new_online_source_thumbnail_url','Thumbnail URL:')?></td>
+                <td><input type="text" id="editThumbnailURL" name="editThumbnailURL" size="60" /></td>
+            </tr>
+        </table>
+        </form>
+    </fieldset>
+</div>

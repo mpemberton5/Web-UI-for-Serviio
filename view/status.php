@@ -7,11 +7,10 @@
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="svrstat1" class="tabcontent">
-        <?php #echo tr('tab_status_description','Below is the status of the UPnP/DLNA server. Feel free to start/stop the server. The actual Serviio process is not affected.')?><br>
         <?php echo tr('tab_status_description1','Start/Stop the UPnP/DLNA server. The actual Serviio process is not affected.')?><br>
         <br>
-        <input type="submit" name="start" value="<?php echo tr('tab_status_button_start_server','Start server')?>" <?php echo $startDisabled?> onclick="return confirm('Are you sure you want to start the server');">
-        <input type="submit" name="stop" value="<?php echo tr('tab_status_button_stop_server','Stop server')?>" <?php echo $stopDisabled?> onclick="return confirm('Are you sure you want to stop the server');">
+        <input type="submit" name="start" id="start" value="<?php echo tr('tab_status_button_start_server','Start server')?>" <?php echo $startDisabled?> onclick="return confirm('Are you sure you want to start the server');">
+        <input type="submit" name="stop" id="stop" value="<?php echo tr('tab_status_button_stop_server','Stop server')?>" <?php echo $stopDisabled?> onclick="return confirm('Are you sure you want to stop the server');">
     </div>
 </div>
 

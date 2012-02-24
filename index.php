@@ -33,14 +33,6 @@ $appInfo = $serviio->getApplication();
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="http://jquery-ui.googlecode.com/svn/tags/1.8.17/themes/redmond/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
-<link type="text/css" rel="stylesheet" href="growl/ehynds-jquery-notify-a851efd/ui.notify.css" />
-<script src="growl/ehynds-jquery-notify-a851efd/src/jquery.notify.js" type="text/javascript"></script>
-<script type="text/javascript">
-function createNotification(template, vars, opts) {
-    return $container.notify("create", template, vars, opts);
-}
-</script>
-
 <style>
     .ui-widget, .ui-widget button {
         font-family: Verdana,Arial,sans-serif;
@@ -324,12 +316,6 @@ $(document).ready(function(){
         CheckStatuses();
     },5000);
 
-    // initialize widget on a container, passing in all the defaults.
-    // the defaults will apply to any notification created within this
-    // container, but can be overwritten on notification-by-notification
-    // basis.
-    $container = $("#container").notify();
-
     function CheckStatuses() {
         $.getJSON("monitor.php", function(json){
             if (json.serverStatus == 'STARTED') {
@@ -421,9 +407,6 @@ indexes.init()
 indexes.onajaxpageload=function(pageurl) {
     //-------------------------------------------------------------------------
     if (pageurl.indexOf("content.php?tab=status")!=-1) {
-        function zz() {
-            alert('cooldaddy');
-        }
         var ssTabs=new ddtabcontent("serverstatustab")
         ssTabs.setpersist(true)
         ssTabs.setselectedClassTarget("link") //"link" or "linkparent"
@@ -460,7 +443,6 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
-                            createNotification("default", { title:'Default Notification', text:'Example of a default notification.  I will fade out after 5 seconds'});
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }
@@ -471,6 +453,57 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+        });
+        $("#start").click(function() {
+                $("#debugInfoDate").text(Date());
+                //e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code/status2.php',
+                    data: 'type=start',
+                    dataType: 'xml',
+                    timeout: 10000,
+                    success: function(response) {
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(serializeXmlNode(response));
+                        if ($(response).find("errorCode").text() == 0) {
+                            $("#stop").removeAttr("disabled");
+                            $("#start").attr("disabled", "disabled");
+                        } else {
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
+                    }
+                });
+                return false;
+        });
+        $("#stop").click(function() {
+                $("#debugInfoDate").text(Date());
+                //e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code/status2.php',
+                    data: 'type=stop',
+                    dataType: 'xml',
+                    timeout: 10000,
+                    success: function(response) {
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(serializeXmlNode(response));
+                        if ($(response).find("errorCode").text() == 0) {
+                            $("#start").removeAttr("disabled");
+                            $("#stop").attr("disabled", "disabled");
+                        } else {
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
+                        alert(errorThrown)
+                    }
+                });
+                return false;
         });
     }
     //-------------------------------------------------------------------------
@@ -524,7 +557,7 @@ indexes.onajaxpageload=function(pageurl) {
                     type: 'POST',
                     url: 'code/library2.php',
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -552,7 +585,7 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/library1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(response);
@@ -821,7 +854,7 @@ indexes.onajaxpageload=function(pageurl) {
                     data: "os_no=15",
                     url: 'code/library3.php',
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -864,7 +897,7 @@ indexes.onajaxpageload=function(pageurl) {
                     type: 'POST',
                     url: 'code/metadata2.php',
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -892,7 +925,7 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/metadata1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -938,7 +971,7 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/transcoding1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -976,7 +1009,7 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/presentation1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -1018,7 +1051,7 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/settings1.php',
                     data: $form.serialize(),
                     dataType: 'text',
-                    timeout: 5000,
+                    timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text("Storage to Cookie successful");
@@ -1068,43 +1101,6 @@ RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> //
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 <a href="http://orangoo.com/labs/GreyBox/">GreyBox</a> &copy; <a href="http://amix.dk/">Amir Salihefendic</a> licensed under <a href="http://orangoo.com/labs/greybox/LGPL.txt">LGPL</a> // 
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>
-
-    <!--- container to hold notifications, and default templates --->
-    <div id="container" style="display:none">
-
-        <div id="default">
-            <h1>#{title}</h1>
-            <p>#{text}</p>
-        </div>
-
-        <div id="sticky">
-            <a class="ui-notify-close ui-notify-cross" href="#">x</a>
-            <h1>#{title}</h1>
-            <p>#{text}</p>
-        </div>
-
-        <div id="themeroller" class="ui-state-error" style="padding:10px; -moz-box-shadow:0 0 6px #980000; -webkit-box-shadow:0 0 6px #980000; box-shadow:0 0 6px #980000;">
-            <a class="ui-notify-close" href="#"><span class="ui-icon ui-icon-close" style="float:right"></span></a>
-            <span style="float:left; margin:0 5px 0 0;" class="ui-icon ui-icon-alert"></span>
-            <h1>#{title}</h1>
-            <p>#{text}</p>
-            <p style="text-align:center"><a class="ui-notify-close" href="#">Close Me</a></p>
-        </div>
-
-        <div id="withIcon">
-            <a class="ui-notify-close ui-notify-cross" href="#">x</a>
-            <div style="float:left;margin:0 10px 0 0"><img src="#{icon}" alt="warning" /></div>
-            <h1>#{title}</h1>
-            <p>#{text}</p>
-        </div>
-        <div id="buttons">
-            <h1>#{title}</h1>
-            <p>#{text}</p>
-            <p style="margin-top:10px;text-align:center">
-                <input type="button" class="confirm" value="Close Dialog" />
-            </p>
-        </div>
-    </div>
 
 </body>
 </html>

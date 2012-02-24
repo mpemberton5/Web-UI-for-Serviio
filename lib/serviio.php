@@ -514,7 +514,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function postAction($action, $params = null)
+    public function postAction($action, $params = '')
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -528,7 +528,8 @@ class ServiioService extends RestRequest
         // create sub element
         $root->appendChild($xmlDoc->createElement("name", $action));
 
-        if ($params != null) {
+        // any params?
+        if ($params != '') {
             foreach ($params as $param) {
                 $root->appendChild($xmlDoc->createElement("parameter", $param));
             }
@@ -538,8 +539,7 @@ class ServiioService extends RestRequest
         header("Content-Type: text/plain");
         $xmlDoc->formatOutput = true;
         $requestBody = $xmlDoc->saveXML();
-        echo $requestBody;
-        die();
+        return $requestBody;
         */
 
         parent::flush();
@@ -548,18 +548,6 @@ class ServiioService extends RestRequest
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         return print_r(parent::getResponseBody());
-        $str = parent::getResponseBody();
-        if (strpos($str, '<title>Status page</title>')) {
-            $str = strstr($str, '<h3>');
-            $this->warning = substr($str, 0, strpos($str, '</body>'));
-            return false;
-        }
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->warning = "Cannot post action: ".$action;
-            return false;
-        }
-        return (string)$xml->errorCode;
     }
 
     /**

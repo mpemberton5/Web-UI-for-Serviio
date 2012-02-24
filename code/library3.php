@@ -9,7 +9,7 @@ include("../lib/serviio.php");
 
 // initiate call to service
 $serviio = new ServiioService($serviio_host,$serviio_port);
-$errorCode = $serviio->postAction("forceOnlineResourceRefresh", getPostVar("os_no", ""));
+$errorCode = $serviio->postAction("forceOnlineResourceRefresh", array(getPostVar("os_no", "")));
 return $errorCode;
 ?>
 

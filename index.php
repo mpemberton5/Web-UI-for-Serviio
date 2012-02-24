@@ -33,6 +33,14 @@ $appInfo = $serviio->getApplication();
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="http://jquery-ui.googlecode.com/svn/tags/1.8.17/themes/redmond/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
+<link type="text/css" rel="stylesheet" href="growl/ehynds-jquery-notify-a851efd/ui.notify.css" />
+<script src="growl/ehynds-jquery-notify-a851efd/src/jquery.notify.js" type="text/javascript"></script>
+<script type="text/javascript">
+function createNotification(template, vars, opts) {
+    return $container.notify("create", template, vars, opts);
+}
+</script>
+
 <style>
     .ui-widget, .ui-widget button {
         font-family: Verdana,Arial,sans-serif;
@@ -64,6 +72,16 @@ $appInfo = $serviio->getApplication();
 <link href="tree/jquery_folder_tree/style.css" rel="stylesheet" type="text/css" />
 
 <SCRIPT type="text/javascript" language="javascript">
+/* this is to make all browsers work nicely */
+function serializeXmlNode(xmlNode) {
+    if (typeof window.XMLSerializer != "undefined") {
+        return (new window.XMLSerializer()).serializeToString(xmlNode);
+    } else if (typeof xmlNode.xml != "undefined") {
+        return xmlNode.xml;
+    }
+    return "";
+}
+
 function addLibRow(tableID,path,newid) {
 
     if (path==null || path=='') {
@@ -140,93 +158,6 @@ function addLibRow(tableID,path,newid) {
     cell7.appendChild(element8);
 
     maxFId = id;
-}
-
-//addLibOSRow('libraryTableOnlineSources',onlineFeedType, sourceURL, mediaType, thumbnailURL, displayName, stat);
-function addLibOSRow(tableID,onlineFT,sURL,mType,tURL,Dname,stat) {
-    var id = 1 + parseInt(maxOSId);
-
-    var table = document.getElementById(tableID);
-
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.align = 'center';
-
-    var cell1 = row.insertCell(0);
-    var element1 = document.createElement("input");
-    element1.type = "hidden";
-    element1.name = "onlinesource_"+id;
-    element1.value = 'new';
-    cell1.appendChild(element1);
-    var element2 = document.createElement("input");
-    element2.type = "checkbox";
-    element2.name = "chk";
-    element2.value = id;
-    cell1.appendChild(element2);
-    var element3 = document.createElement("input");
-    element3.type = "hidden";
-    element3.name = "os_type_"+id;
-    element3.value = onlineFeedType;
-    cell1.appendChild(element3);
-    var element4 = document.createElement("input");
-    element4.type = "hidden";
-    element4.name = "os_url_"+id;
-    element4.value = sURL;
-    cell1.appendChild(element4);
-    var element5 = document.createElement("input");
-    element5.type = "hidden";
-    element5.name = "os_name_"+id;
-    element5.value = Dname;
-    cell1.appendChild(element5);
-    var element6 = document.createElement("input");
-    element6.type = "hidden";
-    element6.id = "os_stat_"+id;
-    element6.name = "os_stat_"+id;
-    element6.value = 'true';
-    cell1.appendChild(element6);
-    var element7 = document.createElement("input");
-    element7.type = "hidden";
-    element7.id = "os_thumb_"+id;
-    element7.name = "os_thumb_"+id;
-    element7.value = tURL;
-    cell1.appendChild(element7);
-
-    var cell2 = row.insertCell(1);
-    if (Dname == "") {
-        cell2.innerHTML = sURL;
-    } else {
-        cell2.innerHTML = Dname;
-    }
-    cell2.align = 'left';
-
-    var cell3 = row.insertCell(2);
-    var element4 = document.createElement("input");
-    element4.type = "checkbox";
-    element4.name = "os_VIDEO_"+id;
-    element4.value = 1;
-    cell3.appendChild(element4);
-    if (mType == "VIDEO")
-        element4.checked = "true";
-
-    var cell4 = row.insertCell(3);
-    var element5 = document.createElement("input");
-    element5.type = "checkbox";
-    element5.name = "os_AUDIO_"+id;
-    element5.value = 1;
-    cell4.appendChild(element5);
-    if (mType == "AUDIO")
-        element5.checked = "true";
-
-    var cell5 = row.insertCell(4);
-    var element6 = document.createElement("input");
-    element6.type = "checkbox";
-    element6.name = "os_IMAGE_"+id;
-    element6.value = 1;
-    cell5.appendChild(element6);
-    if (mType == "IMAGE")
-        element6.checked = "true";
-
-    maxOSId = id;
 }
 
 function deleteLibRow(tableID) {
@@ -366,66 +297,6 @@ function deleteProfileRow(tableID) {
 
 // -->
 </SCRIPT>
-<script type="text/javascript">
-<!--
-/*var maxFId = '<?php echo $midA?>';*/
-var maxFId = '';
-/*
-var localPath = '';
-function addLibLocalPath() {
-    if (localPath==null || localPath=='') {
-        alert('Invalid path');
-        return;
-    }
-    if (confirm('Add path "' + localPath + '" to media library?')) {
-        addLibRow('libraryTableFolders',localPath);
-    }
-}
-function populateDirectory(dir) {
-    localPath = dir;
-}
-*/
-// -->
-</script>
-<script type="text/javascript">
-<!--
-/*var maxOSId = '<?php echo $midB?>';*/
-var maxOSId = '';
-var posted = '';
-var onlineFeedType = '';
-var sourceURL = '';
-var mediaType = '';
-var thumbnailURL = '';
-var displayName = '';
-var stat = '';
-function addLibOnlineSource() {
-
-    // only process if button clicked
-    if (posted!='true') {
-        return;
-    }
-
-    // process only if source URL was entered
-    if (sourceURL==null || sourceURL=='') {
-        alert('Invalid Source');
-        return;
-    }
-
-    if (confirm('Add "' + sourceURL + '" to online sources?')) {
-        addLibOSRow('libraryTableOnlineSources',onlineFeedType, sourceURL, mediaType, thumbnailURL, displayName, stat);
-    }
-}
-function populateLibData(oft,surl,mt,turl,pst,name) {
-    onlineFeedType = oft;
-    sourceURL = surl;
-    mediaType = mt;
-    thumbnailURL = turl;
-    posted = pst;
-    displayName = name;
-    stat = 'true';
-}
-// -->
-</script>
 </head>
 <body class="GreyBox" bgcolor="#eeeeee">
 
@@ -433,7 +304,6 @@ function populateLibData(oft,surl,mt,turl,pst,name) {
     <div id="headerContent">
         <div id="optionBar">
             <div id="wuSites">
-                <span><img style="vertical-align:middle" src="images/ajax-loader.gif"></span>
                 <span><b>Server Status:</b><span id="svrs"></span></span>
                 <span><b>Checking Updates:</b><span id="lucr"></span></span>
                 <span><b>Checking Additions:</b><span id="lacr"></span></span>
@@ -453,6 +323,12 @@ $(document).ready(function(){
     var refreshID = setInterval(function() {
         CheckStatuses();
     },5000);
+
+    // initialize widget on a container, passing in all the defaults.
+    // the defaults will apply to any notification created within this
+    // container, but can be overwritten on notification-by-notification
+    // basis.
+    $container = $("#container").notify();
 
     function CheckStatuses() {
         $.getJSON("monitor.php", function(json){
@@ -580,10 +456,11 @@ indexes.onajaxpageload=function(pageurl) {
                     timeout: 15000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
+                            createNotification("default", { title:'Default Notification', text:'Example of a default notification.  I will fade out after 5 seconds'});
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }
@@ -647,15 +524,19 @@ indexes.onajaxpageload=function(pageurl) {
                     type: 'POST',
                     url: 'code/library2.php',
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Started!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
                             $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -671,16 +552,20 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/library1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(response);
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -713,7 +598,7 @@ indexes.onajaxpageload=function(pageurl) {
                     Cancel: function() {
                         $(this).dialog("close");
                     }
-                },
+                }
             });
 
             $("#addFolder").click(function(e) {
@@ -728,7 +613,7 @@ indexes.onajaxpageload=function(pageurl) {
                 width: 550,
                 modal: true,
                 buttons: {
-                    "Save": function() {
+                    "Add": function() {
                         var newID = 1 + parseInt($("#lastOSId").val());
                         $("#lastOSId").val(newID);
 
@@ -814,7 +699,7 @@ indexes.onajaxpageload=function(pageurl) {
                     Cancel: function() {
                         $(this).dialog("close");
                     }
-                },
+                }
             });
 
             $("#add_os").click(function(e) {
@@ -874,7 +759,7 @@ indexes.onajaxpageload=function(pageurl) {
                     Cancel: function() {
                         $(this).dialog("close");
                     }
-                },
+                }
             });
 
             $("#edit_os").click(function(e) {
@@ -925,7 +810,7 @@ indexes.onajaxpageload=function(pageurl) {
             });
 
             $(".refresh-link").click(function () {
-                var os_no = $(this).attr("os_no");
+                var os_no = "os_no=" + $(this).attr("os_no");
                 $("#savingMsg").text("Starting Refresh...");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(os_no);
@@ -933,18 +818,23 @@ indexes.onajaxpageload=function(pageurl) {
                 //e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    data: os_no,
+                    data: "os_no=15",
                     url: 'code/library3.php',
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Started!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("errorCode").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
+                        alert("Error: " +errorThrown)
                     }
                 });
                 return false;
@@ -974,15 +864,19 @@ indexes.onajaxpageload=function(pageurl) {
                     type: 'POST',
                     url: 'code/metadata2.php',
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Started!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
                             $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -998,15 +892,19 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/metadata1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -1040,15 +938,19 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/transcoding1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -1074,15 +976,19 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/presentation1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text((new XMLSerializer()).serializeToString(response));
+                        $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -1112,11 +1018,15 @@ indexes.onajaxpageload=function(pageurl) {
                     url: 'code/settings1.php',
                     data: $form.serialize(),
                     dataType: 'text',
+                    timeout: 5000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text("Storage to Cookie successful");
                         $("#savingMsg").text("Saved!");
                         $("#savingMsg").delay(800).fadeOut("slow");
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " +textStatus)
                     }
                 });
                 return false;
@@ -1158,5 +1068,43 @@ RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> //
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 <a href="http://orangoo.com/labs/GreyBox/">GreyBox</a> &copy; <a href="http://amix.dk/">Amir Salihefendic</a> licensed under <a href="http://orangoo.com/labs/greybox/LGPL.txt">LGPL</a> // 
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>
+
+    <!--- container to hold notifications, and default templates --->
+    <div id="container" style="display:none">
+
+        <div id="default">
+            <h1>#{title}</h1>
+            <p>#{text}</p>
+        </div>
+
+        <div id="sticky">
+            <a class="ui-notify-close ui-notify-cross" href="#">x</a>
+            <h1>#{title}</h1>
+            <p>#{text}</p>
+        </div>
+
+        <div id="themeroller" class="ui-state-error" style="padding:10px; -moz-box-shadow:0 0 6px #980000; -webkit-box-shadow:0 0 6px #980000; box-shadow:0 0 6px #980000;">
+            <a class="ui-notify-close" href="#"><span class="ui-icon ui-icon-close" style="float:right"></span></a>
+            <span style="float:left; margin:0 5px 0 0;" class="ui-icon ui-icon-alert"></span>
+            <h1>#{title}</h1>
+            <p>#{text}</p>
+            <p style="text-align:center"><a class="ui-notify-close" href="#">Close Me</a></p>
+        </div>
+
+        <div id="withIcon">
+            <a class="ui-notify-close ui-notify-cross" href="#">x</a>
+            <div style="float:left;margin:0 10px 0 0"><img src="#{icon}" alt="warning" /></div>
+            <h1>#{title}</h1>
+            <p>#{text}</p>
+        </div>
+        <div id="buttons">
+            <h1>#{title}</h1>
+            <p>#{text}</p>
+            <p style="margin-top:10px;text-align:center">
+                <input type="button" class="confirm" value="Close Dialog" />
+            </p>
+        </div>
+    </div>
+
 </body>
 </html>

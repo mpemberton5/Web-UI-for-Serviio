@@ -135,25 +135,34 @@
                 </tr>
             </table>
             <br>
-            <?php echo tr('tab_online_sources_max_num_feed_items_to_retrieve','Max. number of feed items to retrieve:')?>
-            <select name="maxfeeditems">
-                <option value="unlimited"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="unlimited"?" selected":""?>>Unlimited</option>
-                <option value="10"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="10"?" selected":""?>>10</option>
-                <option value="20"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="20"?" selected":""?>>20</option>
-                <option value="30"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="30"?" selected":""?>>30</option>
-                <option value="40"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="40"?" selected":""?>>40</option>
-                <option value="50"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="50"?" selected":""?>>50</option>
-            </select>
-            <br>
-            <?php echo tr('tab_online_sources_feed_expiry_interval','Feed Expiry Interval (hours):')?>
-            <input type="text" name="feedexpiry" value="<?php echo $serviio->onlineFeedExpiryInterval?>" maxlength="5" size="5">
-            <br>
-            <?php echo tr('tab_online_sources_preferred_online_content_quality','Preferred online content quality:')?>
-            <select name="onlinequality">
-                <option value="LOW"<?php echo $serviio->onlineContentPreferredQuality=="LOW"?" selected":""?>>Low</option>
-                <option value="MEDIUM"<?php echo $serviio->onlineContentPreferredQuality=="MEDIUM"?" selected":""?>>Medium</option>
-                <option value="HIGH"<?php echo $serviio->onlineContentPreferredQuality=="HIGH"?" selected":""?>>High</option>
-            </select>
+            <table>
+                <tr><td>
+                    <?php echo tr('tab_online_sources_max_num_feed_items_to_retrieve','Max. number of feed items to retrieve:')?>
+                </td><td>
+                    <select name="maxfeeditems">
+                        <option value="unlimited"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="unlimited"?" selected":""?>>Unlimited</option>
+                        <option value="10"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="10"?" selected":""?>>10</option>
+                        <option value="20"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="20"?" selected":""?>>20</option>
+                        <option value="30"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="30"?" selected":""?>>30</option>
+                        <option value="40"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="40"?" selected":""?>>40</option>
+                        <option value="50"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="50"?" selected":""?>>50</option>
+                    </select>
+                </td></tr>
+                <tr><td>
+                    <?php echo tr('tab_online_sources_feed_expiry_interval','Feed Expiry Interval (hours):')?>
+                </td><td>
+                    <input type="text" name="feedexpiry" value="<?php echo $serviio->onlineFeedExpiryInterval?>" maxlength="5" size="5">
+                </td></tr>
+                <tr><td>
+                    <?php echo tr('tab_online_sources_preferred_online_content_quality','Preferred online content quality:')?>
+                </td><td>
+                    <select name="onlinequality">
+                        <option value="LOW"<?php echo $serviio->onlineContentPreferredQuality=="LOW"?" selected":""?>>Low</option>
+                        <option value="MEDIUM"<?php echo $serviio->onlineContentPreferredQuality=="MEDIUM"?" selected":""?>>Medium</option>
+                        <option value="HIGH"<?php echo $serviio->onlineContentPreferredQuality=="HIGH"?" selected":""?>>High</option>
+                    </select>
+                </td></tr>
+            </table>
         </div>
     </div>
 

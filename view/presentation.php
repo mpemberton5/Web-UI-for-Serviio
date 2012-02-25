@@ -9,29 +9,35 @@
         <tr>
             <?php foreach ($categories as $id=>$category) { ?>
             <td style="vertical-align:top">
-                <table>
-                    <tr>
-                        <td><b><?php echo tr('tab_presentation_categories_table_category_name','Category Name')?></b></td>
-                        <td><b><?php echo tr('tab_presentation_categories_table_category_visibility','Visibility')?></b></td>
-                    </tr>
-                    <tr>
-                        <td><?php echo $category[0]?><input type="hidden" name="titles['<?php echo $id?>'][0]" value="<?php echo $category[0]?>"></td>
-                        <td><select name="visibility['<?php echo $id?>'][0]">
-                        <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
-                        <option value="<?php echo $key?>"<?php echo $key==$category[1]?" selected":""?>><?php echo $val?></option>
+                <table id="Presentation<?php echo $category[0]?>" name="Presentation<?php echo $category[0]?>">
+                    <thead>
+                        <tr>
+                            <th><b><?php echo tr('tab_presentation_categories_table_category_name','Category Name')?></b></th>
+                            <th><b><?php echo tr('tab_presentation_categories_table_category_visibility','Visibility')?></b></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?php echo $category[0]?><input type="hidden" name="titles['<?php echo $id?>'][0]" value="<?php echo $category[0]?>"></td>
+                            <td><select name="visibility['<?php echo $id?>'][0]">
+                            <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
+                            <option value="<?php echo $key?>"<?php echo $key==$category[1]?" selected":""?>><?php echo $val?></option>
+                            <?php } ?>
+                            </select></td>
+                        </tr>
+                        <?php $ctr = 1;?>
+                        <?php foreach ($category[2] as $subId=>$subCategory) { ?>
+                        <tr <?php echo $ctr%2?'':'class="odd"'?>>
+                            <td> &nbsp; &nbsp; &nbsp; - <?php echo $subCategory[0]?><input type="hidden" name="titles['<?php echo $id?>']['<?php echo $subId?>']" value="<?php echo $subCategory[0]?>"></td>
+                            <td><select name="visibility['<?php echo $id?>']['<?php echo $subId?>']">
+                            <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
+                            <option value="<?php echo $key?>"<?php echo $key==$subCategory[1]?" selected":""?>><?php echo $val?></option>
+                            <?php } ?>
+                            </select></td>
+                        </tr>
+                        <?php $ctr += 1;?>
                         <?php } ?>
-                        </select></td>
-                    </tr>
-                    <?php foreach ($category[2] as $subId=>$subCategory) { ?>
-                    <tr>
-                        <td> &nbsp; &nbsp; &nbsp; - <?php echo $subCategory[0]?><input type="hidden" name="titles['<?php echo $id?>']['<?php echo $subId?>']" value="<?php echo $subCategory[0]?>"></td>
-                        <td><select name="visibility['<?php echo $id?>']['<?php echo $subId?>']">
-                        <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
-                        <option value="<?php echo $key?>"<?php echo $key==$subCategory[1]?" selected":""?>><?php echo $val?></option>
-                        <?php } ?>
-                        </select></td>
-                    </tr>    
-                    <?php } ?>
+                    </tbody>
                 </table>
             </td>
             <?php } ?>

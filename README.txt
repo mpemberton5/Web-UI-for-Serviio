@@ -11,7 +11,6 @@ TODO:
 - alter how error messages display
 - maybe some controls (start/stop) of the status refreshes
 - add growl for notifications - maybe for saving? unsure
-- Presentation UI rework
 - check at startup if new version of WebUI exists
 - check at startup if new version of Serviio exists - display growl
 

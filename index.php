@@ -290,7 +290,7 @@ function deleteProfileRow(tableID) {
 // -->
 </SCRIPT>
 </head>
-<body class="GreyBox" bgcolor="#eeeeee">
+<body bgcolor="#eeeeee">
 
 <div id="pageHeader" class="headerOff">
     <div id="headerContent">
@@ -599,6 +599,7 @@ indexes.onajaxpageload=function(pageurl) {
                     },
                     error: function(xhr, textStatus, errorThrown){
                         alert("Error: " +textStatus)
+                        alert("Error: " +errorThrown)
                     }
                 });
                 return false;

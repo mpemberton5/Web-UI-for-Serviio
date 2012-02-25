@@ -34,8 +34,8 @@
 	    <th width="200"><?php echo tr('tab_status_renderer_table_device_name','Device Name')?></th>
 	    <th><?php echo tr('tab_status_renderer_table_profile','Profile')?></th>
 	</thead>
-<?php foreach ($statusResponse["renderers"] as $id=>$renderer) { ?>
-	<tr>
+<?php $ctr=1; foreach ($statusResponse["renderers"] as $id=>$renderer) { ?>
+	<tr <?php echo $ctr%2?'':'class="odd"'?>>
 		<td><input type="hidden" name="renderer_<?php echo $id?>" value="<?php echo $id?>"><input type="checkbox" name="chk" value="<?php echo $id?>"><input type="hidden" name="name_<?php echo $id?>" value="<?php echo $renderer[1]?>"><input type="hidden" name="ipAddress_<?php echo $id?>" value="<?php echo $renderer[0]?>"></td>
 	    <td><?php echo status_icon($renderer[3])?></td>	
 	    <td><?php echo $renderer[0]?></td>	
@@ -46,6 +46,7 @@
 <?php } ?>
 </select></td>	
 	</tr>
+<?php $ctr+=1; ?>
 <?php } ?>	
 	</table><td>
     <td width="100">

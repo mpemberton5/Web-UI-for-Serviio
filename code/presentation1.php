@@ -1,11 +1,4 @@
 <?php
-/**
- *  *  */
-function getPostVar($var, $def="")
-{
-    return isset($_POST[$var])?$_POST[$var]:$def;
-}
-
 include("../config.php");
 if ($debugLevel == "debug") {
     ini_set('display_errors', 1);

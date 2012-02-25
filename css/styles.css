@@ -100,7 +100,12 @@ A:visited {
     padding:0 9px 0 10px;
 }
 
-#libraryTableOnlineSources, #libraryTableFolders, #rendererTable {
+#PresentationAudio,
+#PresentationImage,
+#PresentationVideo,
+#libraryTableOnlineSources,
+#libraryTableFolders,
+#rendererTable {
     border-collapse: collapse;
     border: 1px solid #666666;
     font: normal 12px verdana, arial, helvetica, sans-serif;
@@ -108,18 +113,34 @@ A:visited {
     background: #f6f6f6;
     text-align:left;
 }
-#libraryTableOnlineSources thead, #libraryTableFolders thead, #rendererTable thead {
+#PresentationAudio thead,
+#PresentationImage thead,
+#PresentationVideo thead,
+#libraryTableOnlineSources thead,
+#libraryTableFolders thead,
+#rendererTable thead {
     background:url(../images/tbl_hdr_bg.png) repeat-x;
     text-align:left;
     height:30px;
 }
-#libraryTableOnlineSources thead th, #libraryTableFolders thead th, #rendererTable thead th {
+#PresentationAudio thead th,
+#PresentationImage thead th,
+#PresentationVideo thead th,
+#libraryTableOnlineSources thead th,
+#libraryTableFolders thead th,
+#rendererTable thead th {
     padding:5px;
 }
-#libraryTableOnlineSources tr.odd, #libraryTableFolders tr.odd, #rendererTable tr.odd {
+#PresentationAudio tr.odd,
+#PresentationImage tr.odd,
+#PresentationVideo tr.odd,
+#libraryTableOnlineSources tr.odd,
+#libraryTableFolders tr.odd,
+#rendererTable tr.odd {
     background: #f1f1f1;
 }
-#libraryTableOnlineSources tbody td, #libraryTableFolders tbody td, #rendererTable tbody td,
-#libraryTableOnlineSources tbody th, #libraryTableFolders tbody th, #rendererTable tbody th {
+#libraryTableOnlineSources tbody td,
+#libraryTableFolders tbody td,
+#rendererTable tbody td {
     padding:4px;
 }

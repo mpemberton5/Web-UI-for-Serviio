@@ -988,6 +988,41 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+
+            $("#smallbrowser").folderTree({
+                root: '/',
+                script: 'tree/jquery_folder_tree/jquery.foldertree.php',
+                loadMessage: 'My loading message...'
+            });
+                
+            $("#smallbrowser").click(function() {
+                var tmp = $(".sel").attr('href');
+                $("#selValue").val(tmp);
+            });
+
+            $("#dialog-form").dialog({
+                autoOpen: false,
+                height: 440,
+                width: 500,
+                modal: true,
+                buttons: {
+                    "Select Folder": function() {
+                        var tmp = $(".sel").attr('href');
+                        $("#location").val(tmp);
+                        $(this).dialog("close");
+                    },
+                    Cancel: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#addFolder").click(function(e) {
+                e.preventDefault();
+                $("#dialog-form").dialog("open");
+                return false;
+            });
+
         });
     }
     //-------------------------------------------------------------------------
@@ -1099,7 +1134,6 @@ if ($debugLoc == "screen") {
 <div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="http://tolik.org">Tolik aka AcidumIrae</a> (updated by <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">mpemberton5</a>)<br>
 RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> // 
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
-<a href="http://orangoo.com/labs/GreyBox/">GreyBox</a> &copy; <a href="http://amix.dk/">Amir Salihefendic</a> licensed under <a href="http://orangoo.com/labs/greybox/LGPL.txt">LGPL</a> // 
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>
 
 </body>

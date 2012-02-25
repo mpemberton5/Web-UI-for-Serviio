@@ -43,11 +43,8 @@
                         <input type="hidden" id="lastFId" name="lastFId" value="<?php echo $midA?>">
                     </td>
                     <td width="100">
-                        <button id="addFolder"><?php echo tr('tab_folders_button_add_local','Add local...')?></button>
-                        <!--<input type="button" name="addlocal" value="<?php echo tr('tab_folders_button_add_local','Add local...')?>" onclick="localPath='';return GB_showCenter('Add local path', '../../afb/index.php',500,500,addLibLocalPath);">-->
-                        <br>
+                        <input type="button" id="addFolder" name="addFolder" value="<?php echo tr('tab_folders_button_add_local','Add local...')?>">
                         <input type="button" name="addpath" value="<?php echo tr('tab_folders_button_add_remote','Add path...')?>" onclick="addLibRow('libraryTableFolders',null)">
-                        <br>
                         <input type="button" name="remove" value="<?php echo tr('button_remove','Remove Selected')?>" onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">
                     </td>
                 </tr>
@@ -190,7 +187,7 @@
 <div id="dialog-form" title="Select Folder">
     <form>
         <fieldset>
-            <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="72" />
+            <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="70" />
             <div id="smallbrowser"></div>
         </fieldset>
     </form>

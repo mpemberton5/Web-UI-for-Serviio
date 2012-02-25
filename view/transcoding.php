@@ -14,8 +14,8 @@
             <table>
                 <tr>
                     <td><?php echo tr('tab_transcoding_folder_location','Transcoded files location:')?></td>
-                    <td><input type="text" name="location" size="40" value="<?php echo $serviio->transcodingFolderLocation?>"></td>
-                    <td><input type="button" name="browse" value="<?php echo tr('tab_transcoding_select_folder','Browse...')?>" onclick="localPath='';return GB_showCenter('<?php echo tr('tab_transcoding_folder_location','Transcoded files location:')?>', '../../afb/index.php',500,500,addTransLocalPath);"></td>
+                    <td><input type="text" id="location" name="location" size="40" value="<?php echo $serviio->transcodingFolderLocation?>"></td>
+                    <td><input type="button" id="addFolder" name="addFolder" value="<?php echo tr('tab_transcoding_select_folder','Browse...')?>"></td>
                 </tr>
                 <tr>
                     <td><?php echo tr('tab_transcoding_threads','Number of CPU cores to use')?></td>
@@ -49,3 +49,12 @@
         <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
     </div>
 </form>
+
+<div id="dialog-form" title="Select Folder">
+    <form>
+        <fieldset>
+            <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="70" />
+            <div id="smallbrowser"></div>
+        </fieldset>
+    </form>
+</div>

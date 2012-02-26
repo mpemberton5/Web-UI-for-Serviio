@@ -42,6 +42,18 @@ $appInfo = $serviio->getApplication();
 
 <script src="js/jquery.iphone-switch.js" type="text/javascript"></script>
 
+<script src="js/loadingScreen.js" type="text/javascript"></script>
+<style type="text/css">
+    #loadingScreen {
+        background: url(images/loading.gif) no-repeat 5px 8px;
+        padding-left: 25px;
+    }
+    /* hide the close x on the loading screen */
+    .loadingScreenWindow .ui-dialog-titlebar-close {
+        display: none;
+    }
+</style>
+
 <link rel="stylesheet" type="text/css" href="css/ajaxtabs.css" />
 <script type="text/javascript" src="js/ajaxtabs.js">
 /***********************************************
@@ -387,11 +399,8 @@ if ($message!="") {
 </ul>
 
 <div id="indexdivcontainer" style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
-<?php
-//include("code/${tab}.php");
-//include("view/${tab}.php");
-?>
 </div>
+
 <script type="text/javascript" language="javascript">
     function parseUrl(url) {
         var cleanURL = url.replace(/&/g, "\n");
@@ -431,6 +440,7 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
+                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/status1.php',
@@ -438,6 +448,7 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 15000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -448,6 +459,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -457,6 +469,7 @@ indexes.onajaxpageload=function(pageurl) {
         $("#start").click(function() {
                 $("#debugInfoDate").text(Date());
                 //e.preventDefault();
+                waitingDialog({title: "Starting", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/status2.php',
@@ -464,6 +477,7 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -474,6 +488,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -548,6 +563,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#libraryform");
             $("#refresh").click(function(e) {
+                $("#process").val("refresh");
                 $("#savingMsg").text("Starting Refresh...");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -555,7 +571,8 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/library2.php',
+                    url: 'code/library.php',
+                    data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
@@ -579,14 +596,17 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
+                $("#process").val("save");
                 e.preventDefault();
+                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
-                    url: 'code/library1.php',
+                    url: 'code/library.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(response);
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -598,6 +618,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                         alert("Error: " +errorThrown)
                     }
@@ -814,7 +835,8 @@ indexes.onajaxpageload=function(pageurl) {
                 }
 
                 // set defaults and clear fields
-                $("#osID").val($("input[name=onlinesource_"+firstSelect+"]").val());
+                //$("#osID").val($("input[name=onlinesource_"+firstSelect+"]").val());
+                $("#osID").val(firstSelect);
                 $("#editOnlineFeedType").val($("#os_type_"+firstSelect).val());
                 $("#editSourceURL").val($("input[name=os_url_"+firstSelect+"]").val());
                 $("#editName").val($("#os_name_"+firstSelect).val());
@@ -843,17 +865,18 @@ indexes.onajaxpageload=function(pageurl) {
                 }
             });
 
-            $(".refresh-link").click(function () {
-                var os_no = "os_no=" + $(this).attr("os_no");
+            $(".refresh-link").click(function(e) {
+                $("#process").val("OSrefresh");
+                var os_no = "os_no=" + $(this).attr("os_no") + "&process=OSrefresh";
                 $("#savingMsg").text("Starting Refresh...");
                 $("#savingMsg").first().show();
-                $("#debugInfo").text(os_no);
+                $("#debugInfo").text(parseUrl(decodeURIComponent(os_no)));
                 $("#debugInfoDate").text(Date());
                 //e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    data: "os_no=15",
-                    url: 'code/library3.php',
+                    data: os_no,
+                    url: 'code/library.php',
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
@@ -921,6 +944,7 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
+                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/metadata1.php',
@@ -928,6 +952,7 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -938,6 +963,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -967,6 +993,7 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
+                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/transcoding1.php',
@@ -974,6 +1001,7 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -984,6 +1012,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -1040,6 +1069,7 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
+                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/presentation1.php',
@@ -1047,6 +1077,7 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -1057,6 +1088,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -1082,6 +1114,7 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
+                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/settings1.php',
@@ -1089,12 +1122,14 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'text',
                     timeout: 10000,
                     success: function(response) {
+                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text("Storage to Cookie successful");
                         $("#savingMsg").text("Saved!");
                         $("#savingMsg").delay(800).fadeOut("slow");
                     },
                     error: function(xhr, textStatus, errorThrown){
+                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -1137,5 +1172,6 @@ RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> //
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>
 
+<div id="loadingScreen"></div>
 </body>
 </html>

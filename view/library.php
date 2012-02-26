@@ -1,5 +1,6 @@
 <form method="post" action="" id="libraryform" name="library">
     <input type="hidden" name="tab" value="library">
+    <input type="hidden" id="process" name="process" value="">
     <br>
 
     <ul id="librarytabs" class="shadetabs">

@@ -8,12 +8,10 @@ This app was originally written by acidumirae@gmail.com and kudos goes to his wo
 My goal is to keep the development of Web UI active and to continue to improve the application.
 
 TODO:
-- alter how error messages display
+- better error management
 - maybe some controls (start/stop) of the status refreshes
-- add growl for notifications - maybe for saving? unsure
-- check at startup if new version of WebUI exists
-- check at startup if new version of Serviio exists - display growl
-
+- add growl for notifications
+- better notification of when new version of Web UI and Serviio exist
 
 CHANGELOG:
 - 1.0 - 3/1/2012 - Release of new version

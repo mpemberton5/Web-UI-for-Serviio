@@ -656,7 +656,7 @@ class ServiioService extends RestRequest
         /* FOLDERS */
         foreach ($repo[0] as $id=>$entry) {
             $Folder = $sharedFolders->appendChild($xmlDoc->createElement("sharedFolder"));
-            if ($id <= $entry[4]) {
+            if ($entry[4] != "new") {
                 $Folder->appendChild($xmlDoc->createElement("id", $id));
             }
             $Folder->appendChild($xmlDoc->createElement("folderPath", $entry[0]));
@@ -679,7 +679,7 @@ class ServiioService extends RestRequest
         if (isset($repo[1])) {
             foreach ($repo[1] as $id=>$entry) {
                 $Folder = $sharedFolders->appendChild($xmlDoc->createElement("onlineRepository"));
-                if ($id <= $entry[3]) {
+                if ($entry[3] != "new") {
                     $Folder->appendChild($xmlDoc->createElement("id", $id));
                 }
                 $Folder->appendChild($xmlDoc->createElement("repositoryType", $entry[0]));

@@ -93,7 +93,7 @@
                                     </div>
                                 </td>
                                 <td align="left"><span id="os_type_v_<?php echo $id?>" name="os_type_v_<?php echo $id?>"><?php echo $entry[0]?></span></td>
-                                <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
+                                <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>" title="<?php echo $entry[1]?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
 
                                 <td style="vertical-align: top;" width="30"><span id="os_media_v_<?php echo $id?>">
                                     <?php if ($entry[2] == "VIDEO") {?>

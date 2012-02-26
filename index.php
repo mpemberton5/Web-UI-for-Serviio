@@ -1,10 +1,6 @@
 <?php
 set_time_limit(0);
 include("config.php");
-if ($debugLevel == "debug") {
-    ini_set('display_errors', 1);
-    ini_set('error_reporting', E_ALL);
-}
 include("lib/RestRequest.inc.php");
 include("lib/serviio.php");
 
@@ -23,6 +19,8 @@ $appInfo = $serviio->getApplication();
 <head>
 <title><?php echo tr('window_title','Serviio console')?> <?php echo $appInfo["version"]?></title>
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 
 <SCRIPT type="text/javascript" language="javascript" src="js/Math.uuid.js"></SCRIPT>
 
@@ -84,6 +82,11 @@ function serializeXmlNode(xmlNode) {
         return xmlNode.xml;
     }
     return "";
+}
+
+function parseUrl(url) {
+    var cleanURL = url.replace(/&/g, "\n");
+    return cleanURL
 }
 
 function addLibRow(tableID,path,newid) {
@@ -350,24 +353,8 @@ $(document).ready(function(){
         });
     }
 });
+</script>
 
-</script>
-<script type="text/javascript">
-<!--
-var localPath = '';
-function addTransLocalPath() {
-    if (localPath==null || localPath=='') {
-        return;
-    }
-    if (confirm('Change transcoded files location from "' + document.transcoding.location.value + '" to "' + localPath + '"?')) {
-        document.transcoding.location.value = localPath;
-    }
-}
-function populateDirectory(dir) {
-    localPath = dir;
-}
-// -->
-</script>
 <?php
 // Application version check
 $message = "";
@@ -401,12 +388,6 @@ if ($message!="") {
 <div id="indexdivcontainer" style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
 </div>
 
-<script type="text/javascript" language="javascript">
-    function parseUrl(url) {
-        var cleanURL = url.replace(/&/g, "\n");
-        return cleanURL
-    }
-</script>
 
 <script type="text/javascript">
 var indexes=new ddajaxtabs("indextabs", "indexdivcontainer")
@@ -685,13 +666,13 @@ indexes.onajaxpageload=function(pageurl) {
                             .append($('<tr>').attr('align', 'center')
                                 .append($('<td>')
                                     .append($('<input>').attr('type', 'checkbox').attr('name', 'chk').attr('value', newID))
-                                    .append($('<input>').attr('type', 'hidden').attr('name', 'onlinesource_'+newID).attr('value', newID))
+                                    .append($('<input>').attr('type', 'hidden').attr('name', 'onlinesource_'+newID).attr('value', 'new'))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_type_'+newID).attr('name', 'os_type_'+newID).attr('value', $("#newOnlineFeedType").val()))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_url_'+newID).attr('name', 'os_url_'+newID).attr('value', $("#newSourceURL").val()))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_media_'+newID).attr('name', 'os_media_'+newID).attr('value', $("input:radio[name=newMediaType]:checked").val()))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_thumb_'+newID).attr('name', 'os_thumb_'+newID).attr('value', $("#newThumbnailURL").val()))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_name_'+newID).attr('name', 'os_name_'+newID).attr('value', $("#newName").val()))
-                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_stat_'+newID).attr('name', 'os_stat_'+newID).attr('value', $("#newEnabled").attr('checked')))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_stat_'+newID).attr('name', 'os_stat_'+newID).attr('value', ($("#newEnabled").attr('checked'))=="checked"?'true':''))
                                 )
                                 .append($('<td>')
                                     .append($('<span>')
@@ -720,7 +701,8 @@ indexes.onajaxpageload=function(pageurl) {
                                     .append($('<span>')
                                         .attr('id', 'os_name_v_'+newID)
                                         .attr('name', 'os_name_v_'+newID)
-                                        .text($("#newName").val())
+                                        .attr('title', $("#newSourceURL").val())
+                                        .text(($("#newName").val())?$("#newName").val():$("#newSourceURL").val())
                                     )
                                 )
                                 .append($('<td>').attr('style', 'vertical-align: top;').attr('width', '30')
@@ -792,7 +774,12 @@ indexes.onajaxpageload=function(pageurl) {
                     "Save": function() {
                         var osID = $("#osID").val();
                         $("input[name=os_url_"+osID+"]").val($("#editSourceURL").val());
-                        $("#os_name_v_"+osID).text($("#editName").val());
+                        if ($("#editName").val()=="") {
+                            $("#os_name_v_"+osID).text($("#editSourceURL").val());
+                        } else {
+                            $("#os_name_v_"+osID).text($("#editName").val());
+                        }
+                        $("#os_name_v_"+osID).attr('title', $("#editSourceURL").val());
                         $("#os_name_"+osID).val($("#editName").val());
                         $("#os_thumb_"+osID).val($("#editThumbnailURL").val());
                         $("#os_type_v_"+osID).text($("#editOnlineFeedType").val());

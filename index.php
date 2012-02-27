@@ -40,18 +40,6 @@ $appInfo = $serviio->getApplication();
 
 <script src="js/jquery.iphone-switch.js" type="text/javascript"></script>
 
-<script src="js/loadingScreen.js" type="text/javascript"></script>
-<style type="text/css">
-    #loadingScreen {
-        background: url(images/loading.gif) no-repeat 5px 8px;
-        padding-left: 25px;
-    }
-    /* hide the close x on the loading screen */
-    .loadingScreenWindow .ui-dialog-titlebar-close {
-        display: none;
-    }
-</style>
-
 <link rel="stylesheet" type="text/css" href="css/ajaxtabs.css" />
 <script type="text/javascript" src="js/ajaxtabs.js">
 /***********************************************
@@ -421,7 +409,6 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
-                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/status1.php',
@@ -429,7 +416,6 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 15000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -440,7 +426,6 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -450,7 +435,6 @@ indexes.onajaxpageload=function(pageurl) {
         $("#start").click(function() {
                 $("#debugInfoDate").text(Date());
                 //e.preventDefault();
-                waitingDialog({title: "Starting", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/status2.php',
@@ -458,7 +442,6 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -469,7 +452,6 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -579,7 +561,6 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfoDate").text(Date());
                 $("#process").val("save");
                 e.preventDefault();
-                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/library.php',
@@ -587,7 +568,6 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(response);
                         $("#debugInfo2").text(serializeXmlNode(response));
@@ -599,7 +579,6 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                         alert("Error: " +errorThrown)
                     }
@@ -931,7 +910,6 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
-                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/metadata1.php',
@@ -939,7 +917,6 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -950,7 +927,6 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -980,7 +956,6 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
-                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/transcoding1.php',
@@ -988,7 +963,6 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -999,7 +973,6 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -1056,7 +1029,6 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
-                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/presentation1.php',
@@ -1064,7 +1036,6 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
@@ -1075,7 +1046,6 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -1101,7 +1071,6 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
-                waitingDialog({title: "Saving", message: "Please Wait..."});
                 $.ajax({
                     type: 'POST',
                     url: 'code/settings1.php',
@@ -1109,14 +1078,12 @@ indexes.onajaxpageload=function(pageurl) {
                     dataType: 'text',
                     timeout: 10000,
                     success: function(response) {
-                        closeWaitingDialog();
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text("Storage to Cookie successful");
                         $("#savingMsg").text("Saved!");
                         $("#savingMsg").delay(800).fadeOut("slow");
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        closeWaitingDialog();
                         alert("Error: " +textStatus)
                     }
                 });
@@ -1154,11 +1121,10 @@ if ($debugLoc == "screen") {
 </div>
 <?php } ?>
 
-<div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="http://tolik.org">Tolik aka AcidumIrae</a> (updated by <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">mpemberton5</a>)<br>
+<div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="http://tolik.org">Tolik aka AcidumIrae</a> and <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
 RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> // 
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>
 
-<div id="loadingScreen"></div>
 </body>
 </html>

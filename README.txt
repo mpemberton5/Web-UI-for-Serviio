@@ -10,7 +10,6 @@ My goal is to keep the development of Web UI active and to continue to improve t
 TODO:
 - better error management
 - maybe some controls (start/stop) of the status refreshes
-- add growl for notifications
 - better notification of when new version of Web UI and Serviio exist
 
 CHANGELOG:

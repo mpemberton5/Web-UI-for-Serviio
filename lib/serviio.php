@@ -172,25 +172,6 @@ class ServiioService extends RestRequest
 
     /**
      */
-    /*
-    public function getServiceStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/service-status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get service status";
-            return false;
-        }
-        $xmlarray = array(); // this will hold the flattened data
-        XMLToArrayFlat($xml, $xmlarray, '', true); 
-        return $xmlarray;
-    }
-    */
-
-    /**
-     */
     public function getApplication()
     {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/application');
@@ -504,12 +485,6 @@ class ServiioService extends RestRequest
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         return print_r(parent::getResponseBody());
-//        $xml = simplexml_load_string(parent::getResponseBody());
-//        if ($xml===false) {
-//            $this->warning = "Cannot put status";
-//            return false;
-//        }
-//        return (string)$xml->errorCode;
     }
 
     /**
@@ -584,12 +559,6 @@ class ServiioService extends RestRequest
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         return print_r(parent::getResponseBody());
-//        $xml = simplexml_load_string(parent::getResponseBody());
-//        if ($xml===false) {
-//            $this->warning = "Cannot put transcoding";
-//            return false;
-//        }
-//        return (string)$xml->errorCode;
     }
 
     /**
@@ -629,12 +598,6 @@ class ServiioService extends RestRequest
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         return print_r(parent::getResponseBody());
-//        $xml = simplexml_load_string(parent::getResponseBody());
-//        if ($xml===false) {
-//            $this->warning = "Cannot put metadata";
-//            return false;
-//        }
-//        return (string)$xml->errorCode;    
     }
 
     /**
@@ -708,13 +671,6 @@ class ServiioService extends RestRequest
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         return print_r(parent::getResponseBody());
-//        $xml = simplexml_load_string(parent::getResponseBody());
-//        if ($xml===false) {
-//            $this->warning = "Cannot put repository";
-//            return false;
-//        }
-//
-//        return (string)$xml->errorCode;        
     }
 
     /**
@@ -765,12 +721,6 @@ class ServiioService extends RestRequest
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();
         return print_r(parent::getResponseBody());
-//        $xml = simplexml_load_string(parent::getResponseBody());
-//        if ($xml===false) {
-//            $this->warning = "Cannot put presentation";
-//            return false;
-//        }
-//        return (string)$xml->errorCode;
     }
 }
 

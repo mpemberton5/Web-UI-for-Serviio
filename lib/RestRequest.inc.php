@@ -2,52 +2,46 @@
 
 class RestRequest
 {
-	protected $url;
-	protected $verb;
-	protected $requestBody;
-	protected $requestLength;
-	protected $username;
-	protected $password;
-	protected $acceptType;
-	protected $responseBody;
-	protected $responseInfo;
-	
-	public function __construct ($url = null, $verb = 'GET', $requestBody = null)
-	{
-		$this->url				= $url;
-		$this->verb				= $verb;
-		$this->requestBody		= $requestBody;
-		$this->requestLength	= 0;
-		$this->username			= null;
-		$this->password			= null;
-		$this->acceptType		= 'application/xml';
-		$this->responseBody		= null;
-		$this->responseInfo		= null;
-		
-		if ($this->requestBody !== null)
-		{
-			$this->buildPostBody();
-		}
-	}
-	
-	public function flush ()
-	{
-		$this->requestBody		= null;
-		$this->requestLength	= 0;
-		$this->verb				= 'GET';
-		$this->responseBody		= null;
-		$this->responseInfo		= null;
-	}
-	
-	public function execute ()
-	{
-		$ch = curl_init();
-		$this->setAuth($ch);
-		
-		try
-		{
-			switch (strtoupper($this->verb))
-			{
+    protected $url;
+    protected $verb;
+    protected $requestBody;
+    protected $requestLength;
+    protected $username;
+    protected $password;
+    protected $acceptType;
+    protected $responseBody;
+    protected $responseInfo;
+
+    public function __construct ($url = null, $verb = 'GET', $requestBody = null) {
+        $this->url              = $url;
+        $this->verb             = $verb;
+        $this->requestBody      = $requestBody;
+        $this->requestLength    = 0;
+        $this->username         = null;
+        $this->password         = null;
+        $this->acceptType       = 'application/xml';
+        $this->responseBody     = null;
+        $this->responseInfo     = null;
+
+        if ($this->requestBody !== null) {
+            $this->buildPostBody();
+        }
+    }
+
+    public function flush () {
+        $this->requestBody      = null;
+        $this->requestLength    = 0;
+        $this->verb             = 'GET';
+        $this->responseBody     = null;
+        $this->responseInfo     = null;
+    }
+
+    public function execute () {
+        $ch = curl_init();
+        $this->setAuth($ch);
+
+        try {
+            switch (strtoupper($this->verb)) {
 				case 'GET':
 					$this->executeGet($ch);
 					break;
@@ -101,25 +95,11 @@ class RestRequest
 		{
 			$this->buildPostBody();
 		}
-		/*
-		$fh = fopen('php://memory', 'rw');
-		fwrite($fh, $this->requestBody);
-		rewind($fh);
-		*/
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
 		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		//curl_setopt($ch, CURLOPT_INFILE, $fh);
-		//curl_setopt($ch, CURLOPT_INFILESIZE, $this->requestLength);
-		
-		//$this->doExecute($ch);
 		
 		$this->setCurlOpts($ch);
-		//curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_URL, $this->url);
-		//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array ('Content-Type: application/xml; charset=UTF-8'));
 
 		$this->responseBody = curl_exec($ch);
@@ -136,16 +116,11 @@ class RestRequest
 		}
 		
 		$this->requestLength = strlen($this->requestBody);
-		
-		$fh = fopen('php://memory', 'rw');
-		fwrite($fh, $this->requestBody);
-		rewind($fh);
-		
-		curl_setopt($ch, CURLOPT_INFILE, $fh);
-		curl_setopt($ch, CURLOPT_INFILESIZE, $this->requestLength);
-		curl_setopt($ch, CURLOPT_PUT, true);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml; charset=UTF-8'));
-		
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$this->requestBody);
+
 		$this->doExecute($ch);
 		
 		fclose($fh);
@@ -172,7 +147,6 @@ class RestRequest
 		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 10);
 		curl_setopt($curlHandle, CURLOPT_URL, $this->url);
 		curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-//		curl_setopt($curlHandle, CURLOPT_HTTPHEADER, array ('Accept: ' . $this->acceptType));
 	}
 	
 	protected function setAuth (&$curlHandle)

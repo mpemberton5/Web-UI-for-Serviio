@@ -20,6 +20,11 @@ $appInfo = $serviio->getApplication();
 <title><?php echo tr('window_title','Serviio console')?> <?php echo $appInfo["version"]?></title>
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 
+<meta name="format-detection" content="telephone=no"/>
+<meta name="format-detection" content="address=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel="apple-touch-icon" href="images/serviio.png">
 <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 
 <SCRIPT type="text/javascript" language="javascript" src="js/Math.uuid.js"></SCRIPT>

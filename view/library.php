@@ -25,6 +25,7 @@
                                 <th align="center" width="30"><img src="images/document-attribute-m.png" alt="<?php echo tr('tab_folders_repository_table_retrieve_descriptive_metadata','Retrieve descriptive metadata')?>" title="<?php echo tr('tab_folders_repository_table_retrieve_descriptive_metadata','Retrieve descriptive metadata')?>"></th>
                                 <th align="center" width="30"><img src="images/arrow-circle.png" alt="<?php echo tr('tab_folders_repository_table_scan_for_update','Scan for file additions and updates')?>" title="<?php echo tr('tab_folders_repository_table_scan_for_update','Scan for file additions and updates')?>"></th>
                             </thead>
+                            <tbody>
                             <?php $ctr = 1; $midA = 1; foreach ($repo[0] as $id=>$entry) { if ($id>$midA) { $midA = $id; } ?>
                             <tr align="center" <?php echo $ctr%2?'':'class="odd"'?>>
                                 <td>
@@ -41,6 +42,7 @@
                             </tr>
                             <?php $ctr += 1; ?>
                             <?php } ?>
+                            </tbody>
                         </table>
                         <input type="hidden" id="lastFId" name="lastFId" value="<?php echo $midA?>">
                     </td>
@@ -72,6 +74,7 @@
                                 <th align="left" width="400"><?php echo tr('tab_online_sources_repository_table_url','Name / URL')?></th>
                                 <th align="center" width="80"><?php echo tr('tab_online_source_repository_table_mediatype','Media Type')?></th>
                             </thead>
+                            <tbody>
                             <?php $ctr = 1; $midB = 1; foreach ($repo[1] as $id=>$entry) { if ($id>$midB) { $midB = $id; } ?>
                             <tr align="center" <?php echo $ctr%2?'':'class="odd"'?>>
                                 <td>
@@ -122,6 +125,7 @@
                                 <td><input type="radio" name="os_<?php echo $id?>" value="<?php echo $type?>"<?php echo $type===$entry[2]?" checked":""?>></td>
                                 <?php } ?>
                             */?>
+                            </tbody>
                         </table>
                         <input type="hidden" id="lastOSId" name="lastOSId" value="<?php echo $midB?>">
                     </td>

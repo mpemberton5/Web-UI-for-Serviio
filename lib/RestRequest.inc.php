@@ -122,8 +122,6 @@ class RestRequest
         curl_setopt($ch, CURLOPT_POSTFIELDS,$this->requestBody);
 
 		$this->doExecute($ch);
-		
-		fclose($fh);
 	}
 	
 	protected function executeDelete ($ch)

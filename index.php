@@ -117,7 +117,8 @@ function addLibRow(tableID,path,newid) {
     cell1.appendChild(element3);
 
     var cell2 = row.insertCell(1);
-    cell2.innerHTML = path;
+    var strLen = path.length;
+    cell2.innerHTML = path.substring(0,strLen-1);
     cell2.align = 'left';
 
     var cell3 = row.insertCell(2);

@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
         $lastFId = getPostVar("lastFId", "0");
         $lastOSId = getPostVar("lastOSId", "0");
         $repo = array();
-        accGrpIds = "";
+        $accGrpIds = "";
         foreach ($_POST as $key=>$val) {
             if (substr($key, 0, 7)=="folder_") {
                 $id = substr($key, 7);

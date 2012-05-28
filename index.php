@@ -1103,7 +1103,7 @@ indexes.onajaxpageload=function(pageurl) {
 <hr>
 
 <?php
-if (true) {
+if ($debugLoc == "screen") {
 ?>
 <div>
     <fieldset>

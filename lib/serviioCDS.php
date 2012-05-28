@@ -3,7 +3,7 @@
 * http://www.gen-x-design.com/archives/making-restful-requests-in-php/
 */
 
-class ServiioService extends RestRequest
+class ServiioContentDirectoryService extends RestRequest
 {
 
     protected $host;
@@ -62,144 +62,12 @@ class ServiioService extends RestRequest
         $this->port = $port;
     }
 
-    /**
-     */
-    public function getStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get status";
-            return false;
-        }
-        $serverStatus = (string)$xml->serverStatus;
-        $ip = (string)$xml->boundIPAddress;
-        $this->renderers = array();
-        foreach ($xml->renderers->renderer as $item) {
-            $uuid = (string)$item->uuid;
-            $ipAddress = (string)$item->ipAddress;
-            $name = (string)$item->name;
-            $profileId = (string)$item->profileId;
-            $status = (string)$item->status;
-            $enabled = (string)$item->enabled;
-            $accessGroupId = (string)$item->accessGroupId;
-            $this->renderers[$uuid] = array($ipAddress, $name, $profileId, $status, $enabled, $accessGroupId);
-        }
-        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "ip"=>$ip);
-    }
-
-    /**
-     */
-    public function getRemoteAccess()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/remote-access');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get remote-access";
-            return false;
-        }
-        $remoteUserPassword = (string)$xml->remoteUserPassword;
-        $preferredRemoteDeliveryQuality = (string)$xml->preferredRemoteDeliveryQuality;
-        return array("remoteUserPassword"=>$remoteUserPassword, "preferredRemoteDeliveryQuality"=>$this->preferredRemoteDeliveryQuality);
-    }
-
-    /**
-     */
-    public function getConsoleSettings()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/console-settings');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get console-settings";
-            return false;
-        }
-        $language = (string)$xml->language;
-        $securityPin = (string)$xml->securityPin;
-        $checkForUpdates = (string)$xml->checkForUpdates;
-        return array("language"=>$language, "securityPin"=>$this->securityPin, "checkForUpdates"=>$this->checkForUpdates);
-    }
-
-    /**
-     */
-    public function getSystemStatus() {
-        $arr = $this->getStatus();
-        return $this->getLibraryStatus() + array("serverStatus"=>$arr["serverStatus"]);
-    }
-
-    /**
-     */
-    public function getServiceStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/service-status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get service status";
-            return false;
-        }
-        $serviceStarted = (string)$xml->serviceStarted;
-        return array("serviceStarted"=>$serviceStarted);
-    }
-
-    /**
-     */
-    public function getLibraryStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/library-status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get library status";
-            return false;
-        }
-        $libraryUpdatesCheckerRunning = (string)$xml->libraryUpdatesCheckerRunning;
-        $libraryAdditionsCheckerRunning = (string)$xml->libraryAdditionsCheckerRunning;
-        $lastAddedFileName = (string)$xml->lastAddedFileName;
-        $numberOfAddedFiles = (string)$xml->numberOfAddedFiles;
-        return array("libraryUpdatesCheckerRunning"=>$libraryUpdatesCheckerRunning,
-                     "libraryAdditionsCheckerRunning"=>$libraryAdditionsCheckerRunning,
-                     "lastAddedFileName"=>$lastAddedFileName,
-                     "numberOfAddedFiles"=>$numberOfAddedFiles);
-    }
-
-    /**
-     */
-    public function getReferenceData($property)
-    {
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/'.$property);
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get reference data";
-            return false;
-        }
-        $this->pvalues = array();
-        foreach ($xml->pvalues->pvalue as $item) {
-            $name = (string)$item->name;
-            $value = (string)$item->value;
-            $this->pvalues[$name] = array($name, $value);
-        }
-        return array($this->pvalues);
-    }
 
     /**
      */
     public function getPing()
     {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/ping');
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/cds/ping');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
@@ -218,7 +86,7 @@ class ServiioService extends RestRequest
      */
     public function getApplication()
     {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/application');
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/cds/application');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
@@ -247,6 +115,14 @@ class ServiioService extends RestRequest
                      "license"=>$this->lic
                      );
     }
+
+
+
+
+
+
+
+
 
     /**
      */
@@ -519,9 +395,10 @@ class ServiioService extends RestRequest
         return $types;
     }
 
+
     /**
      */
-    public function putStatus($profiles, $ip)
+    public function putLogin($profiles, $ip)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();

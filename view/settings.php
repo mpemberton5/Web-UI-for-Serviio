@@ -1,4 +1,4 @@
-<form method="post" action="" id="settingsform">
+<form method="post" action="" id="settingsform" accept-charset="utf-8">
 <input type="hidden" name="tab" value="settings">
 <br />
 <ul id="consolesettingstab" class="shadetabs">

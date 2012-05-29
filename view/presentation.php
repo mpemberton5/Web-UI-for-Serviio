@@ -1,4 +1,4 @@
-<form method="post" action="" id="presentationform" name="presentation">
+<form method="post" action="" id="presentationform" name="presentation" accept-charset="utf-8">
     <input type="hidden" name="tab" value="presentation">
     <br>
     <?php echo tr('tab_presentation_description','You can modify the categories of the browsing menu on your device. Choose categories to be visible, \'transparent\' or disabled.')?>

@@ -1,4 +1,4 @@
-<form method="post" action="" id="metadataform" name="metadata">
+<form method="post" action="" id="metadataform" name="metadata" accept-charset="utf-8">
     <input type="hidden" name="tab" value="metadata" />
     <input type="hidden" name="section" value="<?php echo $section?>" />
     <br>

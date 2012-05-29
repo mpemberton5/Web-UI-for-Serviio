@@ -1,4 +1,4 @@
-<form method="post" action="" id="libraryform" name="library">
+<form method="post" action="" id="libraryform" name="library" accept-charset="utf-8">
     <input type="hidden" name="tab" value="library">
     <input type="hidden" id="process" name="process" value="">
     <br>
@@ -192,7 +192,7 @@
 </form>
 
 <div id="dialog-form" title="Select Folder">
-    <form>
+    <form accept-charset="utf-8">
         <fieldset>
             <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="70" />
             <div id="smallbrowser"></div>
@@ -204,7 +204,7 @@
         <?php echo tr('new_online_source_description','Enter details of the required online source. Select the source type, enter URL of the source and pick type of media the source provides.')?>
         <br>
         <br>
-        <form>
+        <form accept-charset="utf-8">
             <table>
             <tr>
                 <td><?php echo tr('new_online_source_enabled','Enabled:')?></td>
@@ -248,7 +248,7 @@
         <?php echo tr('new_online_source_description','Enter details of the required online source. Select the source type, enter URL of the source and pick type of media the source provides.')?>
         <br>
         <br>
-        <form>
+        <form accept-charset="utf-8">
             <input type="hidden" id="osID" name="osID" />
             <table>
             <tr>

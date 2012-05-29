@@ -1,4 +1,4 @@
-<form method="post" action="" id="transcodingform" name="transcoding">
+<form method="post" action="" id="transcodingform" name="transcoding" accept-charset="utf-8">
     <input type="hidden" name="tab" value="transcoding">
     <br>
     <?php echo tr('tab_transcoding_general_description','When enabled, transcoding enables you to play media files that would not normally be playable by your device. Transcoding only works with a specific Renderer Profile (not the Generic DLNA profile).')?><br>
@@ -51,7 +51,7 @@
 </form>
 
 <div id="dialog-form" title="Select Folder">
-    <form>
+    <form accept-charset="utf-8">
         <fieldset>
             <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="70" />
             <div id="smallbrowser"></div>

@@ -1,4 +1,4 @@
-<form id="statusform" method="post" action="">
+<form id="statusform" method="post" action="" accept-charset="utf-8">
 <input type="hidden" name="tab" value="status">
 
 <br>

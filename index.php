@@ -29,12 +29,11 @@ $appInfo = $serviio->getApplication();
 
 <SCRIPT type="text/javascript" language="javascript" src="js/Math.uuid.js"></SCRIPT>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script>!window.jQuery && document.write('<script src="http://code.jquery.com/jquery-1.7.1.min.js"><\/script>');</script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js" type="text/javascript"></script>
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui.min.js" type="text/javascript"></script>
 
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
-<link href="http://jquery-ui.googlecode.com/svn/tags/1.8.17/themes/redmond/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
 <style>
     .ui-widget, .ui-widget button {
@@ -274,7 +273,7 @@ function deleteProfileRow(tableID) {
     var table = document.getElementById(tableID);
     var rowCount = table.rows.length;
     var deleted = false;
-    
+
     for(var i=1; i<rowCount; i++) {
         var row = table.rows[i];
         var chkbox = row.cells[0].childNodes[1];
@@ -284,7 +283,6 @@ function deleteProfileRow(tableID) {
             i--;
             deleted = true;
         }
-
     }
     if (deleted) {
         // OK
@@ -375,7 +373,8 @@ if ($message!="") {
 <li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
 <li><a href="content.php?tab=transcoding" rel="indexcontainer"><?php echo tr('tab_transcoding','Transcoding')?></a></li>
 <li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
-<!--<li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>-->
+<li><a href="content.php?tab=remote" rel="indexcontainer"><?php echo tr('tab_remote','Remote')?></a></li>
+<li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>
 <li><a href="content.php?tab=about" rel="indexcontainer"><?php echo tr('tab_about','About')?></a></li>
 </ul>
 
@@ -404,6 +403,31 @@ indexes.onajaxpageload=function(pageurl) {
         nsTabs.setselectedClassTarget("link") //"link" or "linkparent"
         nsTabs.init()
         $(document).ready(function(){
+
+            $(".os_switch").each(function(i, domEle) {
+                var itm = domEle.id.substring(8,55);
+                var itm_def = "on";
+                var itm_stat = $("#enabled_"+itm).val();
+                if (itm_stat == "true") {
+                    itm_def = "on";
+                } else {
+                    itm_def = "off";
+                }
+                $(this).iphoneSwitch(itm_def, 
+                    function() {
+                        //alert('on');
+                        $("#enabled_"+itm).val('true');
+                    },
+                    function() {
+                        //alert('off');
+                        $("#enabled_"+itm).val('false');
+                    },
+                    {
+                        switch_on_container_path: 'images/iphone_switch_container_off_16.png'
+                    }
+                );
+            });
+
             $("#debugInfo").text("");
             $("#debugInfoDate").text("");
             $("#debugInfo2").text("");
@@ -432,7 +456,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -458,7 +484,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -483,8 +511,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
-                        alert(errorThrown)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -555,7 +584,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -585,8 +616,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
-                        alert("Error: " +errorThrown)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -862,8 +894,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
-                        alert("Error: " +errorThrown)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -905,7 +938,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -933,7 +968,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -979,7 +1016,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -1052,7 +1091,52 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
+                    }
+                });
+                return false;
+            });
+        });
+    }
+    //-------------------------------------------------------------------------
+    if (pageurl.indexOf("content.php?tab=remote")!=-1) {
+        var rmtTabs=new ddtabcontent("rmtSecurityTab")
+        rmtTabs.setpersist(false)
+        rmtTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        rmtTabs.init()
+        var rmtTab2=new ddtabcontent("rmtDeliveryQualityTab")
+        rmtTab2.setpersist(false)
+        rmtTab2.setselectedClassTarget("link") //"link" or "linkparent"
+        rmtTab2.init()
+        $(document).ready(function(){
+            $("#debugInfo").text("");
+            $("#debugInfoDate").text("");
+            $("#debugInfo2").text("");
+            $("#debugInfo2Date").text("");
+            var $form = $("#remoteform");
+            $("#submit").click(function(e) {
+                $("#savingMsg").text("Saving...");
+                $("#savingMsg").first().show();
+                $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
+                $("#debugInfoDate").text(Date());
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code/remote1.php',
+                    data: $form.serialize(),
+                    dataType: 'text',
+                    timeout: 10000,
+                    success: function(response) {
+                        $("#debugInfo2Date").text(Date());
+                        $("#savingMsg").text("Saved!");
+                        $("#savingMsg").delay(800).fadeOut("slow");
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -1090,7 +1174,9 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#savingMsg").delay(800).fadeOut("slow");
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;

@@ -53,6 +53,8 @@ class ServiioService extends RestRequest
     public $securityPin;
     public $checkForUpdates;
 
+    public $licenseEdition;
+
     /**
      */
     public function __construct ($host, $port)
@@ -104,7 +106,7 @@ class ServiioService extends RestRequest
         }
         $remoteUserPassword = (string)$xml->remoteUserPassword;
         $preferredRemoteDeliveryQuality = (string)$xml->preferredRemoteDeliveryQuality;
-        return array("remoteUserPassword"=>$remoteUserPassword, "preferredRemoteDeliveryQuality"=>$this->preferredRemoteDeliveryQuality);
+        return array("remoteUserPassword"=>$remoteUserPassword, "preferredRemoteDeliveryQuality"=>$preferredRemoteDeliveryQuality);
     }
 
     /**
@@ -120,9 +122,14 @@ class ServiioService extends RestRequest
             return false;
         }
         $language = (string)$xml->language;
-        $securityPin = (string)$xml->securityPin;
+        // had to set default just in case
+        if ($language == "") {
+            $language = "en";
+        }
+        //$securityPin = (string)$xml->securityPin;
         $checkForUpdates = (string)$xml->checkForUpdates;
-        return array("language"=>$language, "securityPin"=>$this->securityPin, "checkForUpdates"=>$this->checkForUpdates);
+        //return array("language"=>$language, "securityPin"=>$securityPin, "checkForUpdates"=>$checkForUpdates);
+        return array("language"=>$language, "checkForUpdates"=>$checkForUpdates);
     }
 
     /**
@@ -186,13 +193,15 @@ class ServiioService extends RestRequest
             $this->error = "Cannot get reference data";
             return false;
         }
-        $this->pvalues = array();
-        foreach ($xml->pvalues->pvalue as $item) {
-            $name = (string)$item->name;
-            $value = (string)$item->value;
-            $this->pvalues[$name] = array($name, $value);
-        }
-        return array($this->pvalues);
+        return $xml;
+
+        //$this->pvalues = array();
+        //foreach ($xml->pvalues->pvalue as $item) {
+        //    $name = (string)$item->name;
+        //    $value = (string)$item->value;
+        //    $this->pvalues[$name] = array($name, $value);
+        //}
+        //return array($this->pvalues);
     }
 
     /**
@@ -233,18 +242,24 @@ class ServiioService extends RestRequest
         $this->lic = array();
         foreach ($xml->license as $licenseDetail) {
             $id = (string)$licenseDetail->id;
-            $type = (string)$licenseDetail->licenseType;
-            $name = (string)$licenseDetail->licenseName;
-            $email = (string)$licenseDetail->licenseEmail;
+            $type = (string)$licenseDetail->type;
+            $name = (string)$licenseDetail->name;
+            $email = (string)$licenseDetail->email;
             $expiresInMinutes = (string)$licenseDetail->expiresInMinutes;
-            $lic[$id] = array($id,$type,$name,$email,$expiresInMinutes);
         }
+
+        // record license type as global
+        $this->licenseEdition = $edition;
 
         return array(
                      "version"=>$currentVersion,
                      "updateVersionAvailable"=>$updateVersionAvailable,
                      "edition"=>$edition,
-                     "license"=>$this->lic
+                     "licenseID"=>$id,
+                     "licenseType"=>$type,
+                     "licenseName"=>$name,
+                     "licenseEmail"=>$email,
+                     "licenseExpiresInMinutes"=>$expiresInMinutes
                      );
     }
 
@@ -303,7 +318,7 @@ class ServiioService extends RestRequest
                 $repositoryName = (string)$item->repositoryName;
                 $enabled = (string)$item->enabled;
                 $ORaccessGroupIds = array();
-                foreach ($item->ORaccessGroupIds as $accessGroupId) {
+                foreach ($item->accessGroupIds as $accessGroupId) {
                     foreach ($accessGroupId as $grpId) {
                         $ORaccessGroupIds[] = (string)$grpId;
                     }
@@ -533,7 +548,6 @@ class ServiioService extends RestRequest
         $root = $xmlDoc->appendChild($xmlDoc->createElement("status"));
 
         // create sub element
-        $root->appendChild($xmlDoc->createElement("boundIPAddress", $ip));
         $Rends = $root->appendChild($xmlDoc->createElement("renderers"));
 
         foreach ($profiles as $renderer) {
@@ -545,6 +559,8 @@ class ServiioService extends RestRequest
             $Rend->appendChild($xmlDoc->createElement("enabled", $renderer[4]));
             $Rend->appendChild($xmlDoc->createElement("accessGroupId", $renderer[5]));
         }
+
+        $root->appendChild($xmlDoc->createElement("boundIPAddress", $ip));
 
         /*
         header("Content-Type: text/plain");
@@ -597,7 +613,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function putConsoleSettings($lang, $secPin, $chkForUpd)
+    public function putConsoleSettings($lang, $chkForUpd)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -610,7 +626,6 @@ class ServiioService extends RestRequest
 
         // create sub element
         $root->appendChild($xmlDoc->createElement("language", $lang));
-        $root->appendChild($xmlDoc->createElement("securityPin", $secPin));
         $root->appendChild($xmlDoc->createElement("checkForUpdates", $chkForUpd));
 
         /*
@@ -786,9 +801,11 @@ class ServiioService extends RestRequest
             $Folder->appendChild($xmlDoc->createElement("descriptiveMetadataSupported", $entry[2]));
             $Folder->appendChild($xmlDoc->createElement("scanForUpdates", $entry[3]));
 
-            $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
-            foreach ($entry[5] as $grpId) {
-                $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
+            if (is_array($entry[5])) {
+                $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
+                foreach ($entry[5] as $grpId) {
+                    $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
+                }
             }
         }
         $root->appendChild($xmlDoc->createElement("searchHiddenFiles", $this->searchHiddenFiles));
@@ -811,9 +828,11 @@ class ServiioService extends RestRequest
                 $Folder->appendChild($xmlDoc->createElement("repositoryName", $entry[4]));
                 $Folder->appendChild($xmlDoc->createElement("enabled", $entry[5]));
 
-                $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
-                foreach ($entry[7] as $grpId) {
-                    $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
+                if (is_array($entry[7])) {
+                    $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
+                    foreach ($entry[7] as $grpId) {
+                        $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
+                    }
                 }
             }
         }

@@ -2,10 +2,7 @@ Web UI for Serviio
 Front End for Serviio
 
 Requirements: HTTP server, PHP5 (with XML simple and cURL), JavaScript-enabled web browser.
-Serviio 0.6.1 or higher required.
-
-This app was originally written by acidumirae@gmail.com and kudos goes to his work.
-My goal is to keep the development of Web UI active and to continue to improve the application.
+Serviio 1.0.0 or higher required.
 
 TODO:
 - better error management
@@ -14,7 +11,13 @@ TODO:
 
 CHANGELOG:
 - 1.0 - 3/1/2012 - Release of new version
+- 1.1 - 6/24/2012 - Updates to work with Serviio 1.0
 
-Announcement: http://forum.serviio.org/viewtopic.php?f=5&t=1310
+HISTORY:
+This app was originally written by acidumirae@gmail.com and kudos goes to his work.
+My goal is to keep the development of Web UI active and to continue to improve the application.
+
+ANNOUNCEMENTS:
+http://forum.serviio.org/viewtopic.php?f=5&t=1310
 
 Questions? mailto:mpemberton5@gmail.com

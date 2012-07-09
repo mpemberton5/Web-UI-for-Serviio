@@ -10,9 +10,13 @@
         <br>
         <select name="language">
         <?php foreach ($languages as $key=>$val) { ?>
-        <option value="<?php echo $key?>"<?php echo $key==$language?" selected":""?>><?php echo $val?></option>
+        <option value="<?php echo $key?>"<?php echo $key==$settings["language"]?" selected":""?>><?php echo $val?></option>
         <?php } ?>
         </select>
+        <br>
+        <br>
+        <input type="checkbox" name="checkForUpdates" value="1"<?php echo $settings["checkForUpdates"]=="true"?" checked":""?>> <?php echo tr('tab_console_settings_check_for_new_versions','Check for new versions')?><br>
+        <br>
     </div>
 </div>
 

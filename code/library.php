@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
                     $metaval,
                     getPostVar("SCAN_${id}", "0")==1?"true":"false",
                     getPostVar("folder_${id}", "new"),
-                    $accGrpIds);
+                    array(getPostVar("access_${id}", "")));
             }
 
             // Online Sources
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
                     getPostVar("os_name_${id}", ""),
                     getPostVar("os_stat_${id}", ""),
                     getPostVar("os_thumb_${id}", ""),
-                    $accGrpIds
+                    array(getPostVar("os_access_${id}", ""))
                     );
             }
         }
@@ -96,5 +96,6 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 } else {
     $repo = $serviio->getRepository();
+    $serviio->getApplication();
 }
 ?>

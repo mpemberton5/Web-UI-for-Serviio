@@ -495,9 +495,9 @@ class ServiioService extends RestRequest
         }
         $categories = array();
         foreach ($xml->categories->browsingCategory as $entry) {
-            $id = (string)$entry->id; // => A
-            $title = (string)$entry->title; // => Audio
-            $visibility = (string)$entry->visibility; // => DISPLAYED
+            $id = (string)$entry->id; // => A,I,V
+            $title = (string)$entry->title; // => Audio,Image,Video
+            $visibility = (string)$entry->visibility; // => DISPLAYED,CONTENT_DISPLAYED,DISABLED
             $subCategories = array();
             foreach ($entry->subCategories->browsingCategory as $item) {
                 $subId = (string)$item->id; // => A_F

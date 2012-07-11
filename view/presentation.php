@@ -18,8 +18,8 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><?php echo $category[0]?><input type="hidden" name="titles['<?php echo $id?>'][0]" value="<?php echo $category[0]?>"></td>
-                            <td><select name="visibility['<?php echo $id?>'][0]">
+                            <td><?php echo $category[0]?><input type="hidden" name="titles['<?php echo $id?>']['title']" value="<?php echo $category[0]?>"></td>
+                            <td><select name="visibility['<?php echo $id?>']['visibility']">
                             <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
                             <option value="<?php echo $key?>"<?php echo $key==$category[1]?" selected":""?>><?php echo $val?></option>
                             <?php } ?>

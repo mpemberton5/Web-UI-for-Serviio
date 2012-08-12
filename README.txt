@@ -12,6 +12,7 @@ TODO:
 CHANGELOG:
 - 1.0 - 3/1/2012 - Release of new version
 - 1.1 - 6/24/2012 - Updates to work with Serviio 1.0
+- 1.2 - 8/12/2012 - Final release for Serviio 1.0 including 1.0.1
 
 HISTORY:
 This app was originally written by acidumirae@gmail.com and kudos goes to his work.

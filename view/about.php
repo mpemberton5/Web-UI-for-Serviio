@@ -6,6 +6,7 @@
 <b>Serviio v <?php $ret = $serviio->getApplication(); echo $ret['version'];?></b>
 &nbsp;-&nbsp;<b>WebUI v <?php echo $webUIver;?></b>
 <br>
+<br>
 <?php
     echo tr('tab_about_license_to','Licensed To: ');
     echo $ret['licenseName'] . " (" . $ret['licenseEmail'] . ")";
@@ -13,12 +14,13 @@
     echo tr('tab_about_license_info','License Info: ');
     echo $ret['edition'] . " / " . $ret['licenseType'] . " / expires in " . $ret['licenseExpiresInMinutes'] . " minutes";
     echo "<br>";
+    /*
     echo "<input name='uploadfile' type='file'><input type='submit' value='Upload License' readonly>";
+    */
 ?>
 <br>
-<br>
 <?php echo tr('tab_about_text','DLNA media streaming server<br>Copyright 2009-2012 Petr Nejedly<br>
-Web UI for Serviio originally written by AcidumIrae with updates by Mark Pemberton<br>
+Web UI for Serviio originally written by AcidumIrae and currently maintained by Mark Pemberton<br>
 <a href="http://serviio.org">http://serviio.org</a><br><br>
 This product may use movie metadata provided bt <a href="http://www.themoviedb.org/">TheMovieDb.org</a>, please consider contributing to the database.<br>
 This product may use TV metadata provided by <a href="http://www.thetvdb.com/">TheTVDb.com</a>, please consider contributing to the database.<br>

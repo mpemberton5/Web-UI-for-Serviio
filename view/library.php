@@ -19,6 +19,7 @@
                             <thead align="center">
                                 <th width="20">&nbsp;</th>
                                 <th align="left" width="400"><?php echo tr('tab_folders_repository_table_folder','Folder')?></th>
+                                <th width="50"><?php echo tr('tab_folders_repository_table_access','Access')?></th>
                                 <th align="center" width="30"><img src="images/film.png" alt="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>" title="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>"></th>
                                 <th align="center" width="30"><img src="images/music-beam.png" alt="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>" title="<?php echo tr('tab_folders_repository_table_share_audio','Share audio files')?>"></th>
                                 <th align="center" width="30"><img src="images/camera-black.png" alt="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>" title="<?php echo tr('tab_folders_repository_table_share_images','Share image files')?>"></th>
@@ -34,6 +35,14 @@
                                     <input type="hidden" name="name_<?php echo $id?>" value="<?php echo $entry[0]?>">
                                 </td>
                                 <td align="left"><?php echo $entry[0]?></td>
+
+                                <td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
+                                    <?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>
+                                    <?php foreach ($accesses as $key=>$val) { ?>
+                                    <option value="<?php echo $key?>"<?php echo $key==max($entry[4])?" selected":""?>><?php echo $val?></option>
+                                    <?php } ?>
+                                </select></td>
+
                                 <?php for ($i=0;$i<count($types);$i++) { $type = $types[$i]; ?>
                                 <td><input type="checkbox" name="<?php echo $type."_".$id?>" value="1"<?php echo array_search($type,$entry[1])===false?"":" checked"?>></td>
                                 <?php } ?>
@@ -71,6 +80,7 @@
                                 <th align="center" width="100"><?php echo tr('tab_online_sources_repository_table_refresh','Refresh')?></th>
                                 <th align="center" width="100"><?php echo tr('tab_online_sources_repository_table_enabled','Enabled')?></th>
                                 <th align="left" width="100"><?php echo tr('tab_online_sources_repository_table_type','Type')?></th>
+                                <th width="50"><?php echo tr('tab_online_sources_repository_table_access','Access')?></th>
                                 <th align="left" width="400"><?php echo tr('tab_online_sources_repository_table_url','Name / URL')?></th>
                                 <th align="center" width="80"><?php echo tr('tab_online_source_repository_table_mediatype','Media Type')?></th>
                             </thead>
@@ -96,6 +106,13 @@
                                     </div>
                                 </td>
                                 <td align="left"><span id="os_type_v_<?php echo $id?>" name="os_type_v_<?php echo $id?>"><?php echo $entry[0]?></span></td>
+                                <td><select name="os_access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
+                                    <?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>
+                                    <?php foreach ($accesses as $key=>$val) { ?>
+                                    <option value="<?php echo $key?>"<?php echo $key==max($entry[6])?" selected":""?>><?php echo $val?></option>
+                                    <?php } ?>
+                                </select></td>
+
                                 <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>" title="<?php echo $entry[1]?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
 
                                 <td style="vertical-align: top;" width="30"><span id="os_media_v_<?php echo $id?>">

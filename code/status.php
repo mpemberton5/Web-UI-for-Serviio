@@ -8,12 +8,14 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
         $profiles = array();
         foreach ($_POST as $key=>$val) {
             if (substr($key, 0, 5)=="name_") {
-                $uuid = substr($key, 5);
+                $uuid = substr($key, 55);
                 if ($uuid!="") {
                     $ipAddress = getPostVar("ipAddress_${uuid}", "");
                     $name = $val;
                     $profile = getPostVar("profile_${uuid}", "1"); // Generic DLNA profile
-                    $profiles[] = array($uuid, $ipAddress, $name, $profile);
+                    $enabled = getPostVar("enabled_${uuid}", "");
+                    $access = getPostVar("access_${uuid}", "");
+                    $profiles[] = array($uuid, $ipAddress, $name, $profile, $enabled, $access);
                 }
             }
         }
@@ -35,6 +37,7 @@ if ($statusResponse["serverStatus"] == "STARTED") {
     $stopDisabled = "";
 }
 $profiles = $serviio->getProfiles();
+$serviio->getApplication();
 
 function status_icon($status)
 {

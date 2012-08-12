@@ -1,11 +1,11 @@
 <?php
 $language = "en";
-$webUIver = "1.0.3";
+$webUIver = "1.1";
 $debugLevel = "none"; // none, debug
 $debugLoc = "none"; // none, screen
 $serviio_host = "127.0.0.1";
 $serviio_port = "23423";
-$version_req = "0.6.2";
+$version_req = "1.0.1";
 
 # set appropriate encoding
 mb_internal_encoding("UTF-8");

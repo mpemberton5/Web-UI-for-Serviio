@@ -3,7 +3,7 @@
 * http://www.gen-x-design.com/archives/making-restful-requests-in-php/
 */
 
-class ServiioService extends RestRequest
+class ServiioContentDirectoryService extends RestRequest
 {
 
     protected $host;
@@ -53,8 +53,6 @@ class ServiioService extends RestRequest
     public $securityPin;
     public $checkForUpdates;
 
-    public $licenseEdition;
-
     /**
      */
     public function __construct ($host, $port)
@@ -64,151 +62,12 @@ class ServiioService extends RestRequest
         $this->port = $port;
     }
 
-    /**
-     */
-    public function getStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get status";
-            return false;
-        }
-        $serverStatus = (string)$xml->serverStatus;
-        $ip = (string)$xml->boundIPAddress;
-        $this->renderers = array();
-        foreach ($xml->renderers->renderer as $item) {
-            $uuid = (string)$item->uuid;
-            $ipAddress = (string)$item->ipAddress;
-            $name = (string)$item->name;
-            $profileId = (string)$item->profileId;
-            $status = (string)$item->status;
-            $enabled = (string)$item->enabled;
-            $accessGroupId = (string)$item->accessGroupId;
-            $this->renderers[$uuid] = array($ipAddress, $name, $profileId, $status, $enabled, $accessGroupId);
-        }
-        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "ip"=>$ip);
-    }
-
-    /**
-     */
-    public function getRemoteAccess()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/remote-access');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get remote-access";
-            return false;
-        }
-        $remoteUserPassword = (string)$xml->remoteUserPassword;
-        $preferredRemoteDeliveryQuality = (string)$xml->preferredRemoteDeliveryQuality;
-        return array("remoteUserPassword"=>$remoteUserPassword, "preferredRemoteDeliveryQuality"=>$preferredRemoteDeliveryQuality);
-    }
-
-    /**
-     */
-    public function getConsoleSettings()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/console-settings');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get console-settings";
-            return false;
-        }
-        $language = (string)$xml->language;
-        // had to set default just in case
-        if ($language == "") {
-            $language = "en";
-        }
-        //$securityPin = (string)$xml->securityPin;
-        $checkForUpdates = (string)$xml->checkForUpdates;
-        //return array("language"=>$language, "securityPin"=>$securityPin, "checkForUpdates"=>$checkForUpdates);
-        return array("language"=>$language, "checkForUpdates"=>$checkForUpdates);
-    }
-
-    /**
-     */
-    public function getSystemStatus() {
-        $arr = $this->getStatus();
-        return $this->getLibraryStatus() + array("serverStatus"=>$arr["serverStatus"]);
-    }
-
-    /**
-     */
-    public function getServiceStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/service-status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get service status";
-            return false;
-        }
-        $serviceStarted = (string)$xml->serviceStarted;
-        return array("serviceStarted"=>$serviceStarted);
-    }
-
-    /**
-     */
-    public function getLibraryStatus()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/library-status');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get library status";
-            return false;
-        }
-        $libraryUpdatesCheckerRunning = (string)$xml->libraryUpdatesCheckerRunning;
-        $libraryAdditionsCheckerRunning = (string)$xml->libraryAdditionsCheckerRunning;
-        $lastAddedFileName = (string)$xml->lastAddedFileName;
-        $numberOfAddedFiles = (string)$xml->numberOfAddedFiles;
-        return array("libraryUpdatesCheckerRunning"=>$libraryUpdatesCheckerRunning,
-                     "libraryAdditionsCheckerRunning"=>$libraryAdditionsCheckerRunning,
-                     "lastAddedFileName"=>$lastAddedFileName,
-                     "numberOfAddedFiles"=>$numberOfAddedFiles);
-    }
-
-    /**
-     */
-    public function getReferenceData($property)
-    {
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/'.$property);
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get reference data";
-            return false;
-        }
-        return $xml;
-
-        //$this->pvalues = array();
-        //foreach ($xml->pvalues->pvalue as $item) {
-        //    $name = (string)$item->name;
-        //    $value = (string)$item->value;
-        //    $this->pvalues[$name] = array($name, $value);
-        //}
-        //return array($this->pvalues);
-    }
 
     /**
      */
     public function getPing()
     {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/ping');
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/cds/ping');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
@@ -227,7 +86,7 @@ class ServiioService extends RestRequest
      */
     public function getApplication()
     {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/application');
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/cds/application');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
@@ -242,26 +101,28 @@ class ServiioService extends RestRequest
         $this->lic = array();
         foreach ($xml->license as $licenseDetail) {
             $id = (string)$licenseDetail->id;
-            $type = (string)$licenseDetail->type;
-            $name = (string)$licenseDetail->name;
-            $email = (string)$licenseDetail->email;
+            $type = (string)$licenseDetail->licenseType;
+            $name = (string)$licenseDetail->licenseName;
+            $email = (string)$licenseDetail->licenseEmail;
             $expiresInMinutes = (string)$licenseDetail->expiresInMinutes;
+            $lic[$id] = array($id,$type,$name,$email,$expiresInMinutes);
         }
-
-        // record license type as global
-        $this->licenseEdition = $edition;
 
         return array(
                      "version"=>$currentVersion,
                      "updateVersionAvailable"=>$updateVersionAvailable,
                      "edition"=>$edition,
-                     "licenseID"=>$id,
-                     "licenseType"=>$type,
-                     "licenseName"=>$name,
-                     "licenseEmail"=>$email,
-                     "licenseExpiresInMinutes"=>$expiresInMinutes
+                     "license"=>$this->lic
                      );
     }
+
+
+
+
+
+
+
+
 
     /**
      */
@@ -318,7 +179,7 @@ class ServiioService extends RestRequest
                 $repositoryName = (string)$item->repositoryName;
                 $enabled = (string)$item->enabled;
                 $ORaccessGroupIds = array();
-                foreach ($item->accessGroupIds as $accessGroupId) {
+                foreach ($item->ORaccessGroupIds as $accessGroupId) {
                     foreach ($accessGroupId as $grpId) {
                         $ORaccessGroupIds[] = (string)$grpId;
                     }
@@ -495,9 +356,9 @@ class ServiioService extends RestRequest
         }
         $categories = array();
         foreach ($xml->categories->browsingCategory as $entry) {
-            $id = (string)$entry->id; // => A,I,V
-            $title = (string)$entry->title; // => Audio,Image,Video
-            $visibility = (string)$entry->visibility; // => DISPLAYED,CONTENT_DISPLAYED,DISABLED
+            $id = (string)$entry->id; // => A
+            $title = (string)$entry->title; // => Audio
+            $visibility = (string)$entry->visibility; // => DISPLAYED
             $subCategories = array();
             foreach ($entry->subCategories->browsingCategory as $item) {
                 $subId = (string)$item->id; // => A_F
@@ -534,9 +395,10 @@ class ServiioService extends RestRequest
         return $types;
     }
 
+
     /**
      */
-    public function putStatus($profiles, $ip)
+    public function putLogin($profiles, $ip)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -548,6 +410,7 @@ class ServiioService extends RestRequest
         $root = $xmlDoc->appendChild($xmlDoc->createElement("status"));
 
         // create sub element
+        $root->appendChild($xmlDoc->createElement("boundIPAddress", $ip));
         $Rends = $root->appendChild($xmlDoc->createElement("renderers"));
 
         foreach ($profiles as $renderer) {
@@ -559,8 +422,6 @@ class ServiioService extends RestRequest
             $Rend->appendChild($xmlDoc->createElement("enabled", $renderer[4]));
             $Rend->appendChild($xmlDoc->createElement("accessGroupId", $renderer[5]));
         }
-
-        $root->appendChild($xmlDoc->createElement("boundIPAddress", $ip));
 
         /*
         header("Content-Type: text/plain");
@@ -613,7 +474,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function putConsoleSettings($lang, $chkForUpd)
+    public function putConsoleSettings($lang, $secPin, $chkForUpd)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -626,6 +487,7 @@ class ServiioService extends RestRequest
 
         // create sub element
         $root->appendChild($xmlDoc->createElement("language", $lang));
+        $root->appendChild($xmlDoc->createElement("securityPin", $secPin));
         $root->appendChild($xmlDoc->createElement("checkForUpdates", $chkForUpd));
 
         /*
@@ -801,11 +663,9 @@ class ServiioService extends RestRequest
             $Folder->appendChild($xmlDoc->createElement("descriptiveMetadataSupported", $entry[2]));
             $Folder->appendChild($xmlDoc->createElement("scanForUpdates", $entry[3]));
 
-            if (is_array($entry[5])) {
-                $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
-                foreach ($entry[5] as $grpId) {
-                    $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
-                }
+            $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
+            foreach ($entry[5] as $grpId) {
+                $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
             }
         }
         $root->appendChild($xmlDoc->createElement("searchHiddenFiles", $this->searchHiddenFiles));
@@ -828,11 +688,9 @@ class ServiioService extends RestRequest
                 $Folder->appendChild($xmlDoc->createElement("repositoryName", $entry[4]));
                 $Folder->appendChild($xmlDoc->createElement("enabled", $entry[5]));
 
-                if (is_array($entry[7])) {
-                    $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
-                    foreach ($entry[7] as $grpId) {
-                        $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
-                    }
+                $accessGroupIds = $Folder->appendChild($xmlDoc->createElement("accessGroupIds"));
+                foreach ($entry[7] as $grpId) {
+                    $accessGroupIds->appendChild($xmlDoc->createElement("id", $grpId));
                 }
             }
         }

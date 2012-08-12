@@ -17,7 +17,9 @@ foreach ($_POST as $key=>$val) {
             $ipAddress = getPostVar("ipAddress_${uuid}", "");
             $name = $val;
             $profile = getPostVar("profile_${uuid}", "1"); // Generic DLNA profile
-            $profiles[] = array($uuid, $ipAddress, $name, $profile);
+            $enabled = getPostVar("enabled_${uuid}", "");
+            $accGrpId = getPostVar("access_${uuid}", "1");
+            $profiles[] = array($uuid, $ipAddress, $name, $profile, $enabled, $accGrpId);
         }
     }
 }

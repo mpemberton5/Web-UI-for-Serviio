@@ -3,7 +3,7 @@
 
 <br>
 <ul id="serverstatustab" class="shadetabs">
-<li><a href="#" rel="svrstat1" class="selected"><?php echo tr('tab_status_server_status','Server Status')?></a></li>
+    <li><a href="#" rel="svrstat1" class="selected"><?php echo tr('tab_status_server_status','Server Status')?></a></li>
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="svrstat1" class="tabcontent">
@@ -15,7 +15,7 @@
 </div>
 
 <ul id="rendererprofiletab" class="shadetabs">
-<li><a href="#" rel="rendprof1" class="selected"><?php echo tr('tab_status_renderer_profile','Renderer Profile')?></a></li>
+    <li><a href="#" rel="rendprof1" class="selected"><?php echo tr('tab_status_renderer_profile','Renderer Profile')?></a></li>
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="rendprof1" class="tabcontent">
@@ -24,37 +24,57 @@
 <table>
 <tr valign="top">
     <td><table id="rendererTable">
-	<thead>
-    <!--
-		<td width="20" align="center"><img src="images/bullet_red.png" alt="<?php echo tr('button_remove','Remove')?>"></td>
-        -->
-	    <th width="20">&nbsp;</th>
-	    <th width="20">&nbsp;</th>
-	    <th width="100"><?php echo tr('tab_status_renderer_table_ipaddress','IP Address')?></th>
-	    <th width="200"><?php echo tr('tab_status_renderer_table_device_name','Device Name')?></th>
-	    <th><?php echo tr('tab_status_renderer_table_profile','Profile')?></th>
-	</thead>
-<?php $ctr=1; foreach ($statusResponse["renderers"] as $id=>$renderer) { ?>
-	<tr <?php echo $ctr%2?'':'class="odd"'?>>
-		<td><input type="hidden" name="renderer_<?php echo $id?>" value="<?php echo $id?>"><input type="checkbox" name="chk" value="<?php echo $id?>"><input type="hidden" name="name_<?php echo $id?>" value="<?php echo $renderer[1]?>"><input type="hidden" name="ipAddress_<?php echo $id?>" value="<?php echo $renderer[0]?>"></td>
-	    <td><?php echo status_icon($renderer[3])?></td>	
-	    <td><?php echo $renderer[0]?></td>	
-	    <td><?php echo $renderer[1]?></td>	
-	    <td><select name="profile_<?php echo $id?>">
-<?php foreach ($profiles as $key=>$val) { ?>
-<option value="<?php echo $key?>"<?php echo $key==$renderer[2]?" selected":""?>><?php echo $val?></option>
-<?php } ?>
-</select></td>	
-	</tr>
-<?php $ctr+=1; ?>
-<?php } ?>	
-	</table><td>
+    <thead>
+        <th width="20">&nbsp;</th>
+        <th width="20">&nbsp;</th>
+        <th width="100"><?php echo tr('tab_status_renderer_table_ipaddress','IP Address')?></th>
+        <th width="200"><?php echo tr('tab_status_renderer_table_device_name','Device Name')?></th>
+        <th width="50"><?php echo tr('tab_status_renderer_table_enabled','Enabled')?></th>
+        <th width="50"><?php echo tr('tab_status_renderer_table_access','Access')?></th>
+        <th><?php echo tr('tab_status_renderer_table_profile','Profile')?></th>
+    </thead>
+    <?php $ctr=1; foreach ($statusResponse["renderers"] as $id=>$renderer) { ?>
+    <tr <?php echo $ctr%2?'':'class="odd"'?>>
+        <td>
+            <input type="checkbox" name="chk" value="<?php echo $id?>">
+            <input type="hidden" id="enabled_<?php echo $id?>" name="enabled_<?php echo $id?>" value="<?php echo $renderer[4]?>">
+            <input type="hidden" name="renderer_<?php echo $id?>" value="<?php echo $id?>">
+            <input type="hidden" name="name_<?php echo $id?>" value="<?php echo $renderer[1]?>">
+            <input type="hidden" name="ipAddress_<?php echo $id?>" value="<?php echo $renderer[0]?>">
+        </td>
+        <td><?php echo status_icon($renderer[3])?></td>
+        <td><?php echo $renderer[0]?></td>
+        <td><?php echo $renderer[1]?></td>
+
+        <td>
+            <div class="os_switch" id="enabled_<?php echo $id?>" style="cursor: pointer; ">
+                <div class="iphone_switch_container" style="height:27px; width:94px; position: relative; overflow: hidden">
+                    <img class="iphone_switch" style="height: 27px; width: 94px; background-image: url(images/iphone_switch_16.png); background-position: 0px 50%; " src="images/iphone_switch_container_off.png">
+                </div>
+            </div>
+        </td>
+
+        <td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
+        <?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>
+        <?php foreach ($accesses as $key=>$val) { ?>
+            <option value="<?php echo $key?>"<?php echo $key==$renderer[5]?" selected":""?>><?php echo $val?></option>
+        <?php } ?>
+        </select></td>
+        <td><select name="profile_<?php echo $id?>">
+        <?php foreach ($profiles as $key=>$val) { ?>
+            <option value="<?php echo $key?>"<?php echo $key==$renderer[2]?" selected":""?>><?php echo $val?></option>
+        <?php } ?>
+        </select></td>
+    </tr>
+    <?php $ctr+=1; ?>
+    <?php } ?>
+    </table><td>
     <td width="100">
-<input type="submit" name="refresh" value="Refresh">  
-<br>                                                                                                                                                                     
+<input type="submit" name="refresh" value="Refresh">
+<br>
 <input type="button" name="addRenderer" value="  Add  " onclick="addProfileRow('rendererTable',null,null)">
-<br>                                                                                                                                                                     
-<input type="button" name="remove" value="Remove" onclick="if(confirm('Are you sure you want to remove selected renderers')) { deleteProfileRow('rendererTable'); }">     
+<br>
+<input type="button" name="remove" value="Remove" onclick="if(confirm('Are you sure you want to remove selected renderers')) { deleteProfileRow('rendererTable'); }">
     </td>
 </tr>
 </table>
@@ -74,7 +94,7 @@ profiles['<?php echo $key?>'] = '<?php echo $val?>';
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="netset1" class="tabcontent">
-<?php echo tr('tab_status_bound_ip_address','Bound IP address (leave empty for default):')?> 
+<?php echo tr('tab_status_bound_ip_address','Bound IP address (leave empty for default):')?>
 <input type="text" name="ip" value="<?php echo $statusResponse["ip"]?>" maxlength="16">
     </div>
 </div>

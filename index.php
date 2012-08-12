@@ -12,6 +12,7 @@ if (isset($_COOKIE["language"]) && array_key_exists($_COOKIE["language"],$langua
 $serviio = new ServiioService($serviio_host,$serviio_port);
 
 $appInfo = $serviio->getApplication();
+$profiles = $serviio->getProfiles();
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,12 +30,11 @@ $appInfo = $serviio->getApplication();
 
 <SCRIPT type="text/javascript" language="javascript" src="js/Math.uuid.js"></SCRIPT>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script>!window.jQuery && document.write('<script src="http://code.jquery.com/jquery-1.7.1.min.js"><\/script>');</script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js" type="text/javascript"></script>
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui.min.js" type="text/javascript"></script>
 
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
-<link href="http://jquery-ui.googlecode.com/svn/tags/1.8.17/themes/redmond/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
 <style>
     .ui-widget, .ui-widget button {
@@ -121,28 +121,42 @@ function addLibRow(tableID,path,newid) {
     cell2.innerHTML = path.substring(0,strLen-1);
     cell2.align = 'left';
 
-    var cell3 = row.insertCell(2);
+    var cell2a = row.insertCell(2);
+    var element2a = document.createElement("select");
+    element2a.name = "access_"+id;
+    var option1 = document.createElement("option");
+    option1.value = "1";
+    option1.innerHTML = "Full";
+    element2a.appendChild(option1);
+    var option2 = document.createElement("option");
+    option2.value = "2";
+    option2.innerHTML = "Limited";                           
+    element2a.appendChild(option2);
+    element2a.selectedItem = "1";
+    cell2a.appendChild(element2a);
+
+    var cell3 = row.insertCell(3);
     var element4 = document.createElement("input");
     element4.type = "checkbox";
     element4.name = "VIDEO_"+id;
     element4.value = 1;
     cell3.appendChild(element4);
 
-    var cell4 = row.insertCell(3);
+    var cell4 = row.insertCell(4);
     var element5 = document.createElement("input");
     element5.type = "checkbox";
     element5.name = "AUDIO_"+id;
     element5.value = 1;
     cell4.appendChild(element5);
 
-    var cell5 = row.insertCell(4);
+    var cell5 = row.insertCell(5);
     var element6 = document.createElement("input");
     element6.type = "checkbox";
     element6.name = "IMAGE_"+id;
     element6.value = 1;
     cell5.appendChild(element6);
 
-    var cell6 = row.insertCell(5);
+    var cell6 = row.insertCell(6);
     var element7 = document.createElement("input");
     element7.type = "checkbox";
     element7.name = "ONLINE_"+id;
@@ -150,7 +164,7 @@ function addLibRow(tableID,path,newid) {
     element7.disabled = true;
     cell6.appendChild(element7);
 
-    var cell7 = row.insertCell(6);
+    var cell7 = row.insertCell(7);
     var element8 = document.createElement("input");
     element8.type = "checkbox";
     element8.name = "SCAN_"+id;
@@ -197,6 +211,11 @@ function deleteLibRow(tableID) {
 <SCRIPT type="text/javascript" language="javascript">
 <!--
 function addProfileRow(tableID,ipAddress, name) {
+    // load profiles
+    var profiles = new Array();
+    <?php foreach ($profiles as $key=>$val) { ?>
+        profiles['<?php echo $key?>'] = '<?php echo $val?>';
+    <?php } ?>
 
     if (ipAddress==null || ipAddress=='') {
         ipAddress = prompt('Please enter renderer IP address');
@@ -258,7 +277,37 @@ function addProfileRow(tableID,ipAddress, name) {
     element6.innerHTML = name;
     cell4.appendChild(element6);
 
-    var cell5 = row.insertCell(4);
+    var cell4 = row.insertCell(4);
+    var element6 = document.createElement("div");
+    element6.setAttribute('class', 'os_switch');
+    element6.setAttribute('id', 'os_switch_'+id);
+    element6.setAttribute('name', 'os_switch_'+id);
+    var element6a = document.createElement("div");
+    element6a.setAttribute('class', 'iphone_switch_container');
+    element6a.setAttribute('style', 'height:16px; width:56px; position: relative; overflow: hidden;');
+    var element6b = document.createElement("img");
+    element6b.setAttribute('class', 'iphone_switch');
+    element6b.setAttribute('style', 'height:16px; width:56px; background-image:url(images/iphone_switch_16.png); background-repeat:none; background-position:-31px');
+    element6b.setAttribute('src', 'images/iphone_switch_container_off_16.png');
+    element6a.appendChild(element6b);
+    element6.appendChild(element6a);
+    cell4.appendChild(element6);
+
+    var cell2a = row.insertCell(5);
+    var element2a = document.createElement("select");
+    element2a.name = "access_"+id;
+    var option1 = document.createElement("option");
+    option1.value = "1";
+    option1.innerHTML = "Full";
+    element2a.appendChild(option1);
+    var option2 = document.createElement("option");
+    option2.value = "2";
+    option2.innerHTML = "Limited";                           
+    element2a.appendChild(option2);
+    element2a.value = 1;
+    cell2a.appendChild(element2a);
+
+    var cell5 = row.insertCell(6);
     var element6 = document.createElement("select");
     element6.name = "profile_"+id;
     var key;
@@ -274,7 +323,7 @@ function deleteProfileRow(tableID) {
     var table = document.getElementById(tableID);
     var rowCount = table.rows.length;
     var deleted = false;
-    
+
     for(var i=1; i<rowCount; i++) {
         var row = table.rows[i];
         var chkbox = row.cells[0].childNodes[1];
@@ -284,7 +333,6 @@ function deleteProfileRow(tableID) {
             i--;
             deleted = true;
         }
-
     }
     if (deleted) {
         // OK
@@ -351,6 +399,7 @@ $(document).ready(function(){
 
 <?php
 // Application version check
+/* - temporarily disabled
 $message = "";
 if ($appInfo["version"]!=$version_req) {
     if ($message=="") {
@@ -366,22 +415,25 @@ if ($message!="") {
 <center><font color="red"><b><?php echo $message!=""?$message:""?></b></font></center>
 <?php
 }
+*/
 ?>
 <br />
 
-<ul id="indextabs" class="shadetabs">
-<li><a href="content.php?tab=status" rel="indexcontainer" class="selected"><?php echo tr('tab_status','Status')?></a></li>
-<li><a href="content.php?tab=library" rel="indexcontainer"><?php echo tr('tab_folders','Library')?></a></li>
-<li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
-<li><a href="content.php?tab=transcoding" rel="indexcontainer"><?php echo tr('tab_transcoding','Transcoding')?></a></li>
-<li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
-<!--<li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>-->
-<li><a href="content.php?tab=about" rel="indexcontainer"><?php echo tr('tab_about','About')?></a></li>
-</ul>
+<div style="padding-left: 10px;">
+    <ul id="indextabs" class="shadetabs">
+        <li><a href="content.php?tab=status" rel="indexcontainer" class="selected"><?php echo tr('tab_status','Status')?></a></li>
+        <li><a href="content.php?tab=library" rel="indexcontainer"><?php echo tr('tab_folders','Library')?></a></li>
+        <li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
+        <li><a href="content.php?tab=transcoding" rel="indexcontainer"><?php echo tr('tab_transcoding','Transcoding')?></a></li>
+        <li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
+        <li><a href="content.php?tab=remote" rel="indexcontainer"><?php echo tr('tab_remote','Remote')?></a></li>
+        <li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>
+        <li><a href="content.php?tab=about" rel="indexcontainer"><?php echo tr('tab_about','About')?></a></li>
+    </ul>
 
-<div id="indexdivcontainer" style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
+    <div id="indexdivcontainer" style="border:1px solid gray; width:97.5%; margin-bottom: 1em; padding: 10px">
+    </div>
 </div>
-
 
 <script type="text/javascript">
 var indexes=new ddajaxtabs("indextabs", "indexdivcontainer")
@@ -404,6 +456,31 @@ indexes.onajaxpageload=function(pageurl) {
         nsTabs.setselectedClassTarget("link") //"link" or "linkparent"
         nsTabs.init()
         $(document).ready(function(){
+
+            $(".os_switch").each(function(i, domEle) {
+                var itm = domEle.id.substring(8,55);
+                var itm_def = "on";
+                var itm_stat = $("#enabled_"+itm).val();
+                if (itm_stat == "true") {
+                    itm_def = "on";
+                } else {
+                    itm_def = "off";
+                }
+                $(this).iphoneSwitch(itm_def, 
+                    function() {
+                        //alert('on');
+                        $("#enabled_"+itm).val('true');
+                    },
+                    function() {
+                        //alert('off');
+                        $("#enabled_"+itm).val('false');
+                    },
+                    {
+                        switch_on_container_path: 'images/iphone_switch_container_off_16.png'
+                    }
+                );
+            });
+
             $("#debugInfo").text("");
             $("#debugInfoDate").text("");
             $("#debugInfo2").text("");
@@ -432,7 +509,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -458,7 +537,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -483,8 +564,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
-                        alert(errorThrown)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -555,7 +637,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -585,8 +669,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
-                        alert("Error: " +errorThrown)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -680,6 +765,21 @@ indexes.onajaxpageload=function(pageurl) {
                                         .attr('id', 'os_type_v_'+newID)
                                         .attr('name', 'os_type_v_'+newID)
                                         .text($("#newOnlineFeedType").val())
+                                    )
+                                )
+                                .append($('<td>').attr('align', 'left')
+                                    .append($('<select>')
+                                        .attr('id', 'os_access_'+newID)
+                                        .attr('name', 'os_access_'+newID)
+                                        .append($('<option>')
+                                            .attr('value', '1')
+                                            .attr('selected', 'selected')
+                                            .text('Full')
+                                        )
+                                        .append($('<option>')
+                                            .attr('value', '2')
+                                            .text('Limited')
+                                        )
                                     )
                                 )
                                 .append($('<td>').attr('align', 'left')
@@ -862,8 +962,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
-                        alert("Error: " +errorThrown)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -905,7 +1006,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -933,7 +1036,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -979,7 +1084,9 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -1052,7 +1159,57 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
+                    }
+                });
+                return false;
+            });
+        });
+    }
+    //-------------------------------------------------------------------------
+    if (pageurl.indexOf("content.php?tab=remote")!=-1) {
+        var rmtTabs=new ddtabcontent("rmtSecurityTab")
+        rmtTabs.setpersist(false)
+        rmtTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        rmtTabs.init()
+        var rmtTab2=new ddtabcontent("rmtDeliveryQualityTab")
+        rmtTab2.setpersist(false)
+        rmtTab2.setselectedClassTarget("link") //"link" or "linkparent"
+        rmtTab2.init()
+        $(document).ready(function(){
+            $("#debugInfo").text("");
+            $("#debugInfoDate").text("");
+            $("#debugInfo2").text("");
+            $("#debugInfo2Date").text("");
+            var $form = $("#remoteform");
+            $("#submit").click(function(e) {
+                $("#savingMsg").text("Saving...");
+                $("#savingMsg").first().show();
+                $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
+                $("#debugInfoDate").text(Date());
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code/remote.php',
+                    data: $form.serialize(),
+                    dataType: 'xml',
+                    timeout: 10000,
+                    success: function(response) {
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(serializeXmlNode(response));
+                        if ($(response).find("errorCode").text() == 0) {
+                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").delay(800).fadeOut("slow");
+                        } else {
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;
@@ -1090,7 +1247,9 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#savingMsg").delay(800).fadeOut("slow");
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        alert("Error: " +textStatus)
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
                     }
                 });
                 return false;

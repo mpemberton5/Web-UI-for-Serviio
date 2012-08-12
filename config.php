@@ -1,6 +1,6 @@
 <?php
 $language = "en";
-$webUIver = "1.1";
+$webUIver = "1.2";
 $debugLevel = "none"; // none, debug
 $debugLoc = "none"; // none, screen
 $serviio_host = "127.0.0.1";

@@ -33,9 +33,13 @@
     </div>
 </div>
 
-<div align="right">
+<div style="float: left;">
+    <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?>:23424/mediabrowser/" target="_blank">Open MediaBrowser</a>
+</div>
+<div align="right" style="float: right;">
     <span id="savingMsg" class="savingMsg"></span>
     <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
     <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
 </div>
+<br />
 </form>

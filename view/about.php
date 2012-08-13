@@ -11,9 +11,9 @@
     echo tr('tab_about_license_to','Licensed To: ');
     echo $ret['licenseName'] . " (" . $ret['licenseEmail'] . ")";
     echo "<br>";
-    echo tr('tab_about_license_info','License Info: ');
-    echo $ret['edition'] . " / " . $ret['licenseType'] . " / expires in " . $ret['licenseExpiresInMinutes'] . " minutes";
-    echo "<br>";
+    //echo tr('tab_about_license_info','License Info: ');
+    //echo $ret['edition'] . " / " . $ret['licenseType'] . " / expires in " . $ret['licenseExpiresInMinutes'] . " minutes";
+    //echo "<br>";
     /*
     echo "<input name='uploadfile' type='file'><input type='submit' value='Upload License' readonly>";
     */

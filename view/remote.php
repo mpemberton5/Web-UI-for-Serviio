@@ -34,7 +34,7 @@
 </div>
 
 <div style="float: left;">
-    <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?>:23424/mediabrowser/" target="_blank">Open MediaBrowser</a>
+    <a href="http://<?php echo $serviio_mediabrowser_host;?>:23424/mediabrowser/" target="_blank">Open MediaBrowser</a>
 </div>
 <div align="right" style="float: right;">
     <span id="savingMsg" class="savingMsg"></span>

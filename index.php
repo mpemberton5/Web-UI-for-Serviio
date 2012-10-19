@@ -1286,7 +1286,7 @@ if ($debugLoc == "screen") {
 </div>
 <?php } ?>
 
-<div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="http://tolik.org">Tolik aka AcidumIrae</a> and <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
+<div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
 RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> // 
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>

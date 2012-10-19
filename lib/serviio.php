@@ -240,6 +240,12 @@ class ServiioService extends RestRequest
 
         $edition = (string)$xml->edition;
         $this->lic = array();
+        // need to init these variables - thanks Strupniveral
+        $id = "";
+        $type = "";
+        $name = "";
+        $email = "";
+        $expiresInMinutes = "";
         foreach ($xml->license as $licenseDetail) {
             $id = (string)$licenseDetail->id;
             $type = (string)$licenseDetail->type;

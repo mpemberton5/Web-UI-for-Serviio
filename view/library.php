@@ -161,7 +161,7 @@
                     <?php echo tr('tab_online_sources_max_num_feed_items_to_retrieve','Max. number of feed items to retrieve:')?>
                 </td><td>
                     <select name="maxfeeditems">
-                        <option value="unlimited"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="unlimited"?" selected":""?>>Unlimited</option>
+                        <option value="-1"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="-1"?" selected":""?>>Unlimited</option>
                         <option value="10"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="10"?" selected":""?>>10</option>
                         <option value="20"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="20"?" selected":""?>>20</option>
                         <option value="30"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="30"?" selected":""?>>30</option>

@@ -51,6 +51,9 @@ class RestRequest
 				case 'PUT':
 					$this->executePut($ch);
 					break;
+				case 'PUTPLAIN':
+					$this->executePutPlain($ch);
+					break;
 				case 'DELETE':
 					$this->executeDelete($ch);
 					break;
@@ -107,7 +110,7 @@ class RestRequest
 		
 		curl_close($ch);
 	}
-	
+
 	protected function executePut ($ch)
 	{
 		if (!is_string($this->requestBody))
@@ -118,6 +121,22 @@ class RestRequest
 		$this->requestLength = strlen($this->requestBody);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml; charset=UTF-8'));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$this->requestBody);
+
+		$this->doExecute($ch);
+	}
+	
+	protected function executePutPlain ($ch)
+	{
+		if (!is_string($this->requestBody))
+		{
+			$this->buildPostBody();
+		}
+		
+		$this->requestLength = strlen($this->requestBody);
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: plain/text;'));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
         curl_setopt($ch, CURLOPT_POSTFIELDS,$this->requestBody);
 

@@ -676,6 +676,7 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+
             $("#smallbrowser").folderTree({
                 root: '/',
                 script: 'tree/jquery_folder_tree/jquery.foldertree.php',
@@ -1257,6 +1258,47 @@ indexes.onajaxpageload=function(pageurl) {
         });
     }
     //-------------------------------------------------------------------------
+    if (pageurl.indexOf("content.php?tab=about")!=-1) {
+
+        $("#license-form").dialog({
+            autoOpen: false,
+            height: 265,
+            width: 500,
+            modal: true,
+            buttons: {
+                Close: function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            $("#licenseResult").text("");
+            $("#debugInfo").text("");
+            $("#debugInfoDate").text("");
+            $("#debugInfo2").text("");
+            $("#debugInfo2Date").text("");
+            $("#license").click(function(e) {
+                // load form to upload new license key
+                e.preventDefault();
+                $("#license-form").dialog("open");
+
+                $("#upload_target").load(function () {
+                    var iframeContents = this.contentWindow.document;
+                    var result = $(iframeContents).find("errorCode").text()
+                    if (result == "0") {
+                        $("#licenseResult").text("Successfully Imported License!");
+                    } else {
+                        $("#licenseResult").text("Error! Invalid License!");
+                    }
+                    $("#debugInfo2").text(iframeContents);
+                    $("#debugInfo2Date").text(Date());
+                });
+                return false;
+            });
+        });
+    }
+    //-------------------------------------------------------------------------
 }
 </script>
 
@@ -1289,6 +1331,7 @@ if ($debugLoc == "screen") {
 <div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
 RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> // 
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
+Table Sorting/Filtering &copy; <a href="http://www.javascripttoolbox.com/lib/table/source.php">Matt Kruse</a> //
 Math.uuid.js &copy; <a href="http://www.broofa.com">Robert Kieffer</a> licensed under the MIT and GPL licenses</font></div>
 
 </body>

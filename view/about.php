@@ -17,7 +17,9 @@
     /*
     echo "<input name='uploadfile' type='file'><input type='submit' value='Upload License' readonly>";
     */
+    echo "<input id='license' name='license' type='button' value='Upload New License'>";
 ?>
+<br>
 <br>
 <?php echo tr('tab_about_text','DLNA media streaming server<br>Copyright 2009-2012 Petr Nejedly<br>
 Web UI for Serviio maintained by Mark Pemberton<br>
@@ -31,3 +33,18 @@ This product includes software developed by the <a href="http://www.visigoths.or
 This product includes <a href="http://www.restlet.org/">Restlet</a> which is licensed under <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPL v2.1</a>.<br>
 This product includes <a href="http://www.jthink.net/jaudiotagger/">Jaudiotagger</a> (an audio tagging library) which is licensed under <a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a>.<br>')?>
 </div>
+<div id="license-form" title="Load New License">
+    <br />
+    <form accept-charset="utf-8" method="post" enctype="multipart/form-data" action="license_ul.php" target="upload_target">
+        <fieldset>
+            <label for="uploadFile">Choose File:</label>
+            <input name='uploadFile' id='uploadFile' size='45' type='file' />
+            <br />
+            <input type="submit" value="Click to Import" />
+        </fieldset>
+    </form>
+    <br />
+    <div style="width: auto; height: 25px; padding: 5px; vertical-align: middle; text-align: center; font-size:20px;" id="licenseResult" name="licenseResult">asdf</div>
+    <iframe id="upload_target" name="upload_target" src="" style="width:0;height:0;border:0px solid #fff;"></iframe>
+</div>
+

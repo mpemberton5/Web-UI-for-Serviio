@@ -5,7 +5,7 @@ include("lib/RestRequest.inc.php");
 include("lib/serviio.php");
 
 $tab = isset($_REQUEST["tab"])?$_REQUEST["tab"]:"";
-if ($tab!="library" && $tab!="metadata" && $tab!="transcoding" && $tab!="about" && $tab!="presentation" && $tab!="remote" && $tab!="settings") {
+if ($tab!="library" && $tab!="metadata" && $tab!="transcoding" && $tab!="about" && $tab!="presentation" && $tab!="remote" && $tab!="settings" && $tab!="about") {
     $tab = "status";
 }
 if (isset($_COOKIE["language"]) && array_key_exists($_COOKIE["language"],$languages)) {

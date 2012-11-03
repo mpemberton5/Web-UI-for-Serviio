@@ -656,7 +656,7 @@ class ServiioService extends RestRequest
     {
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/license-upload');
-        parent::setVerb('PUT');
+        parent::setVerb('PUTPLAIN');
         parent::setRequestBody($data);
         parent::execute();
         return print_r(parent::getResponseBody());

@@ -28,7 +28,7 @@ $profiles = $serviio->getProfiles();
 <link rel="apple-touch-icon" href="images/serviio.png">
 <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 
-<SCRIPT type="text/javascript" language="javascript" src="js/Math.uuid.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="js/Math.uuid.js"></SCRIPT>
 
 <script src="js/jquery.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui.min.js" type="text/javascript"></script>
@@ -66,7 +66,7 @@ $profiles = $serviio->getProfiles();
 <script src="tree/jquery_folder_tree/jquery.foldertree.js" type="text/javascript"></script>
 <link href="tree/jquery_folder_tree/style.css" rel="stylesheet" type="text/css" />
 
-<SCRIPT type="text/javascript" language="javascript">
+<SCRIPT type="text/javascript">
 /* this is to make all browsers work nicely */
 function serializeXmlNode(xmlNode) {
     if (typeof window.XMLSerializer != "undefined") {
@@ -208,7 +208,7 @@ function deleteLibRow(tableID) {
     }
 }
 </SCRIPT>
-<SCRIPT type="text/javascript" language="javascript">
+<SCRIPT type="text/javascript">
 <!--
 function addProfileRow(tableID,ipAddress, name) {
     // load profiles

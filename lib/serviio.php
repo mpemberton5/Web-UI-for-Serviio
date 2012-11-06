@@ -659,7 +659,8 @@ class ServiioService extends RestRequest
         parent::setVerb('PUTPLAIN');
         parent::setRequestBody($data);
         parent::execute();
-        return print_r(parent::getResponseBody());
+        $x = simplexml_load_string(parent::getResponseBody());
+        return $x->errorCode;
     }
 
     /**

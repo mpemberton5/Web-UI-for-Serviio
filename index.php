@@ -1284,15 +1284,12 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#license-form").dialog("open");
 
                 $("#upload_target").load(function () {
-                    var iframeContents = this.contentWindow.document;
-                    var result = $(iframeContents).find("errorCode").text()
+                    result = $("#upload_target").contents().find("body").html();
                     if (result == "0") {
                         $("#licenseResult").text("Successfully Imported License!");
                     } else {
                         $("#licenseResult").text("Error! Invalid License!");
                     }
-                    $("#debugInfo2").text(iframeContents);
-                    $("#debugInfo2Date").text(Date());
                 });
                 return false;
             });

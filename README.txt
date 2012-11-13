@@ -17,7 +17,7 @@ CHANGELOG:
                    - Added Serviio License Key import on About page
                    - Added Serviidb.com support to add to Online Sources
                    - Small number of code enhancements
-                   - Added new external library from javascripttoolbox.com for the table sorting
+                   - Added new external library from datatables.net
 
 HISTORY:
 This app was originally written by acidumirae@gmail.com and kudos goes to his work.

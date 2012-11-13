@@ -41,6 +41,10 @@ $profiles = $serviio->getProfiles();
         font-family: Verdana,Arial,sans-serif;
         font-size: 0.8em;
     }
+#t1 tr td { padding:10px }
+.row-modified {
+        background-color: #000 !important;
+}
 </style>
 
 <script src="js/jquery.iphone-switch.js" type="text/javascript"></script>
@@ -65,6 +69,13 @@ $profiles = $serviio->getProfiles();
 
 <script src="tree/jquery_folder_tree/jquery.foldertree.js" type="text/javascript"></script>
 <link href="tree/jquery_folder_tree/style.css" rel="stylesheet" type="text/css" />
+
+<script src="js/DataTables-1.9.4/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<style type="text/css" title="currentStyle">
+    @import "js/DataTables-1.9.4/media/css/demo_page.css";
+    @import "js/DataTables-1.9.4/media/css/demo_table.css";
+</style>
+
 
 <SCRIPT type="text/javascript">
 /* this is to make all browsers work nicely */
@@ -840,6 +851,53 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
 
+            $("#Add_Serviidb_Item").dialog({
+                autoOpen: false,
+                height: 480,
+                width: 550,
+                modal: true,
+                open: function(ev, ui) {
+                    $(":focus", $(this)).blur();
+                },
+//                close: function(ev, ui) {
+//                    $("#t1").remove();
+//                },
+//                show: {
+//                    complete: function() {
+//                    }
+//                },
+                buttons: {
+                    "Add": function() {
+                        $(this).dialog("close");
+                    },
+                    Cancel: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#add_serviidb").click(function(e) {
+                e.preventDefault();
+                // set defaults and clear fields
+                // open dialog boxs
+                if (!($("#t1").hasClass("dataTable"))) {
+                    oTable = $("#t1").dataTable({
+                        "bLengthChange": false,
+                        "iDisplayLength": 7,
+                        "sPaginationType": "full_numbers"
+                    });
+                    $("#t1 tbody").click(function(event){
+                        $(oTable.fnSettings().aoData).each(function () {
+                            $(this.nTr).removeClass('row_selected');
+                        });
+                        $(event.target.parentNode).addClass('row_selected');
+                    });
+                }
+                $("#Add_Serviidb_Item").dialog("open");
+
+                return false;
+            });
+
             $("#newOnlineFeedType").change(function () {
                 if ($(this).val() == "LIVE_STREAM") {
                     $("#newThumbnailURL").removeAttr('disabled');
@@ -853,7 +911,7 @@ indexes.onajaxpageload=function(pageurl) {
 
             $("#Edit_OS_Item").dialog({
                 autoOpen: false,
-                height: 380,
+                height: 480,
                 width: 550,
                 modal: true,
                 buttons: {

@@ -13,7 +13,7 @@ CHANGELOG:
 - 1.0 - 3/1/2012 - Release of new version
 - 1.1 - 6/24/2012 - Updates to work with Serviio 1.0
 - 1.2 - 8/12/2012 - Final release for Serviio 1.0 including 1.0.1
-- 1.3 - 11/02/2012 - Added separate media browser URL in config.php
+- 1.3 - 12/13/2012 - Added separate media browser URL in config.php
                    - Added Serviio License Key import on About page
                    - Added Serviidb.com support to add to Online Sources
                    - Small number of code enhancements
@@ -37,8 +37,6 @@ Like the app?  Go to www.markpemberton.com and donate a few bucks for a good cup
 
 TODO:
 Change all buttons to jQuery UI buttons
-Move buttons in library back to rigth side ???
-Add row selection in library (and other tables)
 Change images in library screens
 Hide Remote tab if FREE edition
 Optionalize the location of the Online Resources tab (either on the main tab list or where it is now)

@@ -33,19 +33,27 @@ $profiles = $serviio->getProfiles();
 <script src="js/jquery.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui.min.js" type="text/javascript"></script>
 
+<link href="js/DataTables-1.9.4/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
-<link href="css/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
 <style>
     .ui-widget, .ui-widget button {
         font-family: Verdana,Arial,sans-serif;
         font-size: 0.8em;
     }
+    .btn-small {
+        font-weight: bold;
+        padding: .2em .8em .3em !important;
+    }
 #t1 tr td { padding:10px }
 .row-modified {
-        background-color: #000 !important;
+    background-color: #000 !important;
+}
+.library-row-highlighted {
+    background-color: #CACAD4  !important;
 }
 </style>
+
 
 <script src="js/jquery.iphone-switch.js" type="text/javascript"></script>
 
@@ -74,10 +82,24 @@ $profiles = $serviio->getProfiles();
 <style type="text/css" title="currentStyle">
     @import "js/DataTables-1.9.4/media/css/demo_page.css";
     @import "js/DataTables-1.9.4/media/css/demo_table.css";
+    @import "js/DataTables-1.9.4/extras/ColVis/media/css/ColVis.css";
+    .ColVis {
+        float: left;
+        margin-bottom: 0;
+    }
 </style>
+<script src="js/DataTables-1.9.4/extras/ColVis/media/js/ColVis.min.js" type="text/javascript"></script>
 
 
 <SCRIPT type="text/javascript">
+
+function print(o) {
+  var out = '';
+  for (var p in o) {
+      out += p + ': ' + o[p] + '\n';
+    }
+  console.log(out);
+}
 /* this is to make all browsers work nicely */
 function serializeXmlNode(xmlNode) {
     if (typeof window.XMLSerializer != "undefined") {
@@ -86,6 +108,11 @@ function serializeXmlNode(xmlNode) {
         return xmlNode.xml;
     }
     return "";
+}
+
+/* Get the rows which are currently selected */
+function fnGetSelected(oTableLocal) {
+    return oTableLocal.$('tr.row_selected');
 }
 
 function parseUrl(url) {
@@ -116,11 +143,6 @@ function addLibRow(tableID,path,newid) {
     element1.name = "folder_"+id;
     element1.value = "new";
     cell1.appendChild(element1);
-    var element2 = document.createElement("input");
-    element2.type = "checkbox";
-    element2.name = "chk";
-    element2.value = id;
-    cell1.appendChild(element2);
     var element3 = document.createElement("input");
     element3.type = "hidden";
     element3.name = "name_"+id;
@@ -258,11 +280,6 @@ function addProfileRow(tableID,ipAddress, name) {
     element1.name = "renderer_"+id;
     element1.value = id;
     cell1.appendChild(element1);
-    var element2 = document.createElement("input");
-    element2.type = "checkbox";
-    element2.name = "chk";
-    element2.value = id;
-    cell1.appendChild(element2);
     var element3 = document.createElement("input");
     element3.type = "hidden";
     element3.name = "ipAddress_"+id;
@@ -595,6 +612,19 @@ indexes.onajaxpageload=function(pageurl) {
         libsTabs.init()
         $(document).ready(function(){
 
+            /* highlight library table row */
+            $("#libraryTableFolders tbody tr").on('click', function(event) {
+                $("#libraryTableFolders>tbody>tr").removeClass('library-row-highlighted');
+                $(this).addClass('library-row-highlighted');
+            });
+
+            /* highlight online sources table row */
+            $("#libraryTableOnlineSources tbody tr").on('click', function(event) {
+                $("#libraryTableOnlineSources>tbody>tr").removeClass('library-row-highlighted');
+                $(this).addClass('library-row-highlighted');
+            });
+
+            /* on-off switch for Online Sources */
             $(".os_switch").each(function(i, domEle) {
                 var itm = domEle.id.substring(10,14);
                 var itm_def = "on";
@@ -701,7 +731,7 @@ indexes.onajaxpageload=function(pageurl) {
 
             $("#dialog-form").dialog({
                 autoOpen: false,
-                height: 440,
+                height: 410,
                 width: 500,
                 modal: true,
                 buttons: {
@@ -725,10 +755,62 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
 
+            /* remove library folder row */
+            $("#removeFolder").click(function(e) {
+                var sel_row = 0;
+                $("#libraryTableFolders tr.library-row-highlighted input[name^='folder_']").each(function() {
+                    sel_row = $(this).val();
+                });
+                if (sel_row > 0) {
+                     $("#dialog-remove-library").dialog({
+                         resizable: false,
+                         height: 165,
+                         modal: true,
+                         buttons: {
+                         "Delete Folder": function() {
+                             $(this).dialog("close");
+                             $("#libraryTableFolders tr.library-row-highlighted").remove();
+                         },
+                         Cancel: function() {
+                             $(this).dialog("close");
+                             }
+                         }
+                     });
+                    //alert('selected - '+sel_row);
+                }
+                return false;
+            });
+
+            /* remove online source row */
+            $("#removeOnlineSource").click(function(e) {
+                var sel_row = 0;
+                $("#libraryTableOnlineSources tr.library-row-highlighted input[name^='onlinesource_']").each(function() {
+                    sel_row = $(this).val();
+                });
+                if (sel_row > 0) {
+                     $("#dialog-remove-library").dialog({
+                         resizable: false,
+                         height: 165,
+                         modal: true,
+                         buttons: {
+                         "Delete Online Source": function() {
+                             $(this).dialog("close");
+                             $("#libraryTableOnlineSources tr.library-row-highlighted").remove();
+                         },
+                         Cancel: function() {
+                             $(this).dialog("close");
+                             }
+                         }
+                     });
+                    //alert('selected - '+sel_row);
+                }
+                return false;
+            });
+
             $("#Add_OS_Item").dialog({
                 autoOpen: false,
-                height: 380,
-                width: 550,
+                height: 350,
+                width: 620,
                 modal: true,
                 buttons: {
                     "Add": function() {
@@ -747,7 +829,6 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#libraryTableOnlineSources").find('tbody')
                             .append($('<tr>').attr('align', 'center')
                                 .append($('<td>')
-                                    .append($('<input>').attr('type', 'checkbox').attr('name', 'chk').attr('value', newID))
                                     .append($('<input>').attr('type', 'hidden').attr('name', 'onlinesource_'+newID).attr('value', 'new'))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_type_'+newID).attr('name', 'os_type_'+newID).attr('value', $("#newOnlineFeedType").val()))
                                     .append($('<input>').attr('type', 'hidden').attr('id', 'os_url_'+newID).attr('name', 'os_url_'+newID).attr('value', $("#newSourceURL").val()))
@@ -854,20 +935,105 @@ indexes.onajaxpageload=function(pageurl) {
             $("#Add_Serviidb_Item").dialog({
                 autoOpen: false,
                 height: 480,
-                width: 550,
+                width: 850,
                 modal: true,
                 open: function(ev, ui) {
                     $(":focus", $(this)).blur();
                 },
-//                close: function(ev, ui) {
-//                    $("#t1").remove();
-//                },
-//                show: {
-//                    complete: function() {
-//                    }
-//                },
                 buttons: {
                     "Add": function() {
+                        var anSelected = fnGetSelected(oTable);
+                        if ( anSelected.length !== 0 ) {
+                            var sData = oTable.fnGetData(anSelected[0]);
+
+                            var newID = 1 + parseInt($("#lastOSId").val());
+                            $("#lastOSId").val(newID);
+
+                            var srcImg = "";
+                            var srcTxt = "";
+                            srcTxt = sData['mediaType'];
+                            srcTxt = srcTxt.toUpperCase();
+                            if (srcTxt == "VIDEO") {
+                                srcImg = "images/film.png";
+                            } else if (srcTxt == "AUDIO") {
+                                srcImg = "images/music-beam.png";
+                            } else if (srcTxt == "IMAGE") {
+                                srcImg = "images/camera-black.png";
+                            }
+                            var srcFeed = "FEED";
+                            if (sData['resourceType'] == "RSS Atom Feed") {
+                                srcFeed = "FEED";
+                            } else if (sData['resourceType'] == "Web Resource") {
+                                srcFeed = "FEED";
+                            } else if (sData['resourceType'] == "Live Stream") {
+                                srcFeed = "FEED";
+                            }
+                        $("#libraryTableOnlineSources").find('tbody')
+                            .append($('<tr>').attr('align', 'center')
+                                .append($('<td>')
+                                    .append($('<input>').attr('type', 'hidden').attr('name', 'onlinesource_'+newID).attr('value', 'new'))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_type_'+newID).attr('name', 'os_type_'+newID).attr('value', srcFeed))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_url_'+newID).attr('name', 'os_url_'+newID).attr('value', sData['url']))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_media_'+newID).attr('name', 'os_media_'+newID).attr('value', srcTxt))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_thumb_'+newID).attr('name', 'os_thumb_'+newID).attr('value', ""))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_name_'+newID).attr('name', 'os_name_'+newID).attr('value', sData['name']))
+                                    .append($('<input>').attr('type', 'hidden').attr('id', 'os_stat_'+newID).attr('name', 'os_stat_'+newID).attr('value', "TRUE"))
+                                )
+                                .append($('<td>')
+                                    .append($('<span>')
+                                        .html('&nbsp;New&nbsp;')
+                                    )
+                                )
+                                .append($('<td>')
+                                    .append($('<div>').attr('class', 'os_switch').attr('id', 'os_switch_'+newID).attr('name', 'os_switch_'+newID).attr('style', 'cursor: pointer;')
+                                        .append($('<div>').attr('class', 'iphone_switch_container').attr('style', 'height:16px; width:56px; position: relative; overflow: hidden;')
+                                            .append($('<img>')
+                                                .attr('class', 'iphone_switch')
+                                                .attr('style', 'height:16px; width:56px; background-image:url(images/iphone_switch_16.png); background-repeat:none; background-position:-31px')
+                                                .attr('src', 'images/iphone_switch_container_off_16.png')
+                                            )
+                                        )
+                                    )
+                                )
+                                .append($('<td>').attr('align', 'left')
+                                    .append($('<span>')
+                                        .attr('id', 'os_type_v_'+newID)
+                                        .attr('name', 'os_type_v_'+newID)
+                                        .text(srcFeed)
+                                    )
+                                )
+                                .append($('<td>').attr('align', 'left')
+                                    .append($('<select>')
+                                        .attr('id', 'os_access_'+newID)
+                                        .attr('name', 'os_access_'+newID)
+                                        .append($('<option>')
+                                            .attr('value', '1')
+                                            .attr('selected', 'selected')
+                                            .text('Full')
+                                        )
+                                        .append($('<option>')
+                                            .attr('value', '2')
+                                            .text('Limited')
+                                        )
+                                    )
+                                )
+                                .append($('<td>').attr('align', 'left')
+                                    .append($('<span>')
+                                        .attr('id', 'os_name_v_'+newID)
+                                        .attr('name', 'os_name_v_'+newID)
+                                        .attr('title', sData['url'])
+                                        .text(sData['name'])
+                                    )
+                                )
+                                .append($('<td>').attr('style', 'vertical-align: top;').attr('width', '30')
+                                    .append($('<span>').attr('id', 'os_media_v_'+newID).attr('name', 'os_media_v_'+newID)
+                                        .append($('<img>').attr('src', srcImg).attr('alt', srcTxt))
+                                        .append(' '+srcTxt)
+                                    )
+                                )
+                            ); // end add item
+
+                        }
                         $(this).dialog("close");
                     },
                     Cancel: function() {
@@ -884,7 +1050,25 @@ indexes.onajaxpageload=function(pageurl) {
                     oTable = $("#t1").dataTable({
                         "bLengthChange": false,
                         "iDisplayLength": 7,
-                        "sPaginationType": "full_numbers"
+                        "sPaginationType": "full_numbers",
+                        "bProcessing": true,
+                        "sAjaxSource": "code/library.php?type=serviidb",
+                        "sAjaxDataProp": "items",
+                        "sDom": '<"H"Cfr>t<"F"ip>',
+                        "aoColumns": [
+                            { "mData": "name" },
+                            { "mData": "region", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "url", "bSearchable": false, "bVisible": false, "sWidth": "10px" },
+                            { "mData": "mediaType", "sWidth": "10px" },
+                            { "mData": "resourceType", "sWidth": "10px" },
+                            { "mData": "plugin", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "language", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "nid", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "resolution", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "quality", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "reliability", "bVisible": false, "sWidth": "10px" },
+                            { "mData": "installCount", "sClass": "center", "sWidth": "10px" }
+                        ]
                     });
                     $("#t1 tbody").click(function(event){
                         $(oTable.fnSettings().aoData).each(function () {
@@ -893,6 +1077,10 @@ indexes.onajaxpageload=function(pageurl) {
                         $(event.target.parentNode).addClass('row_selected');
                     });
                 }
+                oTable.fnFilter('');
+                $(oTable.fnSettings().aoData).each(function () {
+                    $(this.nTr).removeClass('row_selected');
+                });
                 $("#Add_Serviidb_Item").dialog("open");
 
                 return false;
@@ -911,8 +1099,8 @@ indexes.onajaxpageload=function(pageurl) {
 
             $("#Edit_OS_Item").dialog({
                 autoOpen: false,
-                height: 480,
-                width: 550,
+                height: 320,
+                width: 620,
                 modal: true,
                 buttons: {
                     "Save": function() {
@@ -948,31 +1136,27 @@ indexes.onajaxpageload=function(pageurl) {
                 }
             });
 
+            /* edit the selected Online Source */
             $("#edit_os").click(function(e) {
                 e.preventDefault();
 
-                var selCount = 0;
-                var firstSelect = 0;
-                $.each($("input[name='chk']:checked"), function() {
-                    selCount += 1;
-                    if (firstSelect == 0) {
-                        firstSelect = $(this).attr('value');
-                    }
+                var sel_row = 0;
+                $("#libraryTableOnlineSources tr.library-row-highlighted input[name^='onlinesource_']").each(function() {
+                    sel_row = $(this).val();
                 });
 
-                if (selCount == 0) {
+                if (sel_row == 0) {
                     alert("No Item Selected");
                     return false;
                 }
 
                 // set defaults and clear fields
-                //$("#osID").val($("input[name=onlinesource_"+firstSelect+"]").val());
-                $("#osID").val(firstSelect);
-                $("#editOnlineFeedType").val($("#os_type_"+firstSelect).val());
-                $("#editSourceURL").val($("input[name=os_url_"+firstSelect+"]").val());
-                $("#editName").val($("#os_name_"+firstSelect).val());
-                $("#editThumbnailURL").val($("input[name=os_thumb_"+firstSelect+"]").val());
-                $("[name=editMediaType]").filter("[value=" + $("input[name=os_media_"+firstSelect+"]").val() + "]").prop("checked",true);
+                $("#osID").val(sel_row);
+                $("#editOnlineFeedType").val($("#os_type_"+sel_row).val());
+                $("#editSourceURL").val($("input[name=os_url_"+sel_row+"]").val());
+                $("#editName").val($("#os_name_"+sel_row).val());
+                $("#editThumbnailURL").val($("input[name=os_thumb_"+sel_row+"]").val());
+                $("[name=editMediaType]").filter("[value=" + $("input[name=os_media_"+sel_row+"]").val() + "]").prop("checked",true);
 
                 if ($("#editOnlineFeedType").val() == "LIVE_STREAM") {
                     $("#editThumbnailURL").removeAttr('disabled');
@@ -1326,6 +1510,7 @@ indexes.onajaxpageload=function(pageurl) {
             buttons: {
                 Close: function() {
                     $(this).dialog("close");
+                    location.reload();
                 }
             }
         });

@@ -12,12 +12,23 @@
         <div id="libtab1" class="tabcontent">
             <?php echo tr('tab_folders_description','Select folders that you want to monitor for media files. Also select type of media files to be shared for each folder. The library can be automatically monitored for new additions and updates to currently shared files.')?><br>
             <br>
+            <div style="padding-left: 3px;">
+                <button type="button" id="addFolder" name="addFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('tab_folders_button_add_local','Add local...')?>
+                </button>&nbsp;&nbsp;
+                <button type="button" id="addPath" name="addPath" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('tab_folders_button_add_remote','Add path...')?>
+                </button>&nbsp;&nbsp;<!-- onclick="addLibRow('libraryTableFolders',null)">-->
+                <button type="button" id="removeFolder" name="removeFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('button_remove','Remove Selected')?>
+                </button> <!--onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">-->
+            </div>
             <table>
                 <tr valign="top">
                     <td>
                         <table width="100%" id="libraryTableFolders" name="libraryTableFolders">
                             <thead align="center">
-                                <th width="20">&nbsp;</th>
+                                <th width="0">&nbsp;</th>
                                 <th align="left" width="400"><?php echo tr('tab_folders_repository_table_folder','Folder')?></th>
                                 <th width="50"><?php echo tr('tab_folders_repository_table_access','Access')?></th>
                                 <th align="center" width="30"><img src="images/film.png" alt="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>" title="<?php echo tr('tab_folders_repository_table_share_video','Share video files')?>"></th>
@@ -31,7 +42,6 @@
                             <tr align="center" <?php echo $ctr%2?'':'class="odd"'?>>
                                 <td>
                                     <input type="hidden" name="folder_<?php echo $id?>" value="<?php echo $id?>">
-                                    <input type="checkbox" name="chk" value="<?php echo $id?>">
                                     <input type="hidden" name="name_<?php echo $id?>" value="<?php echo $entry[0]?>">
                                 </td>
                                 <td align="left"><?php echo $entry[0]?></td>
@@ -55,11 +65,6 @@
                         </table>
                         <input type="hidden" id="lastFId" name="lastFId" value="<?php echo $midA?>">
                     </td>
-                    <td width="100">
-                        <input type="button" id="addFolder" name="addFolder" value="<?php echo tr('tab_folders_button_add_local','Add local...')?>">
-                        <input type="button" name="addpath" value="<?php echo tr('tab_folders_button_add_remote','Add path...')?>" onclick="addLibRow('libraryTableFolders',null)">
-                        <input type="button" name="remove" value="<?php echo tr('button_remove','Remove Selected')?>" onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">
-                    </td>
                 </tr>
             </table>
             <br>
@@ -71,13 +76,27 @@
         <div id="libtab2" class="tabcontent">
             <?php echo tr('tab_online_sources_description','Define online source that you would like to access. Online sources are constantly monitored for updates and cached for a period of time. It might take a moment for new sources to appear on your device.')?><br>
             <br>
+            <div style="padding-left: 3px;">
+                <button type="button" id="add_os" name="add_os" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('button_add','Add')?>
+                </button>&nbsp;&nbsp;
+                <button type="button" id="add_serviidb" name="add_serviidb" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('button_add_Serviidb','Add from ServiiDB')?>
+                </button>&nbsp;&nbsp;
+                <button type="button" id="edit_os" name="edit_os" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('button_edit','Edit')?>
+                </button>&nbsp;&nbsp;
+                <button type="button" id="removeOnlineSource" name="removeOnlineSource" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                    <?php echo tr('button_remove','Remove')?>
+                </button><!--" onclick="if(confirm('Are you sure you want to remove selected online source?')) { deleteLibRow('libraryTableOnlineSources'); }">-->
+            </div>
             <table>
                 <tr valign="top">
                     <td>
                         <table width="100%" id="libraryTableOnlineSources" name="libraryTableOnlineSources">
                             <thead align="center">
-                                <th width="20">&nbsp;</th>
-                                <th align="center" width="100"><?php echo tr('tab_online_sources_repository_table_refresh','Refresh')?></th>
+                                <th width="0">&nbsp;</th>
+                                <th align="center" width="80"><?php echo tr('tab_online_sources_repository_table_refresh','Refresh')?></th>
                                 <th align="center" width="100"><?php echo tr('tab_online_sources_repository_table_enabled','Enabled')?></th>
                                 <th align="left" width="100"><?php echo tr('tab_online_sources_repository_table_type','Type')?></th>
                                 <th width="50"><?php echo tr('tab_online_sources_repository_table_access','Access')?></th>
@@ -88,7 +107,6 @@
                             <?php $ctr = 1; $midB = 1; foreach ($repo[1] as $id=>$entry) { if ($id>$midB) { $midB = $id; } ?>
                             <tr align="center" <?php echo $ctr%2?'':'class="odd"'?>>
                                 <td>
-                                    <input type="checkbox" name="chk" value="<?php echo $id?>">
                                     <input type="hidden" name="onlinesource_<?php echo $id?>" value="<?php echo $id?>">
                                     <input type="hidden" id="os_type_<?php echo $id?>" name="os_type_<?php echo $id?>" value="<?php echo $entry[0]?>">
                                     <input type="hidden" id="os_url_<?php echo $id?>" name="os_url_<?php echo $id?>" value="<?php echo $entry[1]?>">
@@ -146,15 +164,6 @@
                         </table>
                         <input type="hidden" id="lastOSId" name="lastOSId" value="<?php echo $midB?>">
                     </td>
-                    <td width="100">
-                        <input type="button" id="add_os" name="add_os" value="<?php echo tr('button_add','Add')?>" />
-                        <br>
-                        <input type="button" id="add_serviidb" name="add_serviidb" value="<?php echo tr('button_add_Serviidb','Add from ServiiDB')?>" />
-                        <br>
-                        <input type="button" id="edit_os" name="edit_os" value="<?php echo tr('button_edit','Edit')?>" />
-                        <br>
-                        <input type="button" name="remove_os" value="<?php echo tr('button_remove','Remove')?>" onclick="if(confirm('Are you sure you want to remove selected online source?')) { deleteLibRow('libraryTableOnlineSources'); }">
-                    </td>
                 </tr>
             </table>
             <br>
@@ -198,15 +207,15 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             Refresh interval (minutes): <input type="text" name="minutes" value="<?php echo $serviio->automaticLibraryUpdateInterval ?>" maxlength="3" size="3">
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <input type="submit" id="refresh" name="refresh" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" />
+            <input type="submit" id="refresh" name="refresh" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
             <span id="forceRefreshMsg" class="forceRefreshMsg"></span>
         </div>
     </div>
 
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>
-        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-        <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </form>
 
@@ -304,754 +313,31 @@
     </fieldset>
 </div>
 <div id="Add_Serviidb_Item" title="Add Online Source from ServiiDB">
+<div id="testtest"></div>
 <table id="t1" width="100%" class="display noblink">
 <thead>
     <tr>
-        <th>Index</th>
-        <th>Numeric</th>
-        <th>Text</th>
-        <th>Currency</th>
-        <th>Date</th>
+        <th>Name</th>
+        <th>Region</th>
+        <th>URL</th>
+        <th>MediaType</th>
+        <th>ResourceType</th>
+        <th>plugin</th>
+        <th>language</th>
+        <th>nid</th>
+        <th>resolution</th>
+        <th>quality</th>
+        <th>reliability</th>
+        <th>installCount</th>
     </tr>
 </thead>
 <tbody>
-    <tr>
-        <td>0</td>
-        <td>469</td>
-        <td>Bill</td>
-        <td>$74.04</td>
-        <td>2015-06-09</td>
-    </tr>
-    <tr class="alternate">
-        <td>1</td>
-        <td>726.9</td>
-        <td>Joe</td>
-        <td>$40.34</td>
-        <td>2013-09-05</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>2.1</td>
-        <td>Bob</td>
-        <td>$54.14</td>
-        <td>2014-07-14</td>
-    </tr>
-    <tr class="alternate">
-        <td>3</td>
-        <td>99.5</td>
-        <td>Matt</td>
-        <td>$43.04</td>
-        <td>2013-07-07</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>371.4</td>
-        <td>Bill</td>
-        <td>$35.14</td>
-        <td>2013-11-10</td>
-    </tr>
-    <tr class="alternate">
-        <td>5</td>
-        <td>227.8</td>
-        <td>Joe</td>
-        <td>$62.44</td>
-        <td>2013-06-27</td>
-    </tr>
-    <tr>
-        <td>6</td>
-        <td>490.1</td>
-        <td>Bob</td>
-        <td>$58.24</td>
-        <td>2015-06-14</td>
-    </tr>
-    <tr class="alternate">
-        <td>7</td>
-        <td>206.9</td>
-        <td>Matt</td>
-        <td>$13.64</td>
-        <td>2014-01-02</td>
-    </tr>
-    <tr>
-        <td>8</td>
-        <td>575.6</td>
-        <td>Bill</td>
-        <td>$57.14</td>
-        <td>2015-02-10</td>
-    </tr>
-    <tr class="alternate">
-        <td>9</td>
-        <td>383.2</td>
-        <td>Joe</td>
-        <td>$5.53</td>
-        <td>2013-12-01</td>
-    </tr>
-    <tr>
-        <td>10</td>
-        <td>876.5</td>
-        <td>Bob</td>
-        <td>$52.44</td>
-        <td>2013-02-03</td>
-    </tr>
-    <tr class="alternate">
-        <td>11</td>
-        <td>737.8</td>
-        <td>Matt</td>
-        <td>$25.14</td>
-        <td>2014-05-15</td>
-    </tr>
-    <tr>
-        <td>12</td>
-        <td>44.4</td>
-        <td>Bill</td>
-        <td>$25.34</td>
-        <td>2012-11-29</td>
-    </tr>
-    <tr class="alternate">
-        <td>13</td>
-        <td>620.3</td>
-        <td>Joe</td>
-        <td>$35.34</td>
-        <td>2014-04-11</td>
-    </tr>
-    <tr>
-        <td>14</td>
-        <td>875</td>
-        <td>Bob</td>
-        <td>$72.44</td>
-        <td>2015-05-22</td>
-    </tr>
-    <tr class="alternate">
-        <td>15</td>
-        <td>238.7</td>
-        <td>Matt</td>
-        <td>$95.24</td>
-        <td>2014-03-13</td>
-    </tr>
-    <tr>
-        <td>16</td>
-        <td>484.2</td>
-        <td>Bill</td>
-        <td>$44.24</td>
-        <td>2012-11-15</td>
-    </tr>
-    <tr class="alternate">
-        <td>17</td>
-        <td>349.5</td>
-        <td>Joe</td>
-        <td>$64.84</td>
-        <td>2013-04-21</td>
-    </tr>
-    <tr>
-        <td>18</td>
-        <td>758.8</td>
-        <td>Bob</td>
-        <td>$22.44</td>
-        <td>2015-02-12</td>
-    </tr>
-    <tr class="alternate">
-        <td>19</td>
-        <td>517</td>
-        <td>Matt</td>
-        <td>$60.74</td>
-        <td>2015-04-16</td>
-    </tr>
-    <tr>
-        <td>20</td>
-        <td>898.2</td>
-        <td>Bill</td>
-        <td>$48.44</td>
-        <td>2013-10-13</td>
-    </tr>
-    <tr class="alternate">
-        <td>21</td>
-        <td>19.4</td>
-        <td>Joe</td>
-        <td>$22.14</td>
-        <td>2014-07-30</td>
-    </tr>
-    <tr>
-        <td>22</td>
-        <td>543.4</td>
-        <td>Bob</td>
-        <td>$26.64</td>
-        <td>2015-05-19</td>
-    </tr>
-    <tr class="alternate">
-        <td>23</td>
-        <td>608.2</td>
-        <td>Matt</td>
-        <td>$88.64</td>
-        <td>2013-04-30</td>
-    </tr>
-    <tr>
-        <td>24</td>
-        <td>103.1</td>
-        <td>Bill</td>
-        <td>$76.14</td>
-        <td>2015-08-16</td>
-    </tr>
-    <tr class="alternate">
-        <td>25</td>
-        <td>948.7</td>
-        <td>Joe</td>
-        <td>$100.05</td>
-        <td>2015-06-20</td>
-    </tr>
-    <tr>
-        <td>26</td>
-        <td>418.5</td>
-        <td>Bob</td>
-        <td>$48.44</td>
-        <td>2013-09-12</td>
-    </tr>
-    <tr class="alternate">
-        <td>27</td>
-        <td>470.7</td>
-        <td>Matt</td>
-        <td>$83.34</td>
-        <td>2015-10-03</td>
-    </tr>
-    <tr>
-        <td>28</td>
-        <td>659.1</td>
-        <td>Bill</td>
-        <td>$59.24</td>
-        <td>2013-04-18</td>
-    </tr>
-    <tr class="alternate">
-        <td>29</td>
-        <td>418.8</td>
-        <td>Joe</td>
-        <td>$10.94</td>
-        <td>2015-03-21</td>
-    </tr>
-    <tr>
-        <td>30</td>
-        <td>233.6</td>
-        <td>Bob</td>
-        <td>$0.73</td>
-        <td>2013-08-01</td>
-    </tr>
-    <tr class="alternate">
-        <td>31</td>
-        <td>572.5</td>
-        <td>Matt</td>
-        <td>$2.63</td>
-        <td>2014-04-14</td>
-    </tr>
-    <tr>
-        <td>32</td>
-        <td>162.4</td>
-        <td>Bill</td>
-        <td>$57.04</td>
-        <td>2015-02-16</td>
-    </tr>
-    <tr class="alternate">
-        <td>33</td>
-        <td>5.4</td>
-        <td>Joe</td>
-        <td>$17.84</td>
-        <td>2014-10-07</td>
-    </tr>
-    <tr>
-        <td>34</td>
-        <td>200.9</td>
-        <td>Bob</td>
-        <td>$28.14</td>
-        <td>2014-01-03</td>
-    </tr>
-    <tr class="alternate">
-        <td>35</td>
-        <td>120.3</td>
-        <td>Matt</td>
-        <td>$23.04</td>
-        <td>2014-01-03</td>
-    </tr>
-    <tr>
-        <td>36</td>
-        <td>991.3</td>
-        <td>Bill</td>
-        <td>$64.84</td>
-        <td>2015-07-17</td>
-    </tr>
-    <tr class="alternate">
-        <td>37</td>
-        <td>303.9</td>
-        <td>Joe</td>
-        <td>$11.94</td>
-        <td>2015-01-04</td>
-    </tr>
-    <tr>
-        <td>38</td>
-        <td>265</td>
-        <td>Bob</td>
-        <td>$77.84</td>
-        <td>2013-09-19</td>
-    </tr>
-    <tr class="alternate">
-        <td>39</td>
-        <td>450.2</td>
-        <td>Matt</td>
-        <td>$19.64</td>
-        <td>2014-01-23</td>
-    </tr>
-    <tr>
-        <td>40</td>
-        <td>242.5</td>
-        <td>Bill</td>
-        <td>$43.04</td>
-        <td>2014-02-01</td>
-    </tr>
-    <tr class="alternate">
-        <td>41</td>
-        <td>518.5</td>
-        <td>Joe</td>
-        <td>$0.23</td>
-        <td>2014-03-03</td>
-    </tr>
-    <tr>
-        <td>42</td>
-        <td>15.8</td>
-        <td>Bob</td>
-        <td>$16.54</td>
-        <td>2012-10-21</td>
-    </tr>
-    <tr class="alternate">
-        <td>43</td>
-        <td>779</td>
-        <td>Matt</td>
-        <td>$17.04</td>
-        <td>2013-05-15</td>
-    </tr>
-    <tr>
-        <td>44</td>
-        <td>428.1</td>
-        <td>Bill</td>
-        <td>$37.14</td>
-        <td>2014-04-05</td>
-    </tr>
-    <tr class="alternate">
-        <td>45</td>
-        <td>838.2</td>
-        <td>Joe</td>
-        <td>$49.14</td>
-        <td>2014-12-27</td>
-    </tr>
-    <tr>
-        <td>46</td>
-        <td>247.9</td>
-        <td>Bob</td>
-        <td>$48.34</td>
-        <td>2013-11-15</td>
-    </tr>
-    <tr class="alternate">
-        <td>47</td>
-        <td>141.4</td>
-        <td>Matt</td>
-        <td>$78.64</td>
-        <td>2014-04-01</td>
-    </tr>
-    <tr>
-        <td>48</td>
-        <td>868.1</td>
-        <td>Bill</td>
-        <td>$5.13</td>
-        <td>2013-07-18</td>
-    </tr>
-    <tr class="alternate">
-        <td>49</td>
-        <td>186.8</td>
-        <td>Joe</td>
-        <td>$50.14</td>
-        <td>2014-03-02</td>
-    </tr>
-    <tr>
-        <td>50</td>
-        <td>614.4</td>
-        <td>Bob</td>
-        <td>$74.44</td>
-        <td>2015-07-13</td>
-    </tr>
-    <tr class="alternate">
-        <td>51</td>
-        <td>49.1</td>
-        <td>Matt</td>
-        <td>$26.24</td>
-        <td>2015-07-16</td>
-    </tr>
-    <tr>
-        <td>52</td>
-        <td>510.3</td>
-        <td>Bill</td>
-        <td>$27.84</td>
-        <td>2012-11-21</td>
-    </tr>
-    <tr class="alternate">
-        <td>53</td>
-        <td>541.2</td>
-        <td>Joe</td>
-        <td>$5.73</td>
-        <td>2013-06-06</td>
-    </tr>
-    <tr>
-        <td>54</td>
-        <td>750.1</td>
-        <td>Bob</td>
-        <td>$48.54</td>
-        <td>2014-08-10</td>
-    </tr>
-    <tr class="alternate">
-        <td>55</td>
-        <td>239.9</td>
-        <td>Matt</td>
-        <td>$32.34</td>
-        <td>2012-12-29</td>
-    </tr>
-    <tr>
-        <td>56</td>
-        <td>959.4</td>
-        <td>Bill</td>
-        <td>$57.14</td>
-        <td>2014-07-11</td>
-    </tr>
-    <tr class="alternate">
-        <td>57</td>
-        <td>327</td>
-        <td>Joe</td>
-        <td>$71.24</td>
-        <td>2013-11-05</td>
-    </tr>
-    <tr>
-        <td>58</td>
-        <td>813.3</td>
-        <td>Bob</td>
-        <td>$58.14</td>
-        <td>2014-01-04</td>
-    </tr>
-    <tr class="alternate">
-        <td>59</td>
-        <td>77.4</td>
-        <td>Matt</td>
-        <td>$76.74</td>
-        <td>2015-08-07</td>
-    </tr>
-    <tr>
-        <td>60</td>
-        <td>538</td>
-        <td>Bill</td>
-        <td>$38.24</td>
-        <td>2014-10-15</td>
-    </tr>
-    <tr class="alternate">
-        <td>61</td>
-        <td>428.5</td>
-        <td>Joe</td>
-        <td>$43.14</td>
-        <td>2015-08-14</td>
-    </tr>
-    <tr>
-        <td>62</td>
-        <td>321.5</td>
-        <td>Bob</td>
-        <td>$94.14</td>
-        <td>2013-05-01</td>
-    </tr>
-    <tr class="alternate">
-        <td>63</td>
-        <td>379.3</td>
-        <td>Matt</td>
-        <td>$48.24</td>
-        <td>2013-07-06</td>
-    </tr>
-    <tr>
-        <td>64</td>
-        <td>607.3</td>
-        <td>Bill</td>
-        <td>$23.24</td>
-        <td>2015-01-18</td>
-    </tr>
-    <tr class="alternate">
-        <td>65</td>
-        <td>206.5</td>
-        <td>Joe</td>
-        <td>$47.24</td>
-        <td>2012-11-26</td>
-    </tr>
-    <tr>
-        <td>66</td>
-        <td>296.9</td>
-        <td>Bob</td>
-        <td>$43.14</td>
-        <td>2014-09-18</td>
-    </tr>
-    <tr class="alternate">
-        <td>67</td>
-        <td>869.8</td>
-        <td>Matt</td>
-        <td>$75.84</td>
-        <td>2013-10-20</td>
-    </tr>
-    <tr>
-        <td>68</td>
-        <td>229.2</td>
-        <td>Bill</td>
-        <td>$57.24</td>
-        <td>2015-08-23</td>
-    </tr>
-    <tr class="alternate">
-        <td>69</td>
-        <td>639.8</td>
-        <td>Joe</td>
-        <td>$64.94</td>
-        <td>2014-11-27</td>
-    </tr>
-    <tr>
-        <td>70</td>
-        <td>552</td>
-        <td>Bob</td>
-        <td>$18.74</td>
-        <td>2012-12-11</td>
-    </tr>
-    <tr class="alternate">
-        <td>71</td>
-        <td>208.1</td>
-        <td>Matt</td>
-        <td>$61.54</td>
-        <td>2014-04-24</td>
-    </tr>
-    <tr>
-        <td>72</td>
-        <td>126.5</td>
-        <td>Bill</td>
-        <td>$93.74</td>
-        <td>2014-02-15</td>
-    </tr>
-    <tr class="alternate">
-        <td>73</td>
-        <td>323</td>
-        <td>Joe</td>
-        <td>$31.64</td>
-        <td>2015-08-27</td>
-    </tr>
-    <tr>
-        <td>74</td>
-        <td>576.6</td>
-        <td>Bob</td>
-        <td>$92.34</td>
-        <td>2013-03-21</td>
-    </tr>
-    <tr class="alternate">
-        <td>75</td>
-        <td>315.3</td>
-        <td>Matt</td>
-        <td>$13.04</td>
-        <td>2014-09-18</td>
-    </tr>
-    <tr>
-        <td>76</td>
-        <td>377.3</td>
-        <td>Bill</td>
-        <td>$42.64</td>
-        <td>2012-11-29</td>
-    </tr>
-    <tr class="alternate">
-        <td>77</td>
-        <td>10.4</td>
-        <td>Joe</td>
-        <td>$29.64</td>
-        <td>2015-04-26</td>
-    </tr>
-    <tr>
-        <td>78</td>
-        <td>356.1</td>
-        <td>Bob</td>
-        <td>$52.54</td>
-        <td>2013-12-16</td>
-    </tr>
-    <tr class="alternate">
-        <td>79</td>
-        <td>282.3</td>
-        <td>Matt</td>
-        <td>$16.54</td>
-        <td>2012-11-05</td>
-    </tr>
-    <tr>
-        <td>80</td>
-        <td>975.8</td>
-        <td>Bill</td>
-        <td>$71.74</td>
-        <td>2013-06-09</td>
-    </tr>
-    <tr class="alternate">
-        <td>81</td>
-        <td>51</td>
-        <td>Joe</td>
-        <td>$92.54</td>
-        <td>2015-05-22</td>
-    </tr>
-    <tr>
-        <td>82</td>
-        <td>557</td>
-        <td>Bob</td>
-        <td>$5.23</td>
-        <td>2015-03-10</td>
-    </tr>
-    <tr class="alternate">
-        <td>83</td>
-        <td>4</td>
-        <td>Matt</td>
-        <td>$37.54</td>
-        <td>2013-01-07</td>
-    </tr>
-    <tr>
-        <td>84</td>
-        <td>933.1</td>
-        <td>Bill</td>
-        <td>$95.14</td>
-        <td>2012-10-10</td>
-    </tr>
-    <tr class="alternate">
-        <td>85</td>
-        <td>94.5</td>
-        <td>Joe</td>
-        <td>$26.64</td>
-        <td>2013-03-09</td>
-    </tr>
-    <tr>
-        <td>86</td>
-        <td>727.8</td>
-        <td>Bob</td>
-        <td>$64.34</td>
-        <td>2014-07-16</td>
-    </tr>
-    <tr class="alternate">
-        <td>87</td>
-        <td>792.6</td>
-        <td>Matt</td>
-        <td>$65.44</td>
-        <td>2015-06-24</td>
-    </tr>
-    <tr>
-        <td>88</td>
-        <td>615.6</td>
-        <td>Bill</td>
-        <td>$1.03</td>
-        <td>2013-12-22</td>
-    </tr>
-    <tr class="alternate">
-        <td>89</td>
-        <td>10.2</td>
-        <td>Joe</td>
-        <td>$29.24</td>
-        <td>2014-07-01</td>
-    </tr>
-    <tr>
-        <td>90</td>
-        <td>53.7</td>
-        <td>Bob</td>
-        <td>$26.84</td>
-        <td>2013-08-07</td>
-    </tr>
-    <tr class="alternate">
-        <td>91</td>
-        <td>284.1</td>
-        <td>Matt</td>
-        <td>$31.94</td>
-        <td>2013-05-13</td>
-    </tr>
-    <tr>
-        <td>92</td>
-        <td>129.6</td>
-        <td>Bill</td>
-        <td>$87.64</td>
-        <td>2013-07-11</td>
-    </tr>
-    <tr class="alternate">
-        <td>93</td>
-        <td>911.9</td>
-        <td>Joe</td>
-        <td>$88.04</td>
-        <td>2014-09-18</td>
-    </tr>
-    <tr>
-        <td>94</td>
-        <td>10.2</td>
-        <td>Bob</td>
-        <td>$81.34</td>
-        <td>2014-07-23</td>
-    </tr>
-    <tr class="alternate">
-        <td>95</td>
-        <td>31.7</td>
-        <td>Matt</td>
-        <td>$90.74</td>
-        <td>2015-05-27</td>
-    </tr>
-    <tr>
-        <td>96</td>
-        <td>182.8</td>
-        <td>Bill</td>
-        <td>$63.54</td>
-        <td>2014-04-10</td>
-    </tr>
-    <tr class="alternate">
-        <td>97</td>
-        <td>760.5</td>
-        <td>Joe</td>
-        <td>$42.84</td>
-        <td>2013-03-05</td>
-    </tr>
-    <tr>
-        <td>98</td>
-        <td>634.4</td>
-        <td>Bob</td>
-        <td>$4.33</td>
-        <td>2013-03-17</td>
-    </tr>
-    <tr class="alternate">
-        <td>99</td>
-        <td>33.7</td>
-        <td>Matt</td>
-        <td>$5.33</td>
-        <td>2014-02-18</td>
-    </tr>
-    <tr>
-        <td>100</td>
-        <td>598.1</td>
-        <td>Bill</td>
-        <td>$10.74</td>
-        <td>2014-12-25</td>
-    </tr>
-    <tr class="alternate">
-        <td>101</td>
-        <td>879.7</td>
-        <td>Joe</td>
-        <td>$39.14</td>
-        <td>2012-10-28</td>
-    </tr>
-    <tr>
-        <td>102</td>
-        <td>86.4</td>
-        <td>Bob</td>
-        <td>$52.14</td>
-        <td>2015-08-07</td>
-    </tr>
-    <tr class="alternate">
-        <td>103</td>
-        <td>344.7</td>
-        <td>Matt</td>
-        <td>$43.34</td>
-        <td>2015-03-21</td>
-    </tr>
-    <tr>
-        <td>104</td>
-        <td>977.4</td>
-        <td>Bill</td>
-        <td>$44.34</td>
-        <td>2014-08-17</td>
-    </tr>
 </tbody>
 </table>
         </form>
     </fieldset>
 </div>
+<div id="dialog-remove-library" style="display: none;" title="Remove selected Folder?">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This will remove the selected folder. Are you sure?</p>
+</div>
+

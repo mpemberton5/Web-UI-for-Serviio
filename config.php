@@ -6,6 +6,7 @@ $debugLoc = "screen"; // none, screen
 $serviio_mediabrowser_host = "127.0.0.1";
 $serviio_host = "127.0.0.1";
 $serviio_port = "23423";
+$serviidb_url = "http://www.serviidb.com/api/";
 $version_req = "1.0.1";
 
 # set appropriate encoding

@@ -94,6 +94,16 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
     echo "<xml>Failed to get proper posting value!</xml>";
     return "";
 
+} elseif (isset($_GET["type"])) {
+    if ($_GET["type"] == "serviidb") {
+        include("../config.php");
+        include("../lib/RestRequest.inc.php");
+        include("../lib/serviidb.php");
+        $serviidb = new ServiidbService($serviidb_url);
+        $tst = $serviidb->getVideo();
+        echo $tst;
+    }
+
 } else {
     $repo = $serviio->getRepository();
     $serviio->getApplication();

@@ -9,6 +9,7 @@
 <ul id="metadatatabs" class="shadetabs">
 <li><a href="#" rel="meta1" class="selected"><?php echo tr('file_type_video','Video')?></a></li>
 <li><a href="#" rel="meta2"><?php echo tr('file_type_audio','Audio')?></a></li>
+<li><a href="#" rel="meta3"><?php echo tr('file_type_image','Image')?></a></li>
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="meta1" class="tabcontent">
@@ -43,6 +44,10 @@
     <div id="meta2" class="tabcontent">
             <input type="checkbox" name="audio_cover" value="1"<?php echo $serviio->audioLocalArtExtractorEnabled=="true"?" checked":""?>> 
             <?php echo tr('tab_metadata_audio_local_art','Look for a local album art image (e.g. folder.jpg, cover.jpg, front_cover.jpg, etc.)')?>
+    </div>
+    <div id="meta3" class="tabcontent">
+            <input type="checkbox" name="img_thumbnails" value="1"<?php echo $serviio->imageGenerateLocalThumbnailEnabled=="true"?" checked":""?>> 
+            <?php echo tr('tab_metadata_image_local_art','Generate thumbnails for local images')?>
     </div>
 </div>
 

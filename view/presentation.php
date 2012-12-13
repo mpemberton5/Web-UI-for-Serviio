@@ -48,12 +48,21 @@
     <?php echo tr('tab_presentation_include_category_title_for_content_only_content','Include parents title for items in "Display content only" categories')?>
     <br>
     <br>
-    <?php echo tr('tab_presentation_languages_description','Select preferred language of the browsing menu.')?><br>
-    <select name="presentation_language">
-    <?php foreach ($browsingCategoriesLanguages as $key=>$val) { ?>
-    <option value="<?php echo $key?>"<?php echo $key==$serviio->presentationLanguage?" selected":""?>><?php echo $val?></option>
-    <?php } ?>
-    </select>
+    <table width="90%">
+        <tr>
+            <td>
+                <?php echo tr('tab_presentation_languages_description','Select preferred language of the browsing menu.')?><br>
+                <select name="presentation_language">
+                    <?php foreach ($browsingCategoriesLanguages as $key=>$val) { ?>
+                        <option value="<?php echo $key?>"<?php echo $key==$serviio->presentationLanguage?" selected":""?>><?php echo $val?></option>
+                    <?php } ?>
+                </select>
+            </td>
+            <td align="right"> 
+                <?php echo tr('tab_presentation_dynamic_categories','Number of items in dynamic categories:')?><input type="text" name="numberOfFilesForDynamicCategories" id="numberOfFilesForDynamicCategories" size="2" value="<?php echo $serviio->numberOfFilesForDynamicCategories ?>">
+            </td>
+        </tr>
+    </table>
     <br>
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>

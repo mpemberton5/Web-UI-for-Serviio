@@ -18,6 +18,10 @@ CHANGELOG:
                    - Added Serviidb.com support to add to Online Sources
                    - Small number of code enhancements
                    - Added new external library from datatables.net
+                   - Added jQuery UI custom Aristo Theme
+                   - Added refresh after exiting license upload dialog
+                   - Added Image tab under Metadata tab
+                   - Tested to work with Serviio 1.1
 
 HISTORY:
 This app was originally written by acidumirae@gmail.com and kudos goes to his work.
@@ -29,3 +33,15 @@ http://forum.serviio.org/viewtopic.php?f=5&t=1310
 Questions? mailto:mpemberton5@gmail.com
 
 Like the app?  Go to www.markpemberton.com and donate a few bucks for a good cup of coffee!
+
+
+TODO:
+Change all buttons to jQuery UI buttons
+Move buttons in library back to rigth side ???
+Add row selection in library (and other tables)
+Change images in library screens
+Hide Remote tab if FREE edition
+Optionalize the location of the Online Resources tab (either on the main tab list or where it is now)
+If adding from Online Source, check for duplicates
+Add Installed Plugins tab?  Or just have it as an option under About?
+sorting of OS items?

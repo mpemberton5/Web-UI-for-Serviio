@@ -1,7 +1,4 @@
 <?php
-/**
-* http://www.gen-x-design.com/archives/making-restful-requests-in-php/
-*/
 
 class ServiioService extends RestRequest
 {
@@ -28,6 +25,7 @@ class ServiioService extends RestRequest
     public $videoLocalArtExtractorEnabled;
     public $videoOnlineArtExtractorEnabled;
     public $videoGenerateLocalThumbnailEnabled;
+    public $imageGenerateLocalThumbnailEnabled;
     public $metadataLanguage;
     public $descriptiveMetadataExtractor;
     public $retrieveOriginalTitle;
@@ -45,6 +43,7 @@ class ServiioService extends RestRequest
 
     public $presentationLanguage;
     public $showParentCategoryTitle;
+    public $numberOfFilesForDynamicCategories;
 
     public $remoteUserPassword;
     public $preferredRemoteDeliveryQuality;
@@ -298,9 +297,11 @@ class ServiioService extends RestRequest
                 $descriptiveMetadataSupported = (string)$item->descriptiveMetadataSupported;
                 $scanForUpdates = (string)$item->scanForUpdates;
                 $accessGroupIds = array();
-                foreach ($item->accessGroupIds as $accessGroupId) {
-                    foreach ($accessGroupId as $grpId) {
-                        $accessGroupIds[] = (string)$grpId;
+                if ($this->licenseEdition != "FREE") {
+                    foreach ($item->accessGroupIds as $accessGroupId) {
+                        foreach ($accessGroupId as $grpId) {
+                            $accessGroupIds[] = (string)$grpId;
+                        }
                     }
                 }
                 $sf[$id] = array($folderPath, $supportedFileTypes, $descriptiveMetadataSupported, $scanForUpdates, $accessGroupIds);
@@ -324,9 +325,11 @@ class ServiioService extends RestRequest
                 $repositoryName = (string)$item->repositoryName;
                 $enabled = (string)$item->enabled;
                 $ORaccessGroupIds = array();
-                foreach ($item->accessGroupIds as $accessGroupId) {
-                    foreach ($accessGroupId as $grpId) {
-                        $ORaccessGroupIds[] = (string)$grpId;
+                if ($this->licenseEdition != "FREE") {
+                    foreach ($item->accessGroupIds as $accessGroupId) {
+                        foreach ($accessGroupId as $grpId) {
+                            $ORaccessGroupIds[] = (string)$grpId;
+                        }
                     }
                 }
                 $or[$id] = array($repositoryType, $contentUrl, $fileType, $thumbnailUrl, $repositoryName, $enabled, $ORaccessGroupIds);
@@ -379,6 +382,7 @@ class ServiioService extends RestRequest
         $videoLocalArtExtractorEnabled = (string)$xml->videoLocalArtExtractorEnabled;
         $videoOnlineArtExtractorEnabled = (string)$xml->videoOnlineArtExtractorEnabled;
         $videoGenerateLocalThumbnailEnabled = (string)$xml->videoGenerateLocalThumbnailEnabled;
+        $imageGenerateLocalThumbnailEnabled = (string)$xml->imageGenerateLocalThumbnailEnabled;
         $metadataLanguage = (string)$xml->metadataLanguage;
         $retrieveOriginalTitle = (string)$xml->retrieveOriginalTitle;
         $descriptiveMetadataExtractor = (string)$xml->descriptiveMetadataExtractor;
@@ -386,10 +390,11 @@ class ServiioService extends RestRequest
         $this->videoLocalArtExtractorEnabled = $videoLocalArtExtractorEnabled;
         $this->videoOnlineArtExtractorEnabled = $videoOnlineArtExtractorEnabled;
         $this->videoGenerateLocalThumbnailEnabled = $videoGenerateLocalThumbnailEnabled;
+        $this->imageGenerateLocalThumbnailEnabled = $imageGenerateLocalThumbnailEnabled;
         $this->metadataLanguage = $metadataLanguage;
         $this->retrieveOriginalTitle = $retrieveOriginalTitle;
         $this->descriptiveMetadataExtractor = $descriptiveMetadataExtractor;
-        return array($audioLocalArtExtractorEnabled, $videoLocalArtExtractorEnabled, $videoOnlineArtExtractorEnabled, $videoGenerateLocalThumbnailEnabled, $metadataLanguage, $descriptiveMetadataExtractor, $retrieveOriginalTitle);
+        return array($audioLocalArtExtractorEnabled, $videoLocalArtExtractorEnabled, $videoOnlineArtExtractorEnabled, $videoGenerateLocalThumbnailEnabled, $imageGenerateLocalThumbnailEnabled, $metadataLanguage, $descriptiveMetadataExtractor, $retrieveOriginalTitle);
     }
 
     /**
@@ -515,8 +520,10 @@ class ServiioService extends RestRequest
         }
         $presentationLanguage = (string)$xml->language;
         $showParentCategoryTitle = (string)$xml->showParentCategoryTitle;
+        $numberOfFilesForDynamicCategories = (string)$xml->numberOfFilesForDynamicCategories;
         $this->presentationLanguage = $presentationLanguage;
         $this->showParentCategoryTitle = $showParentCategoryTitle;
+        $this->numberOfFilesForDynamicCategories = $numberOfFilesForDynamicCategories;
         return $categories;
     }
 
@@ -656,8 +663,9 @@ class ServiioService extends RestRequest
     {
         parent::flush();
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/license-upload');
-        parent::setVerb('PUTPLAIN');
+        parent::setVerb('PUT');
         parent::setRequestBody($data);
+        parent::setContentType('Content-Type: plain/text;');
         parent::execute();
         $x = simplexml_load_string(parent::getResponseBody());
         return $x->errorCode;
@@ -740,7 +748,7 @@ class ServiioService extends RestRequest
     /**
      */
     public function putMetadata($audioLocalArtExtractorEnabled, $videoLocalArtExtractorEnabled, $videoOnlineArtExtractorEnabled,
-    $videoGenerateLocalThumbnailEnabled, $metadataLanguage, $descriptiveMetadataExtractor, $retrieveOriginalTitle)
+    $videoGenerateLocalThumbnailEnabled, $imageGenerateLocalThumbnailEnabled, $metadataLanguage, $descriptiveMetadataExtractor, $retrieveOriginalTitle)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -756,6 +764,7 @@ class ServiioService extends RestRequest
         $root->appendChild($xmlDoc->createElement("videoLocalArtExtractorEnabled", $videoLocalArtExtractorEnabled));
         $root->appendChild($xmlDoc->createElement("videoOnlineArtExtractorEnabled", $videoOnlineArtExtractorEnabled));
         $root->appendChild($xmlDoc->createElement("videoGenerateLocalThumbnailEnabled", $videoGenerateLocalThumbnailEnabled));
+        $root->appendChild($xmlDoc->createElement("imageGenerateLocalThumbnailEnabled", $imageGenerateLocalThumbnailEnabled));
         $root->appendChild($xmlDoc->createElement("metadataLanguage", $metadataLanguage));
         $root->appendChild($xmlDoc->createElement("retrieveOriginalTitle", $retrieveOriginalTitle));
         $root->appendChild($xmlDoc->createElement("descriptiveMetadataExtractor", $descriptiveMetadataExtractor));
@@ -865,7 +874,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function putPresentation($categories, $presentationLanguage, $showParentCategoryTitle)
+    public function putPresentation($categories, $presentationLanguage, $showParentCategoryTitle, $numberOfFilesForDynamicCategories)
     {
         //create the xml document
         $xmlDoc = new DOMDocument();
@@ -896,6 +905,7 @@ class ServiioService extends RestRequest
         }
         $root->appendChild($xmlDoc->createElement("language", $presentationLanguage));
         $root->appendChild($xmlDoc->createElement("showParentCategoryTitle", $showParentCategoryTitle));
+        $root->appendChild($xmlDoc->createElement("numberOfFilesForDynamicCategories", $numberOfFilesForDynamicCategories));
 
         /*
         header("Content-Type: text/plain");

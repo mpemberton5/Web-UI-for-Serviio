@@ -71,6 +71,23 @@
             <input type="checkbox" name="searchupdates" value="1"<?php echo $serviio->searchForUpdates=="true"?" checked":""?>> <?php echo tr('tab_folders_search_for_files_updates','Search for updates of currently shared files')?>
             <br>
             <input type="checkbox" name="addhidden" value="1"<?php echo $serviio->searchHiddenFiles=="true"?" checked":""?>> <?php echo tr('tab_folders_include_hidden','Include hidden files')?>
+            <br>
+            <br>
+
+            <ul id="librarystatustabs" class="shadetabs">
+            <li><a href="#" rel="libstab1" class="selected">Library Status</a></li>
+            </ul>
+            <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
+                <div id="libstab1" class="tabcontent">
+                    <input type="checkbox" name="autoupdate" value="1"<?php echo $serviio->automaticLibraryUpdate=="true"?" checked":""?>> <?php echo tr('tab_folders_automatic_update','Keep library automatically updated')?>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    Refresh interval (minutes): <input type="text" name="minutes" value="<?php echo $serviio->automaticLibraryUpdateInterval ?>" maxlength="3" size="3">
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    <input type="submit" id="refresh" name="refresh" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+                    <span id="forceRefreshMsg" class="forceRefreshMsg"></span>
+                </div>
+            </div>
+
         </div>
 
         <div id="libtab2" class="tabcontent">
@@ -195,20 +212,6 @@
                     </select>
                 </td></tr>
             </table>
-        </div>
-    </div>
-
-    <ul id="librarystatustabs" class="shadetabs">
-    <li><a href="#" rel="libstab1" class="selected">Library Status</a></li>
-    </ul>
-    <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
-        <div id="libstab1" class="tabcontent">
-            <input type="checkbox" name="autoupdate" value="1"<?php echo $serviio->automaticLibraryUpdate=="true"?" checked":""?>> <?php echo tr('tab_folders_automatic_update','Keep library automatically updated')?>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            Refresh interval (minutes): <input type="text" name="minutes" value="<?php echo $serviio->automaticLibraryUpdateInterval ?>" maxlength="3" size="3">
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <input type="submit" id="refresh" name="refresh" value="<?php echo tr('tab_folders_button_refresh_library','Force refresh')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
-            <span id="forceRefreshMsg" class="forceRefreshMsg"></span>
         </div>
     </div>
 

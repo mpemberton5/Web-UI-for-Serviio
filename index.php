@@ -93,6 +93,7 @@ $profiles = $serviio->getProfiles();
 
 <SCRIPT type="text/javascript">
 
+/* simple debugging function to display contents of an object */
 function print(o) {
   var out = '';
   for (var p in o) {
@@ -1397,6 +1398,8 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
+                            /* refresh in case language was changed */
+                            location.reload();
                         } else {
                             $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                         }

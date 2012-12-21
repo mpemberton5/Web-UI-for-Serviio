@@ -733,7 +733,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#dialog-form").dialog({
                 autoOpen: false,
                 height: 410,
-                width: 500,
+                width: 570,
                 modal: true,
                 buttons: {
                     "Select Folder": function() {

@@ -16,9 +16,10 @@
                 <button type="button" id="addFolder" name="addFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
                     <?php echo tr('tab_folders_button_add_local','Add local...')?>
                 </button>&nbsp;&nbsp;
+                <!--
                 <button type="button" id="addPath" name="addPath" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
                     <?php echo tr('tab_folders_button_add_remote','Add path...')?>
-                </button>&nbsp;&nbsp;<!-- onclick="addLibRow('libraryTableFolders',null)">-->
+                </button>&nbsp;&nbsp;        onclick="addLibRow('libraryTableFolders',null)">-->
                 <button type="button" id="removeFolder" name="removeFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
                     <?php echo tr('button_remove','Remove Selected')?>
                 </button> <!--onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">-->

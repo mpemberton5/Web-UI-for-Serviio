@@ -1,8 +1,8 @@
 <?php
 $language = "en";
-$webUIver = "1.3";
-$debugLevel = "debug"; // none, debug
-$debugLoc = "screen"; // none, screen
+$webUIver = "1.3beta";
+$debugLevel = "none"; // none, debug
+$debugLoc = "none"; // none, screen
 $serviio_mediabrowser_host = "127.0.0.1";
 $serviio_host = "127.0.0.1";
 $serviio_port = "23423";

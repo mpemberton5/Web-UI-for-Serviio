@@ -445,7 +445,7 @@ class ServiioService extends RestRequest
      */
     public function getTranscoding()
     {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/transcoding');
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/delivery');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
@@ -453,11 +453,14 @@ class ServiioService extends RestRequest
             $this->error = "Cannot get transcoding";
             return false;
         }
-        $audioDownmixing = (string)$xml->audioDownmixing;
-        $threadsNumber = (string)$xml->threadsNumber;
-        $transcodingFolderLocation = (string)$xml->transcodingFolderLocation;
-        $bestVideoQuality = (string)$xml->bestVideoQuality;
-        $transcodingEnabled = (string)$xml->transcodingEnabled;
+        
+        $transcoding = $xml->transcoding;
+        
+        $audioDownmixing = (string)$transcoding->audioDownmixing;
+        $threadsNumber = (string)$transcoding->threadsNumber;
+        $transcodingFolderLocation = (string)$transcoding->transcodingFolderLocation;
+        $transcodingEnabled = (string)$transcoding->transcodingEnabled;
+        $bestVideoQuality = (string)$transcoding->bestVideoQuality;
         $this->audioDownmixing = $audioDownmixing;
         $this->threadsNumber = $threadsNumber;
         $this->transcodingFolderLocation = $transcodingFolderLocation;
@@ -720,14 +723,17 @@ class ServiioService extends RestRequest
         $xmlDoc->encoding = "UTF-8";
 
         //create the root element
-        $root = $xmlDoc->appendChild($xmlDoc->createElement("transcoding"));
+        $root = $xmlDoc->appendChild($xmlDoc->createElement("delivery"));
+
+        //create the transcoding element
+        $delivery = $root->appendChild($xmlDoc->createElement("transcoding"));
 
         // create sub element
-        $root->appendChild($xmlDoc->createElement("audioDownmixing", $audio));
-        $root->appendChild($xmlDoc->createElement("threadsNumber", $cores));
-        $root->appendChild($xmlDoc->createElement("transcodingFolderLocation", $location));
-        $root->appendChild($xmlDoc->createElement("bestVideoQuality", $quality));
-        $root->appendChild($xmlDoc->createElement("transcodingEnabled", $transcoding));
+        $delivery->appendChild($xmlDoc->createElement("audioDownmixing", $audio));
+        $delivery->appendChild($xmlDoc->createElement("threadsNumber", $cores));
+        $delivery->appendChild($xmlDoc->createElement("transcodingFolderLocation", $location));
+        $delivery->appendChild($xmlDoc->createElement("bestVideoQuality", $quality));
+        $delivery->appendChild($xmlDoc->createElement("transcodingEnabled", $transcoding));
 
         /*
         header("Content-Type: text/plain");
@@ -738,7 +744,7 @@ class ServiioService extends RestRequest
         */
 
         parent::flush();
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/transcoding');
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/delivery');
         parent::setVerb('PUT');
         parent::setRequestBody($xmlDoc->saveXML());
         parent::execute();

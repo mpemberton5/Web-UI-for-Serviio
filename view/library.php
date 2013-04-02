@@ -13,14 +13,14 @@
             <?php echo tr('tab_folders_description','Select folders that you want to monitor for media files. Also select type of media files to be shared for each folder. The library can be automatically monitored for new additions and updates to currently shared files.')?><br>
             <br>
             <div style="padding-left: 3px;">
-                <button type="button" id="addFolder" name="addFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                <button type="button" id="addFolder" name="addFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
                     <?php echo tr('tab_folders_button_add_local','Add local...')?>
                 </button>&nbsp;&nbsp;
                 <!--
                 <button type="button" id="addPath" name="addPath" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
                     <?php echo tr('tab_folders_button_add_remote','Add path...')?>
                 </button>&nbsp;&nbsp;        onclick="addLibRow('libraryTableFolders',null)">-->
-                <button type="button" id="removeFolder" name="removeFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small">
+                <button type="button" id="removeFolder" name="removeFolder" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
                     <?php echo tr('button_remove','Remove Selected')?>
                 </button> <!--onclick="if(confirm('Are you sure you want to remove selected folders')) { deleteLibRow('libraryTableFolders'); }">-->
             </div>
@@ -48,10 +48,10 @@
                                 <td align="left"><?php echo $entry[0]?></td>
 
                                 <td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
-                                    <?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>
-                                    <?php foreach ($accesses as $key=>$val) { ?>
-                                    <option value="<?php echo $key?>"<?php echo $key==max($entry[4])?" selected":""?>><?php echo $val?></option>
-                                    <?php } ?>
+                                    <!--<?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>-->
+    								<?php foreach ($accesses as $key=>$val) { ?>
+										<option value="<?php echo $key?>"<?php echo $key==max($entry[4])?" selected":""?>><?php echo $val?></option>
+									<?php } ?>
                                 </select></td>
 
                                 <?php for ($i=0;$i<count($types);$i++) { $type = $types[$i]; ?>
@@ -143,10 +143,10 @@
                                 </td>
                                 <td align="left"><span id="os_type_v_<?php echo $id?>" name="os_type_v_<?php echo $id?>"><?php echo $entry[0]?></span></td>
                                 <td><select name="os_access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
-                                    <?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>
-                                    <?php foreach ($accesses as $key=>$val) { ?>
-                                    <option value="<?php echo $key?>"<?php echo $key==max($entry[6])?" selected":""?>><?php echo $val?></option>
-                                    <?php } ?>
+                                    <!--<?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>-->
+									<?php foreach ($accesses as $key=>$val) { ?>
+										<option value="<?php echo $key?>"<?php echo $key==max($entry[6])?" selected":""?>><?php echo $val?></option>
+									<?php } ?>
                                 </select></td>
 
                                 <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>" title="<?php echo $entry[1]?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
@@ -196,6 +196,9 @@
                         <option value="30"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="30"?" selected":""?>>30</option>
                         <option value="40"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="40"?" selected":""?>>40</option>
                         <option value="50"<?php echo $serviio->maxNumberOfItemsForOnlineFeeds=="50"?" selected":""?>>50</option>
+						<!--<?php foreach ($maxOnlineFeeds as $key=>$val) { ?>
+							<option value="<?php echo $key?>"<?php echo $key==$serviio->maxNumberOfItemsForOnlineFeeds?" selected":""?>><?php echo $val?></option>
+						<?php } ?>-->
                     </select>
                 </td></tr>
                 <tr><td>
@@ -207,9 +210,12 @@
                     <?php echo tr('tab_online_sources_preferred_online_content_quality','Preferred online content quality:')?>
                 </td><td>
                     <select name="onlinequality">
-                        <option value="LOW"<?php echo $serviio->onlineContentPreferredQuality=="LOW"?" selected":""?>>Low</option>
+                        <!--<option value="LOW"<?php echo $serviio->onlineContentPreferredQuality=="LOW"?" selected":""?>>Low</option>
                         <option value="MEDIUM"<?php echo $serviio->onlineContentPreferredQuality=="MEDIUM"?" selected":""?>>Medium</option>
-                        <option value="HIGH"<?php echo $serviio->onlineContentPreferredQuality=="HIGH"?" selected":""?>>High</option>
+                        <option value="HIGH"<?php echo $serviio->onlineContentPreferredQuality=="HIGH"?" selected":""?>>High</option>-->
+                        <?php foreach ($onlineQuality as $key=>$val) { ?>
+							<option value="<?php echo $key?>"<?php echo $key==$serviio->onlineContentPreferredQuality?" selected":""?>><?php echo $val?></option>
+						<?php } ?>
                     </select>
                 </td></tr>
             </table>
@@ -246,9 +252,12 @@
                 <td><?php echo tr('new_online_source_type','Source type:')?></td>
                 <td>
                     <select id="newOnlineFeedType" name="newOnlineFeedType">
-                        <option value="FEED" SELECTED>Online RSS/Atom feed</option>
+                        <!--<option value="FEED" SELECTED>Online RSS/Atom feed</option>
                         <option value="LIVE_STREAM">Live Stream</option>
-                        <option value="WEB_RESOURCE">Other Web Resources</option>
+                        <option value="WEB_RESOURCE">Other Web Resources</option>-->
+                        <?php foreach ($feedTypes as $key=>$val) { ?>
+							<option value="<?php echo $key?>"><?php echo $val?></option>
+						<?php } ?>
                     </select>
                 </td>
             </tr>
@@ -287,9 +296,12 @@
                 <td><?php echo tr('new_online_source_type','Source type:')?></td>
                 <td>
                     <select id="editOnlineFeedType" name="editOnlineFeedType">
-                        <option value="FEED" SELECTED>Online RSS/Atom feed</option>
+                        <!--<option value="FEED" SELECTED>Online RSS/Atom feed</option>
                         <option value="LIVE_STREAM">Live Stream</option>
-                        <option value="WEB_RESOURCE">Other Web Resources</option>
+                        <option value="WEB_RESOURCE">Other Web Resources</option>-->
+						<?php foreach ($feedTypes as $key=>$val) { ?>
+							<option value="<?php echo $key?>"><?php echo $val?></option>
+						<?php } ?>
                     </select>
                 </td>
             </tr>

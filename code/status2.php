@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
                 }
             }
         }
-        $ip = getPostVar("ip", "");
-        $errorCode = $serviio->putStatus($profiles, $ip);
+        $bound_nic = getPostVar("bound_nic", "");
+        $errorCode = $serviio->putStatus($profiles, $bound_nic);
     } else if (getPostVar("start", "")!="") {
         $errorCode = $serviio->postAction("startServer");
     } else if (getPostVar("stop", "")!="") {
@@ -55,7 +55,9 @@ if ($statusResponse["serverStatus"] == "STARTED") {
     $startDisabled = "disabled";
     $stopDisabled = "";
 }
-$profiles = $serviio->getProfiles();
+$profiles = $serviio->getReferenceData('profiles');
+$interfaces = $serviio->getReferenceData('networkInterfaces');
+$accesses = $serviio->getReferenceData('accessGroups');
 
 function status_icon($status)
 {

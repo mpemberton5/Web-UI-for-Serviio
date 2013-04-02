@@ -244,108 +244,6 @@ function deleteLibRow(tableID) {
 </SCRIPT>
 <SCRIPT type="text/javascript">
 <!--
-function addProfileRow(tableID,ipAddress, name) {
-    // load profiles
-    var profiles = new Array();
-    <?php foreach ($profiles as $key=>$val) { ?>
-        profiles['<?php echo $key?>'] = '<?php echo $val?>';
-    <?php } ?>
-
-    if (ipAddress==null || ipAddress=='') {
-        ipAddress = prompt('Please enter renderer IP address');
-        if (ipAddress==null || ipAddress=='') {
-            //alert('Invalid IP address');
-            return;
-        }
-    }
-
-    if (name==null || name=='') {
-        name = prompt('Please enter renderer name');
-        if (name==null || name=='') {
-            //alert('Invalid name');
-            return;
-        }
-    }
-    var id = Math.uuid();
-
-    var table = document.getElementById(tableID);
-
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.align = 'left';
-
-    var cell1 = row.insertCell(0);
-    cell1.align = 'left';
-    var element1 = document.createElement("input");
-    element1.type = "hidden";
-    element1.name = "renderer_"+id;
-    element1.value = id;
-    cell1.appendChild(element1);
-    var element3 = document.createElement("input");
-    element3.type = "hidden";
-    element3.name = "ipAddress_"+id;
-    element3.value = ipAddress;
-    cell1.appendChild(element3);
-    var element4 = document.createElement("input");
-    element4.type = "hidden";
-    element4.name = "name_"+id;
-    element4.value = name;
-    cell1.appendChild(element4);
-
-
-    var cell2 = row.insertCell(1);
-    cell2.innerHTML = "<img src='images/bullet_orange.png' alt='UNKNOWN'>";
-
-    var cell3 = row.insertCell(2);
-    var element5 = document.createElement("div");
-    element5.innerHTML = ipAddress;
-    cell3.appendChild(element5);
-
-    var cell4 = row.insertCell(3);
-    var element6 = document.createElement("div");
-    element6.innerHTML = name;
-    cell4.appendChild(element6);
-
-    var cell4 = row.insertCell(4);
-    var element6 = document.createElement("div");
-    element6.setAttribute('class', 'os_switch');
-    element6.setAttribute('id', 'os_switch_'+id);
-    element6.setAttribute('name', 'os_switch_'+id);
-    var element6a = document.createElement("div");
-    element6a.setAttribute('class', 'iphone_switch_container');
-    element6a.setAttribute('style', 'height:16px; width:56px; position: relative; overflow: hidden;');
-    var element6b = document.createElement("img");
-    element6b.setAttribute('class', 'iphone_switch');
-    element6b.setAttribute('style', 'height:16px; width:56px; background-image:url(images/iphone_switch_16.png); background-repeat:none; background-position:-31px');
-    element6b.setAttribute('src', 'images/iphone_switch_container_off_16.png');
-    element6a.appendChild(element6b);
-    element6.appendChild(element6a);
-    cell4.appendChild(element6);
-
-    var cell2a = row.insertCell(5);
-    var element2a = document.createElement("select");
-    element2a.name = "access_"+id;
-    var option1 = document.createElement("option");
-    option1.value = "1";
-    option1.innerHTML = "Full";
-    element2a.appendChild(option1);
-    var option2 = document.createElement("option");
-    option2.value = "2";
-    option2.innerHTML = "Limited";                           
-    element2a.appendChild(option2);
-    element2a.value = 1;
-    cell2a.appendChild(element2a);
-
-    var cell5 = row.insertCell(6);
-    var element6 = document.createElement("select");
-    element6.name = "profile_"+id;
-    var key;
-    for (key in profiles) {
-        element6.options[element6.options.length] = new Option(profiles[key],key);
-    }
-    element6.value = 1;
-    cell5.appendChild(element6);
-}
 
 function deleteProfileRow(tableID) {
     try {
@@ -453,7 +351,7 @@ if ($message!="") {
         <li><a href="content.php?tab=status" rel="indexcontainer" class="selected"><?php echo tr('tab_status','Status')?></a></li>
         <li><a href="content.php?tab=library" rel="indexcontainer"><?php echo tr('tab_folders','Library')?></a></li>
         <li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
-        <li><a href="content.php?tab=transcoding" rel="indexcontainer"><?php echo tr('tab_transcoding','Transcoding')?></a></li>
+        <li><a href="content.php?tab=delivery" rel="indexcontainer"><?php echo tr('tab_delivery','Delivery')?></a></li>
         <li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
         <li><a href="content.php?tab=remote" rel="indexcontainer"><?php echo tr('tab_remote','Remote')?></a></li>
         <li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>
@@ -534,7 +432,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -562,7 +460,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#stop").removeAttr("disabled");
                             $("#start").attr("disabled", "disabled");
                         } else {
-                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -589,7 +487,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#start").removeAttr("disabled");
                             $("#stop").attr("disabled", "disabled");
                         } else {
-                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -675,7 +573,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Started!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -707,7 +605,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1246,7 +1144,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Started!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1276,7 +1174,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1290,21 +1188,34 @@ indexes.onajaxpageload=function(pageurl) {
         });
     }
     //-------------------------------------------------------------------------
-    if (pageurl.indexOf("content.php?tab=transcoding")!=-1) {
-        var metTab1=new ddtabcontent("generalsettingstab")
+    if (pageurl.indexOf("content.php?tab=delivery")!=-1) {
+        /*var metTab1=new ddtabcontent("generalsettingstab")
         metTab1.setpersist(false)
         metTab1.setselectedClassTarget("link") //"link" or "linkparent"
         metTab1.init()
         var metTab2=new ddtabcontent("videosettingstab")
         metTab2.setpersist(false)
         metTab2.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab2.init()*/
+        var metTab1=new ddtabcontent("deliverytabs")
+        metTab1.setpersist(false)
+        metTab1.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab1.init()
+        var metTab2=new ddtabcontent("generalsettingstab")
+        metTab2.setpersist(false)
+        metTab2.setselectedClassTarget("link") //"link" or "linkparent"
         metTab2.init()
+    	var metTab3=new ddtabcontent("videosettingstab")
+        metTab3.setpersist(false)
+        metTab3.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab3.init()
+
         $(document).ready(function(){
             $("#debugInfo").text("");
             $("#debugInfoDate").text("");
             $("#debugInfo2").text("");
             $("#debugInfo2Date").text("");
-            var $form = $("#transcodingform");
+            var $form = $("#deliveryform");
             $("#submit").click(function(e) {
                 $("#savingMsg").text("Saving...");
                 $("#savingMsg").first().show();
@@ -1313,7 +1224,7 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/transcoding1.php',
+                    url: 'code/delivery1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
@@ -1324,7 +1235,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1401,7 +1312,7 @@ indexes.onajaxpageload=function(pageurl) {
                             /* refresh in case language was changed */
                             location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1424,6 +1335,11 @@ indexes.onajaxpageload=function(pageurl) {
         rmtTab2.setpersist(false)
         rmtTab2.setselectedClassTarget("link") //"link" or "linkparent"
         rmtTab2.init()
+        var rmtTab3=new ddtabcontent("rmtInternetAccessTab")
+        rmtTab3.setpersist(false)
+        rmtTab3.setselectedClassTarget("link") //"link" or "linkparent"
+        rmtTab3.init()
+
         $(document).ready(function(){
             $("#debugInfo").text("");
             $("#debugInfoDate").text("");
@@ -1449,7 +1365,40 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#savingMsg").text("Saved!");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
+                    }
+                });
+                return false;
+            });
+            
+            $("#checkPortMapping").click(function(e) {
+            	$("#process").val("checkPortMapping");
+                $("#savingMsg").text("Checking accessibility...");
+                $("#savingMsg").first().show();
+                $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
+                $("#debugInfoDate").text(Date());
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code/remote.php',
+                    data: $form.serialize(),
+                    dataType: 'xml',
+                    timeout: 10000,
+                    success: function(response) {
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(serializeXmlNode(response));
+                        if ($(response).find("errorCode").text() == 0) {
+                            $("#savingMsg").text("Available!");
+                            $("#savingMsg").delay(800).fadeOut("slow");
+                        } else {
+                            $("#savingMsg").text("Not accessible over Internet! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){

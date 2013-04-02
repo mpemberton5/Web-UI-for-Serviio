@@ -23,8 +23,8 @@ foreach ($_POST as $key=>$val) {
         }
     }
 }
-$ip = getPostVar("ip", "");
-$errorCode = $serviio->putStatus($profiles, $ip);
+$bound_nic = getPostVar("bound_nic", "");
+$errorCode = $serviio->putStatus($profiles, $bound_nic);
 return $errorCode;
 return print_r($zero);
 return print_r($zero["tab"]);

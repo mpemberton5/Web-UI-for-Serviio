@@ -31,6 +31,6 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
     }
 }
 $categories = $serviio->getPresentation();
-$categoryVisibilityTypes = $serviio->getCategoryVisibilityTypes();
-$browsingCategoriesLanguages = $serviio->getBrowsingCategoriesLanguages();
+$categoryVisibilityTypes = $serviio->getReferenceData('categoryVisibilityTypes');
+$browsingCategoriesLanguages = $serviio->getReferenceData('browsingCategoriesLanguages');
 ?>

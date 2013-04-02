@@ -35,7 +35,7 @@ class ServiidbService extends RestRequest
             return false;
         }
         $serverStatus = (string)$xml->serverStatus;
-        $ip = (string)$xml->boundIPAddress;
+        $boundNICName = (string)$xml->boundNICName;
         $this->renderers = array();
         foreach ($xml->renderers->renderer as $item) {
             $uuid = (string)$item->uuid;
@@ -47,7 +47,7 @@ class ServiidbService extends RestRequest
             $accessGroupId = (string)$item->accessGroupId;
             $this->renderers[$uuid] = array($ipAddress, $name, $profileId, $status, $enabled, $accessGroupId);
         }
-        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "ip"=>$ip);
+        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "boundNICName"=>$boundNICName);
     }
 
 }

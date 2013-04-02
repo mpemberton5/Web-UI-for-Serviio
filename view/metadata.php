@@ -31,11 +31,11 @@
                 </select>
                 <br>
                 <input type="checkbox" name="download_cover" value="1"<?php echo $serviio->videoOnlineArtExtractorEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_online_retrieve_poster','Retrieve DVD cover image or poster if available')?><br>
-                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('Are you sure you want to force rescan video metadata?')"></div>
+                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('Are you sure you want to force rescan video metadata?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></div>
                 <br>
                 <?php echo tr('tab_metadata_metadata_languages_description','Some metadata extractors enable retrieving metadata in a certain language. Select the preferred language.')?><br>
                 <select name="metadata_language">
-                    <?php foreach ($browsingCategoriesLanguages as $key=>$val) { ?>
+                    <?php foreach ($metadataLanguages as $key=>$val) { ?>
                     <option value="<?php echo $key?>"<?php echo $key==$serviio->metadataLanguage?" selected":""?>><?php echo $val?></option>
                     <?php } ?>
                 </select> &nbsp; <input type="checkbox" name="orig_title" value="1"<?php echo $serviio->retrieveOriginalTitle=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_use_original_title','Use original title')?>
@@ -53,7 +53,7 @@
 
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>
-        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-        <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </form>

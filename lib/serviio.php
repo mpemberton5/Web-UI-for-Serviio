@@ -20,6 +20,7 @@ class ServiioService extends RestRequest
 
     public $profiles;
     public $renderers;
+    public $boundNICName;
 
     public $audioLocalArtExtractorEnabled;
     public $videoLocalArtExtractorEnabled;
@@ -38,6 +39,10 @@ class ServiioService extends RestRequest
     public $transcodingFolderLocation;
     public $transcodingEnabled;
     public $bestVideoQuality;
+	public $subtitlesEnabled;
+	public $embeddedSubtitlesExtractionEnabled;
+	public $hardSubsEnabled;
+	public $hardSubsForced;
 
     public $numberOfCPUCores;
 
@@ -47,6 +52,8 @@ class ServiioService extends RestRequest
 
     public $remoteUserPassword;
     public $preferredRemoteDeliveryQuality;
+	public $portMappingEnabled;
+	public $externalAddress;
 
     public $language;
     public $securityPin;
@@ -76,7 +83,7 @@ class ServiioService extends RestRequest
             return false;
         }
         $serverStatus = (string)$xml->serverStatus;
-        $ip = (string)$xml->boundIPAddress;
+        $boundNICName = (string)$xml->boundNICName;
         $this->renderers = array();
         foreach ($xml->renderers->renderer as $item) {
             $uuid = (string)$item->uuid;
@@ -88,7 +95,8 @@ class ServiioService extends RestRequest
             $accessGroupId = (string)$item->accessGroupId;
             $this->renderers[$uuid] = array($ipAddress, $name, $profileId, $status, $enabled, $accessGroupId);
         }
-        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "ip"=>$ip);
+        //return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "bound_nic"=>$bound_nic);
+        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "boundNICName"=>$boundNICName);
     }
 
     /**
@@ -105,7 +113,9 @@ class ServiioService extends RestRequest
         }
         $remoteUserPassword = (string)$xml->remoteUserPassword;
         $preferredRemoteDeliveryQuality = (string)$xml->preferredRemoteDeliveryQuality;
-        return array("remoteUserPassword"=>$remoteUserPassword, "preferredRemoteDeliveryQuality"=>$preferredRemoteDeliveryQuality);
+		$portMappingEnabled = (string)$xml->portMappingEnabled;
+		$externalAddress = (string)$xml->externalAddress;
+        return array("remoteUserPassword"=>$remoteUserPassword, "preferredRemoteDeliveryQuality"=>$preferredRemoteDeliveryQuality, "portMappingEnabled"=>$portMappingEnabled, "externalAddress"=>$externalAddress);
     }
 
     /**
@@ -180,19 +190,61 @@ class ServiioService extends RestRequest
      */
     public function getReferenceData($property)
     {
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        /* INCOMPLETE */
-        /* INCOMPLETE */
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/'.$property);
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
         if ($xml===false) {
-            $this->error = "Cannot get reference data";
+            $this->error = "Cannot get ".$property." data";
             return false;
         }
-        return $xml;
+        $numberOfCPUCores = 1;
+		
+		$result = array();
+		
+        foreach ($xml->values->item as $item) {
+            $value = (string)$item->value;
+            $name = (string)$item->name;
+            $result["${name}"] = $value;
+        }
+        
+		switch ($property) {
+			case "cpu-cores":
+				$this->numberOfCPUCores = $result;				//delivery.php
+				break;
+			case "profiles":
+				$this->profiles = $result;						//status.php
+				break;
+			case "metadataLanguages":
+				$this->metadataLanguages = $result;				//metadata.php
+				break;
+			case "browsingCategoriesLanguages":
+				$this->browsingCategoriesLanguages = $result;	//presentation.php
+				break;
+			case "descriptiveMetadataExtractors":
+				$this->descriptiveMetadataExtractors = $result;	//metadata.php
+				break;
+			case "categoryVisibilityTypes":
+				$this->categoryVisibilityTypes = $result;		//presentation.php
+				break;
+			case "onlineRepositoryTypes":
+				$this->onlineRepositoryTypes = $result;			//library.php
+				break;
+			case "onlineContentQualities":
+				$this->onlineContentQualities = $result;		//library.php
+				break;
+			case "accessGroups":
+				$this->accessGroups = $result;					//status.php, library.php
+				break;
+			case "remoteDeliveryQualities":
+				$this->remoteDeliveryQualities = $result;		//remote.php
+				break;
+			case "networkInterfaces":
+				$this->boundNICName = $result;					//status.php
+				break;
+		}
+		
+        return $result;
 
         //$this->pvalues = array();
         //foreach ($xml->pvalues->pvalue as $item) {
@@ -346,28 +398,6 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function getProfiles()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/profiles');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get profiles";
-            return false;
-        }
-        $profiles = array();
-        foreach ($xml->values->item as $item) {
-            $value = (string)$item->value;
-            $name = (string)$item->name;
-            $profiles["${name}"] = $value;
-        }
-        $this->profiles = $profiles;
-        return $profiles;
-    }
-
-    /**
-     */
     public function getMetadata()
     {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/metadata');
@@ -399,58 +429,14 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function getDescriptiveMetadataExtractors()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/descriptiveMetadataExtractors');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get descriptive metadata extractors";
-            return false;
-        }
-        $result = array();
-        foreach ($xml->values->item as $item) {
-            $value = (string)$item->value;
-            $name = (string)$item->name;
-            $result["${name}"] = $value;
-        }
-        $this->descriptiveMetadataExtractors = $result;
-        return $result;
-    }
-
-    /**
-     */
-    public function getBrowsingCategoriesLanguages()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/browsingCategoriesLanguages');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get browsing categories languages";
-            return false;
-        }
-        $result = array();
-        foreach ($xml->values->item as $item) {
-            $value = (string)$item->value;
-            $name = (string)$item->name;
-            $result["${name}"] = $value;
-        }
-        $this->browsingCategoriesLanguages = $result;
-        return $result;
-    }
-
-    /**
-     */
-    public function getTranscoding()
+    public function getDelivery()
     {
         parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/delivery');
         parent::setVerb('GET');
         parent::execute();
         $xml = simplexml_load_string(parent::getResponseBody());
         if ($xml===false) {
-            $this->error = "Cannot get transcoding";
+            $this->error = "Cannot get delivery";
             return false;
         }
         
@@ -466,32 +452,21 @@ class ServiioService extends RestRequest
         $this->transcodingFolderLocation = $transcodingFolderLocation;
         $this->transcodingEnabled = $transcodingEnabled;
         $this->bestVideoQuality = $bestVideoQuality;
-        return array($audioDownmixing, $threadsNumber, $transcodingFolderLocation, $bestVideoQuality, $transcodingEnabled);
-    }
-
-    /**
-     */
-    public function getCpuCores()
-    {
-        parent::flush();
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/cpu-cores');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get CPU cores";
-            return false;
-        }
-        $numberOfCPUCores = 1;
-        foreach ($xml->values as $entry) {
-            $item = $entry->item;
-            if ((string)$item->name=="numberOfCPUCores") {
-                $numberOfCPUCores = (string)$item->value;
-                break;
-            }
-        }
-        $this->numberOfCPUCores = $numberOfCPUCores;
-        return $numberOfCPUCores;
+		
+		$subtitles = $xml->subtitles;
+		
+		$subtitlesEnabled = (string)$subtitles->subtitlesEnabled;
+        $embeddedSubtitlesExtractionEnabled = (string)$subtitles->embeddedSubtitlesExtractionEnabled;
+        $hardSubsEnabled = (string)$subtitles->hardSubsEnabled;
+        $hardSubsForced = (string)$subtitles->hardSubsForced;
+		$preferredLanguage = (string)$subtitles->preferredLanguage;
+		$this->subtitlesEnabled = $subtitlesEnabled;
+        $this->embeddedSubtitlesExtractionEnabled = $embeddedSubtitlesExtractionEnabled;
+        $this->hardSubsEnabled = $hardSubsEnabled;
+        $this->hardSubsForced = $hardSubsForced;
+        $this->preferredLanguage = $preferredLanguage;
+        
+        return array($audioDownmixing, $threadsNumber, $transcodingFolderLocation, $bestVideoQuality, $transcodingEnabled, $subtitlesEnabled, $embeddedSubtitlesExtractionEnabled, $hardSubsEnabled, $hardSubsForced, $preferredLanguage);
     }
 
     /**
@@ -532,27 +507,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function getCategoryVisibilityTypes()
-    {
-        parent::flush();
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/refdata/categoryVisibilityTypes');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get presentation";
-            return false;
-        }
-        $types = array();
-        foreach ($xml->values->item as $entry) {
-            $types[(string)$entry->name] = (string)$entry->value;
-        }
-        return $types;
-    }
-
-    /**
-     */
-    public function putStatus($profiles, $ip)
+    public function putStatus($profiles, $bound_nic)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -562,6 +517,8 @@ class ServiioService extends RestRequest
 
         //create the root element
         $root = $xmlDoc->appendChild($xmlDoc->createElement("status"));
+		
+		$root->appendChild($xmlDoc->createElement("boundNICName", $bound_nic));
 
         // create sub element
         $Rends = $root->appendChild($xmlDoc->createElement("renderers"));
@@ -575,8 +532,6 @@ class ServiioService extends RestRequest
             $Rend->appendChild($xmlDoc->createElement("enabled", $renderer[4]));
             $Rend->appendChild($xmlDoc->createElement("accessGroupId", $renderer[5]));
         }
-
-        $root->appendChild($xmlDoc->createElement("boundIPAddress", $ip));
 
         /*
         header("Content-Type: text/plain");
@@ -596,7 +551,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function putRemoteAccess($passwd, $quality)
+    public function putRemoteAccess($passwd, $quality, $mapping, $address)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -610,6 +565,8 @@ class ServiioService extends RestRequest
         // create sub element
         $root->appendChild($xmlDoc->createElement("remoteUserPassword", $passwd));
         $root->appendChild($xmlDoc->createElement("preferredRemoteDeliveryQuality", $quality));
+		$root->appendChild($xmlDoc->createElement("portMappingEnabled", $mapping));
+		$root->appendChild($xmlDoc->createElement("externalAddress", $address));
 
         /*
         header("Content-Type: text/plain");
@@ -714,7 +671,7 @@ class ServiioService extends RestRequest
 
     /**
      */
-    public function putTranscoding($transcoding, $location, $cores, $audio, $quality)
+    public function putDelivery($transcoding, $location, $cores, $audio, $quality, $subtitles, $subtitlesextraction, $hardsubsenabled, $hardsubsforced, $language)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -732,8 +689,18 @@ class ServiioService extends RestRequest
         $delivery->appendChild($xmlDoc->createElement("audioDownmixing", $audio));
         $delivery->appendChild($xmlDoc->createElement("threadsNumber", $cores));
         $delivery->appendChild($xmlDoc->createElement("transcodingFolderLocation", $location));
-        $delivery->appendChild($xmlDoc->createElement("bestVideoQuality", $quality));
         $delivery->appendChild($xmlDoc->createElement("transcodingEnabled", $transcoding));
+		$delivery->appendChild($xmlDoc->createElement("bestVideoQuality", $quality));
+		
+		//create the transcoding element
+        $delivery1 = $root->appendChild($xmlDoc->createElement("subtitles"));
+
+        // create sub element
+        $delivery1->appendChild($xmlDoc->createElement("subtitlesEnabled", $subtitles));
+        $delivery1->appendChild($xmlDoc->createElement("embeddedSubtitlesExtractionEnabled", $subtitlesextraction));
+        $delivery1->appendChild($xmlDoc->createElement("hardSubsEnabled", $hardsubsenabled));
+        $delivery1->appendChild($xmlDoc->createElement("hardSubsForced", $hardsubsforced));
+        $delivery1->appendChild($xmlDoc->createElement("preferredLanguage", $language));
 
         /*
         header("Content-Type: text/plain");

@@ -24,7 +24,7 @@
 
 <div align="right">
     <span id="savingMsg" class="savingMsg"></span>
-    <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-    <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" />
+    <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+    <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
 </div>
 </form>

@@ -17,7 +17,7 @@
     /*
     echo "<input name='uploadfile' type='file'><input type='submit' value='Upload License' readonly>";
     */
-    echo "<input id='license' name='license' type='button' value='Upload New License'>";
+    echo "<input id='license' name='license' type='button' value='Upload New License' class='ui-button ui-widget ui-state-default ui-corner-all btn-small' />";
 ?>
 <br>
 <br>
@@ -40,7 +40,7 @@ This product includes <a href="http://www.jthink.net/jaudiotagger/">Jaudiotagger
             <label for="uploadFile">Choose File:</label>
             <input name='uploadFile' id='uploadFile' size='45' type='file' />
             <br />
-            <input type="submit" value="Click to Import" />
+            <input type="submit" value="Click to Import">
         </fieldset>
     </form>
     <br />

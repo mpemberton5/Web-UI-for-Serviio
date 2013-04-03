@@ -1,6 +1,6 @@
 <?php
 $language = "en";
-$webUIver = "1.3beta";
+$webUIver = "1.4beta";
 $debugLevel = "none"; // none, debug
 $debugLoc = "none"; // none, screen
 $serviio_mediabrowser_host = "127.0.0.1";

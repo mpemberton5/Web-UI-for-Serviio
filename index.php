@@ -12,7 +12,7 @@ if (isset($_COOKIE["language"]) && array_key_exists($_COOKIE["language"],$langua
 $serviio = new ServiioService($serviio_host,$serviio_port);
 
 $appInfo = $serviio->getApplication();
-$profiles = $serviio->getProfiles();
+$profiles = $serviio->getReferenceData('profiles');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

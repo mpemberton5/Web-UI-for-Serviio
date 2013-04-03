@@ -24,6 +24,7 @@ CHANGELOG:
                    - Tested to work with Serviio 1.1
 - 1.4 - 04/02/2013 - Added separate media browser URL in config.php
                    - Various code enhancements
+                   - Media browser link now accessess the bound interface IP
                    - Status tab lets you now chose the bound network interface (Serviio API 1.2)
                    - Transcoding settings now working again (Serviio API 1.2)
                    - Added new subtitle options (Serviio API 1.2)

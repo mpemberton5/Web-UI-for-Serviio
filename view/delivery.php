@@ -20,9 +20,9 @@
                 <tr>
                     <td><?php echo tr('tab_transcoding_threads','Number of CPU cores to use')?></td>
                     <td><select name="cores">
-                    <?php for ($i=1;$i<=$serviio->numberOfCPUCores;$i++) { ?>
-                    <option value="<?php echo $i?>"<?php echo $i==$serviio->threadsNumber?" selected":""?>><?php echo $i?></option>
-                    <?php } ?>
+                    <?php foreach($numberOfCPUCores as $key=>$val) {for ($i=1;$i<=$val;$i++) { ?>
+                    <option value="<?php echo $i?>"<?php echo $i==$val?" selected":""?>><?php echo $i?></option>
+                    <?php }} ?>
                     </select></td><td>&nbsp;</td>
                 </tr>
             </table>

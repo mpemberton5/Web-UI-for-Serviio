@@ -3,7 +3,7 @@
 <img src="images/logo.png" alt="serviio" />
 <br>
 <?php $appdata = $serviio->getApplication(); ?>
-<b>Serviio v <?php $ret = $serviio->getApplication(); echo $ret['version'];?></b>
+<b>Serviio <?php $ret = $serviio->getApplication(); echo $ret['edition'];?> v <?php echo $ret['version'];?> <?php echo $ret['licenseType'];?> license</b>
 &nbsp;-&nbsp;<b>WebUI v <?php echo $webUIver;?></b>
 <br>
 <br>

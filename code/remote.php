@@ -28,5 +28,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 $rmtAccess = $serviio->getRemoteAccess();
 $quality = $serviio->getReferenceData('remoteDeliveryQualities');
+$interfaces = $serviio->getReferenceData('networkInterfaces');
+$boundNIC = $serviio->getStatus();
 
 ?>

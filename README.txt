@@ -22,8 +22,10 @@ CHANGELOG:
                    - Added refresh after exiting license upload dialog
                    - Added Image tab under Metadata tab
                    - Tested to work with Serviio 1.1
-- 1.4 - 04/02/2013 - Added separate media browser URL in config.php
-                   - Various code enhancements
+- 1.4 - 04/05/2013 - Various code enhancements
+                   - Improved multilanguage support, added new language tags
+                   - Updated German translation
+                   - Page is reloaded to discard changes on reset button press
                    - Media browser link now accessess the bound interface IP
                    - Status tab lets you now chose the bound network interface (Serviio API 1.2)
                    - Transcoding settings now working again (Serviio API 1.2)

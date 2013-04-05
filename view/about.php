@@ -33,14 +33,14 @@ This product includes software developed by the <a href="http://www.visigoths.or
 This product includes <a href="http://www.restlet.org/">Restlet</a> which is licensed under <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPL v2.1</a>.<br>
 This product includes <a href="http://www.jthink.net/jaudiotagger/">Jaudiotagger</a> (an audio tagging library) which is licensed under <a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a>.<br>')?>
 </div>
-<div id="license-form" title="Load New License">
+<div id="license-form" title="<?php echo tr('dialog_load_license','Load New License')?>">
     <br />
     <form accept-charset="utf-8" method="post" enctype="multipart/form-data" action="license_ul.php" target="upload_target">
         <fieldset>
-            <label for="uploadFile">Choose File:</label>
+            <label for="uploadFile"><?php echo tr('dialog_choose_file','Choose File')?>:&nbsp;</label>
             <input name='uploadFile' id='uploadFile' size='45' type='file' />
             <br />
-            <input type="submit" value="Click to Import">
+            <input type="submit" value="<?php echo tr('dialog_import','Click to Import')?>">
         </fieldset>
     </form>
     <br />

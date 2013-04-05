@@ -8,6 +8,7 @@
     <div id="conset1" class="tabcontent">
         <?php echo tr('tab_console_settings_languages_description','Select preferred language of the Console (needs Console restart).')?>
         <br>
+        <br>
         <select name="language">
         <?php foreach ($languages as $key=>$val) { ?>
         <option value="<?php echo $key?>"<?php echo $key==$settings["language"]?" selected":""?>><?php echo $val?></option>
@@ -20,11 +21,9 @@
     </div>
 </div>
 
-<br>
-
 <div align="right">
     <span id="savingMsg" class="savingMsg"></span>
-    <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+    <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
 </div>
 </form>

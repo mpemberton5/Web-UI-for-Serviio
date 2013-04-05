@@ -23,6 +23,7 @@ CHANGELOG:
                    - Added Image tab under Metadata tab
                    - Tested to work with Serviio 1.1
 - 1.4 - 04/05/2013 - Various code enhancements
+                   - Language selection in console tab now working (fixed wrong cookie path)
                    - Improved multilanguage support, added new language tags
                    - Updated German translation
                    - Page is reloaded to discard changes on reset button press

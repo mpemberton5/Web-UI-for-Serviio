@@ -4,31 +4,31 @@
     <br>
     
     <ul id="deliverytabs" class="shadetabs">
-        <li><a href="#" rel="deltab1" class="selected">Transcoding</a></li>
-		<li><a href="#" rel="deltab2">Subtitles</a></li>
+	    <li><a href="#" rel="deltab1" class="selected"><?php echo tr('tab_delivery_transcoding_transcoding','Transcoding')?></a></li>
+		<li><a href="#" rel="deltab2"><?php echo tr('tab_delivery_transcoding_subtitles','Subtitles')?></a></li>
     </ul>
     <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     	
     	<div id="deltab1" class="tabcontent">
     
-		    <?php echo tr('tab_transcoding_general_description','When enabled, transcoding enables you to play media files that would not normally be playable by your device. Transcoding only works with a specific Renderer Profile (not the Generic DLNA profile).')?><br>
+		    <?php echo tr('tab_delivery_transcoding_general_description','When enabled, transcoding enables you to play media files that would not normally be playable by your device. Transcoding only works with a specific Renderer Profile (not the Generic DLNA profile).')?><br>
 		    <br>
-		    <input type="checkbox" name="transcoding" value="1"<?php echo $serviio->transcodingEnabled=="true"?" checked":""?>> <?php echo tr('tab_transcoding_enable_transcoding','Enable transcoding')?><br>
+		    <input type="checkbox" name="transcoding" value="1"<?php echo $serviio->transcodingEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_transcoding_enable_transcoding','Enable transcoding')?><br>
 		    <br>
 		
 		    <ul id="generalsettingstab" class="shadetabs">
-		        <li><a href="#" rel="genset1" class="selected"><?php echo tr('tab_transcoding_general_settings','General settings')?></a></li>
+		        <li><a href="#" rel="genset1" class="selected"><?php echo tr('tab_delivery_transcoding_general_settings','General settings')?></a></li>
 		    </ul>
 		    <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
 		        <div id="genset1" class="tabcontent">
 		            <table>
 		                <tr>
-		                    <td><?php echo tr('tab_transcoding_folder_location','Transcoded files location:')?></td>
+		                    <td><?php echo tr('tab_delivery_transcoding_folder_location','Transcoded files location')?>:&nbsp;</td>
 		                    <td><input type="text" id="location" name="location" size="40" value="<?php echo $serviio->transcodingFolderLocation?>"></td>
-		                    <td><input type="button" id="addFolder" name="addFolder" value="<?php echo tr('tab_transcoding_select_folder','Browse...')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></td>
+		                    <td><input type="button" id="addFolder" name="addFolder" value="<?php echo tr('tab_delivery_transcoding_select_folder','Browse...')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></td>
 		                </tr>
 		                <tr>
-		                    <td><?php echo tr('tab_transcoding_threads','Number of CPU cores to use')?></td>
+		                    <td><?php echo tr('tab_delivery_transcoding_threads','Number of CPU cores to use')?>:&nbsp;</td>
 		                    <td><select name="cores">
 							<?php foreach($numberOfCPUCores as $key=>$val) {for ($i=1;$i<=$val;$i++) { ?>
 		                    <option value="<?php echo $i?>"<?php echo $i==$val?" selected":""?>><?php echo $i?></option>
@@ -42,39 +42,37 @@
 		    <br>
 		
 		    <ul id="videosettingstab" class="shadetabs">
-		        <li><a href="#" rel="vidset1" class="selected"><?php echo tr('tab_transcoding_video_settings','Video settings')?></a></li>
+		        <li><a href="#" rel="vidset1" class="selected"><?php echo tr('tab_delivery_transcoding_video_settings','Video settings')?></a></li>
 		    </ul>
 		    <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
 		        <div id="vidset1" class="tabcontent">
-		            <input type="checkbox" name="quality" value="1"<?php echo $serviio->bestVideoQuality=="true"?" checked":""?>> <?php echo tr('tab_transcoding_produce_best_quality','Produce the best video quality')?><br><br>
-		            <?php echo tr('tab_transcoding_audio_channels','Audio channels')?>
-		            <input type="radio" name="audio" value="original"<?php echo $serviio->audioDownmixing=="true"?"":" checked"?>> <?php echo tr('tab_transcoding_audio_channels_original','Keep original')?>
-		            <input type="radio" name="audio" value="downmix"<?php echo $serviio->audioDownmixing=="true"?" checked":""?>> <?php echo tr('tab_transcoding_audio_channels_stereo','Downmix to stereo')?>
+		            <input type="checkbox" name="quality" value="1"<?php echo $serviio->bestVideoQuality=="true"?" checked":""?>> <?php echo tr('tab_delivery_transcoding_produce_best_quality','Produce the best video quality')?><br><br>
+		            <?php echo tr('tab_delivery_transcoding_audio_channels','Audio channels')?>
+		            <input type="radio" name="audio" value="original"<?php echo $serviio->audioDownmixing=="true"?"":" checked"?>> <?php echo tr('tab_delivery_transcoding_audio_channels_original','Keep original')?>
+		            <input type="radio" name="audio" value="downmix"<?php echo $serviio->audioDownmixing=="true"?" checked":""?>> <?php echo tr('tab_delivery_transcoding_audio_channels_stereo','Downmix to stereo')?>
 		        </div>
 		    </div>
 		    		    
     	</div>
     
 		<div id="deltab2" class="tabcontent">
-	    	<?php echo tr('tab_delivery_general_subtitles_description','When enabled, subtitles stored in external files or embedded in the video files will be served during video playback. If the device requires it or if forced, subtitles can be burned-in onto the video stream, which triggers complete transcoding of the file.')?><br>
+	    	<?php echo tr('tab_delivery_subtitles_general_subtitles_description','When enabled, subtitles stored in external files or embedded in the video files will be served during video playback. If the device requires it or if forced, subtitles can be burned-in onto the video stream, which triggers complete transcoding of the file.')?><br>
 		    <br>
-            <input type="checkbox" name="subtitles" value="1"<?php echo $serviio->subtitlesEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_enable_subtitles','Enable subtitles')?>
+            <input type="checkbox" name="subtitles" value="1"<?php echo $serviio->subtitlesEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_enable_subtitles','Enable subtitles')?>
             <br>
-            <input type="checkbox" name="subtitlesextraction" value="1"<?php echo $serviio->embeddedSubtitlesExtractionEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_embedded_subtitles_extraction_enabled','Enable extraction of subtitles embedded in video files')?>
+            <input type="checkbox" name="subtitlesextraction" value="1"<?php echo $serviio->embeddedSubtitlesExtractionEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_embedded_subtitles_extraction_enabled','Enable extraction of subtitles embedded in video files')?>
             <br>
-            <input type="checkbox" name="hardsubsenabled" value="1"<?php echo $serviio->hardSubsEnabled=="true"||$serviio->hardSubsForced=="true"?" checked":""?>> <?php echo tr('tab_delivery_hard_subs_enabled','Enable burned-in subtitles')?>
+            <input type="checkbox" name="hardsubsenabled" value="1"<?php echo $serviio->hardSubsEnabled=="true"||$serviio->hardSubsForced=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_hard_subs_enabled','Enable burned-in subtitles')?>
 				<select id="hardSubs" name="hardsubs" <?php echo $serviio->hardSubsEnabled=="false"&&$serviio->hardSubsForced=="false"?"disabled":""?>>
-        		<!--<select id="hardSubs" name="hardsubs<?php echo $serviio->hardSubsEnabled=="true"&&$serviio->hardSubsForced=="false"?"enabled":"forced"?>" <?php echo $serviio->hardSubsEnabled=="true"||$serviio->hardSubsForced=="true"?"":"disabled"?>>-->
-
-					<option value="enabled"<?php echo $serviio->hardSubsEnabled=="true"?" selected":""?>>Only when required</option>
-					<option value="forced"<?php echo $serviio->hardSubsForced=="true"?" selected":""?>>Always</option>
+					<option value="enabled"<?php echo $serviio->hardSubsEnabled=="true"?" selected":""?>><?php echo tr('tab_delivery_subtitles_hard_subs_required','Only when required')?></option>
+					<option value="forced"<?php echo $serviio->hardSubsForced=="true"?" selected":""?>><?php echo tr('tab_delivery_subtitles_hard_subs_always','Always')?></option>
 				</select>
 			<br>
 			<br>
             
-            <?php echo tr('tab_delivery_preferred_languages','Define a list of preferred languages codes, separated with comma. Subtitles for the specified language codes will have preference.')?><br>
+            <?php echo tr('tab_delivery_subtitles_preferred_languages','Define a list of preferred languages codes, separated with comma. Subtitles for the specified language codes will have preference.')?><br>
             <br>
-            <?php echo tr('tab_delivery_language_codes','Preferred language:')?>
+            <?php echo tr('tab_delivery_subtitles_language_codes','Preferred language')?>:&nbsp;
 			<input type="text" name="language" value="<?php echo $serviio->preferredLanguage?>" maxlength="64">
             <br>
 		</div>
@@ -83,16 +81,17 @@
 
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>
-        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" >
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" >
         <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
     
 </form>
 
-<div id="dialog-form" title="Select Folder">
+<div id="dialog-form" title="<?php echo tr('dialog_select_folder','Select Folder')?>">
     <form accept-charset="utf-8">
         <fieldset>
-            <label for="selValue">Selected Folder:</label><input type="text" id="selValue" name="selValue" readonly="readonly" size="70" />
+            <label for="selValue"><?php echo tr('dialog_selected_folder','Selected Folder')?>:&nbsp;</label>
+            <input type="text" id="selValue" name="selValue" readonly="readonly" size="70" />
             <div id="smallbrowser"></div>
         </fieldset>
     </form>

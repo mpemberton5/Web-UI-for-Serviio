@@ -24,16 +24,21 @@
                 <legend><?php echo tr('tab_metadata_descriptive_metadata','Descriptive metadata')?></legend>
                 <?php echo tr('tab_metadata_descriptive_metadata_description','Serviio includes various ways to retrieve descriptive metadata of your video files. Please pick one or select \'No descriptive metadata\' from the drop-down box.')?>
                 <br>
+                <br>
                 <select name="online_sources">
                     <?php foreach ($descriptiveMetadataExtractors as $key=>$val) { ?>
                     <option value="<?php echo $key?>"<?php echo $key==$serviio->descriptiveMetadataExtractor?" selected":""?>><?php echo $val?></option>
                     <?php } ?>
                 </select>
                 <br>
-                <input type="checkbox" name="download_cover" value="1"<?php echo $serviio->videoOnlineArtExtractorEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_online_retrieve_poster','Retrieve DVD cover image or poster if available')?><br>
-                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('Are you sure you want to force rescan video metadata?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></div>
                 <br>
-                <?php echo tr('tab_metadata_metadata_languages_description','Some metadata extractors enable retrieving metadata in a certain language. Select the preferred language.')?><br>
+                <input type="checkbox" name="download_cover" value="1"<?php echo $serviio->videoOnlineArtExtractorEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_online_retrieve_poster','Retrieve DVD cover image or poster if available')?><br>
+                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('<?php echo tr('status_message_force_rescan_metadata','Are you sure you want to force rescan video metadata?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></div>
+                <br>
+                <br>
+                <?php echo tr('tab_metadata_metadata_languages_description','Some metadata extractors enable retrieving metadata in a certain language. Select the preferred language.')?>
+                <br>
+                <br>
                 <select name="metadata_language">
                     <?php foreach ($metadataLanguages as $key=>$val) { ?>
                     <option value="<?php echo $key?>"<?php echo $key==$serviio->metadataLanguage?" selected":""?>><?php echo $val?></option>
@@ -53,7 +58,7 @@
 
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>
-        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
         <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </form>

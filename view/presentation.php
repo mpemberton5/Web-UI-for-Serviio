@@ -51,7 +51,9 @@
     <table width="90%">
         <tr>
             <td>
-                <?php echo tr('tab_presentation_languages_description','Select preferred language of the browsing menu.')?><br>
+                <?php echo tr('tab_presentation_languages_description','Select preferred language of the browsing menu.')?>
+                <br>
+                <br>
                 <select name="presentation_language">
                     <?php foreach ($browsingCategoriesLanguages as $key=>$val) { ?>
                         <option value="<?php echo $key?>"<?php echo $key==$serviio->presentationLanguage?" selected":""?>><?php echo $val?></option>
@@ -59,14 +61,15 @@
                 </select>
             </td>
             <td align="right"> 
-                <?php echo tr('tab_presentation_dynamic_categories','Number of items in dynamic categories:')?><input type="text" name="numberOfFilesForDynamicCategories" id="numberOfFilesForDynamicCategories" size="2" value="<?php echo $serviio->numberOfFilesForDynamicCategories ?>">
+                <?php echo tr('tab_presentation_dynamic_categories','Number of items in dynamic categories')?>:&nbsp;
+                <input type="text" name="numberOfFilesForDynamicCategories" id="numberOfFilesForDynamicCategories" size="2" value="<?php echo $serviio->numberOfFilesForDynamicCategories ?>">
             </td>
         </tr>
     </table>
     <br>
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>
-        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" >
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" >
         <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </form>

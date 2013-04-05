@@ -5,7 +5,7 @@ include("../lib/serviio.php");
 
 $language = $_POST["language"];
 $_COOKIE["language"] = $language;
-setcookie("language",$language,mktime(9,9,9,9,9,9999));
+setcookie("language",$language,mktime(9,9,9,9,9,9999),"/");
 
 // initiate call to service
 $serviio = new ServiioService($serviio_host,$serviio_port);

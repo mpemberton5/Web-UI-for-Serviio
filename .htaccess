@@ -1,1 +1,9 @@
 php_value magic_quotes_gpc off
+
+AuthName "Serviio: Admin Restricted Access"
+AuthType Basic
+AuthUserFile /mnt/HDA_ROOT/.config/shadow
+AuthGroupFile /dev/null
+<limit GET POST>
+require user admin
+</Limit>

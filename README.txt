@@ -22,6 +22,17 @@ CHANGELOG:
                    - Added refresh after exiting license upload dialog
                    - Added Image tab under Metadata tab
                    - Tested to work with Serviio 1.1
+- 1.4 - 04/05/2013 - Various code enhancements
+                   - Language selection in console tab now working (fixed wrong cookie path)
+                   - Improved multilanguage support, added new language tags
+                   - Updated German translation
+                   - Page is reloaded to discard changes on reset button press
+                   - Media browser link now accessess the bound interface IP
+                   - Status tab lets you now chose the bound network interface (Serviio API 1.2)
+                   - Transcoding settings now working again (Serviio API 1.2)
+                   - Added new subtitle options (Serviio API 1.2)
+                   - Added new remote options (Serviio API 1.2)
+                   - Tested to work with Serviio 1.21
 
 HISTORY:
 This app was originally written by acidumirae@gmail.com and kudos goes to his work.

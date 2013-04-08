@@ -7,10 +7,10 @@
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="svrstat1" class="tabcontent">
-        <?php echo tr('tab_status_description1','Start/Stop the UPnP/DLNA server. The actual Serviio process is not affected.')?><br>
+        <?php echo tr('tab_status_description','Start/Stop the UPnP/DLNA server. The actual Serviio process is not affected.')?><br>
         <br>
-        <input type="submit" name="start" id="start" value="<?php echo tr('tab_status_button_start_server','Start server')?>" <?php echo $startDisabled?> onclick="return confirm('Are you sure you want to start the server');">
-        <input type="submit" name="stop" id="stop" value="<?php echo tr('tab_status_button_stop_server','Stop server')?>" <?php echo $stopDisabled?> onclick="return confirm('Are you sure you want to stop the server');">
+        <input type="submit" name="start" id="start" value="<?php echo tr('tab_status_button_start_server','Start server')?>" <?php echo $startDisabled?> onclick="return confirm('<?php echo tr('status_message_start_server','Are you sure you want to start the server?')?>');" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" name="stop" id="stop" value="<?php echo tr('tab_status_button_stop_server','Stop server')?>" <?php echo $stopDisabled?> onclick="return confirm('<?php echo tr('status_message_stop_server','Are you sure you want to stop the server?')?>');" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </div>
 
@@ -55,10 +55,9 @@
         </td>
 
         <td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
-        <?php $accesses = array("1"=>"Full","2"=>"Limited"); ?>
-        <?php foreach ($accesses as $key=>$val) { ?>
-            <option value="<?php echo $key?>"<?php echo $key==$renderer[5]?" selected":""?>><?php echo $val?></option>
-        <?php } ?>
+		<?php foreach ($accesses as $key=>$val) { ?>
+			<option value="<?php echo $key?>"<?php echo $key==$renderer[5]?" selected":""?>><?php echo $val?></option>
+		<?php } ?>
         </select></td>
         <td><select name="profile_<?php echo $id?>">
         <?php foreach ($profiles as $key=>$val) { ?>
@@ -70,11 +69,9 @@
     <?php } ?>
     </table><td>
     <td width="100">
-<input type="submit" name="refresh" value="Refresh">
+<input type="submit" name="refresh" value="<?php echo tr('button_refresh','Refresh')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
 <br>
-<input type="button" name="addRenderer" value="  Add  " onclick="addProfileRow('rendererTable',null,null)">
-<br>
-<input type="button" name="remove" value="Remove" onclick="if(confirm('Are you sure you want to remove selected renderers')) { deleteProfileRow('rendererTable'); }">
+<input type="button" name="remove" value="<?php echo tr('button_remove','Remove')?>" onclick="if(confirm('<?php echo tr('status_message_remove_renderers','Are you sure you want to remove selected renderers?')?>')) { deleteProfileRow('rendererTable'); }" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </td>
 </tr>
 </table>
@@ -94,15 +91,22 @@ profiles['<?php echo $key?>'] = '<?php echo $val?>';
 </ul>
 <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     <div id="netset1" class="tabcontent">
-<?php echo tr('tab_status_bound_ip_address','Bound IP address (leave empty for default):')?>
-<input type="text" name="ip" value="<?php echo $statusResponse["ip"]?>" maxlength="16">
+		<?php echo tr('tab_status_bound_ip_address','Bound IP address')?>:&nbsp;
+		<!--<input type="text" name="ip" value="<?php echo $statusResponse["ip"]?>" maxlength="16">-->
+		<select name="bound_nic">
+			<?php foreach ($interfaces as $key=>$val) { ?>
+			<option value="<?php echo $key?>"<?php echo $key==$statusResponse["boundNICName"]?" selected":""?>><?php echo $val?></option>
+			<?php } ?>
+		</select>
     </div>
 </div>
 
 
+
+
 <div align="right">
 <span id="savingMsg" class="savingMsg"></span>
-<input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('Are you sure you want to reset changes?')">
-<input type="submit" id="submit" class="button" name="save" value="<?php echo tr('button_save','Save')?>" />
+<input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+<input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
 </div>
 </form>

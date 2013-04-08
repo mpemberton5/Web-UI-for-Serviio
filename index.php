@@ -12,7 +12,7 @@ if (isset($_COOKIE["language"]) && array_key_exists($_COOKIE["language"],$langua
 $serviio = new ServiioService($serviio_host,$serviio_port);
 
 $appInfo = $serviio->getApplication();
-$profiles = $serviio->getProfiles();
+$profiles = $serviio->getReferenceData('profiles');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -124,7 +124,7 @@ function parseUrl(url) {
 function addLibRow(tableID,path,newid) {
 
     if (path==null || path=='') {
-        path = prompt('Please enter folder path');
+        path = prompt('<?php echo tr('status_message_path','Please enter folder path')?>');
         if (path==null || path=='') {
             //alert('Invalid path');
             return;
@@ -235,7 +235,7 @@ function deleteLibRow(tableID) {
         if (deleted) {
             // OK
         } else {
-            alert('ERROR: Online Source was not added');
+            alert('ERROR: <?php echo tr('status_message_error_os','Online Source was not added')?>');
         }
     } catch(e) {
         alert(e);
@@ -244,108 +244,6 @@ function deleteLibRow(tableID) {
 </SCRIPT>
 <SCRIPT type="text/javascript">
 <!--
-function addProfileRow(tableID,ipAddress, name) {
-    // load profiles
-    var profiles = new Array();
-    <?php foreach ($profiles as $key=>$val) { ?>
-        profiles['<?php echo $key?>'] = '<?php echo $val?>';
-    <?php } ?>
-
-    if (ipAddress==null || ipAddress=='') {
-        ipAddress = prompt('Please enter renderer IP address');
-        if (ipAddress==null || ipAddress=='') {
-            //alert('Invalid IP address');
-            return;
-        }
-    }
-
-    if (name==null || name=='') {
-        name = prompt('Please enter renderer name');
-        if (name==null || name=='') {
-            //alert('Invalid name');
-            return;
-        }
-    }
-    var id = Math.uuid();
-
-    var table = document.getElementById(tableID);
-
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.align = 'left';
-
-    var cell1 = row.insertCell(0);
-    cell1.align = 'left';
-    var element1 = document.createElement("input");
-    element1.type = "hidden";
-    element1.name = "renderer_"+id;
-    element1.value = id;
-    cell1.appendChild(element1);
-    var element3 = document.createElement("input");
-    element3.type = "hidden";
-    element3.name = "ipAddress_"+id;
-    element3.value = ipAddress;
-    cell1.appendChild(element3);
-    var element4 = document.createElement("input");
-    element4.type = "hidden";
-    element4.name = "name_"+id;
-    element4.value = name;
-    cell1.appendChild(element4);
-
-
-    var cell2 = row.insertCell(1);
-    cell2.innerHTML = "<img src='images/bullet_orange.png' alt='UNKNOWN'>";
-
-    var cell3 = row.insertCell(2);
-    var element5 = document.createElement("div");
-    element5.innerHTML = ipAddress;
-    cell3.appendChild(element5);
-
-    var cell4 = row.insertCell(3);
-    var element6 = document.createElement("div");
-    element6.innerHTML = name;
-    cell4.appendChild(element6);
-
-    var cell4 = row.insertCell(4);
-    var element6 = document.createElement("div");
-    element6.setAttribute('class', 'os_switch');
-    element6.setAttribute('id', 'os_switch_'+id);
-    element6.setAttribute('name', 'os_switch_'+id);
-    var element6a = document.createElement("div");
-    element6a.setAttribute('class', 'iphone_switch_container');
-    element6a.setAttribute('style', 'height:16px; width:56px; position: relative; overflow: hidden;');
-    var element6b = document.createElement("img");
-    element6b.setAttribute('class', 'iphone_switch');
-    element6b.setAttribute('style', 'height:16px; width:56px; background-image:url(images/iphone_switch_16.png); background-repeat:none; background-position:-31px');
-    element6b.setAttribute('src', 'images/iphone_switch_container_off_16.png');
-    element6a.appendChild(element6b);
-    element6.appendChild(element6a);
-    cell4.appendChild(element6);
-
-    var cell2a = row.insertCell(5);
-    var element2a = document.createElement("select");
-    element2a.name = "access_"+id;
-    var option1 = document.createElement("option");
-    option1.value = "1";
-    option1.innerHTML = "Full";
-    element2a.appendChild(option1);
-    var option2 = document.createElement("option");
-    option2.value = "2";
-    option2.innerHTML = "Limited";                           
-    element2a.appendChild(option2);
-    element2a.value = 1;
-    cell2a.appendChild(element2a);
-
-    var cell5 = row.insertCell(6);
-    var element6 = document.createElement("select");
-    element6.name = "profile_"+id;
-    var key;
-    for (key in profiles) {
-        element6.options[element6.options.length] = new Option(profiles[key],key);
-    }
-    element6.value = 1;
-    cell5.appendChild(element6);
-}
 
 function deleteProfileRow(tableID) {
     try {
@@ -366,7 +264,7 @@ function deleteProfileRow(tableID) {
     if (deleted) {
         // OK
     } else {
-        alert('Please select renderers with the Rem. column');
+        alert('<?php echo tr('status_message_remove_renderers','Please select renderers in the Rem. column')?>');
     }
     } catch(e) {
         alert(e);
@@ -382,11 +280,11 @@ function deleteProfileRow(tableID) {
     <div id="headerContent">
         <div id="optionBar">
             <div id="wuSites">
-                <span><b>Server Status:</b><span id="svrs"></span></span>
-                <span><b>Checking Updates:</b><span id="lucr"></span></span>
-                <span><b>Checking Additions:</b><span id="lacr"></span></span>
-                <span><b>Files Added:</b><span id="nofa"></span></span>
-                <span><b>Last File Added:</b><span id="lafn"></span></span>
+                <span><b><?php echo tr('status_message_server_status','Server Status')?>:&nbsp;</b><span id="svrs"></span></span>
+                <span><b><?php echo tr('status_message_updates','Checking Updates')?>:&nbsp;</b><span id="lucr"></span></span>
+                <span><b><?php echo tr('status_message_checking_additions','Checking Additions')?>:&nbsp;</b><span id="lacr"></span></span>
+                <span><b><?php echo tr('status_message_files_added','Files Added')?>:&nbsp;</b><span id="nofa"></span></span>
+                <span><b><?php echo tr('status_message_last_added','Last File Added')?>:&nbsp;</b><span id="lafn"></span></span>
             </div>
         </div>
     </div>
@@ -453,7 +351,7 @@ if ($message!="") {
         <li><a href="content.php?tab=status" rel="indexcontainer" class="selected"><?php echo tr('tab_status','Status')?></a></li>
         <li><a href="content.php?tab=library" rel="indexcontainer"><?php echo tr('tab_folders','Library')?></a></li>
         <li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
-        <li><a href="content.php?tab=transcoding" rel="indexcontainer"><?php echo tr('tab_transcoding','Transcoding')?></a></li>
+        <li><a href="content.php?tab=delivery" rel="indexcontainer"><?php echo tr('tab_delivery','Delivery')?></a></li>
         <li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
         <li><a href="content.php?tab=remote" rel="indexcontainer"><?php echo tr('tab_remote','Remote')?></a></li>
         <li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>
@@ -516,7 +414,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#statusform");
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -531,10 +429,11 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+    						location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -562,7 +461,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#stop").removeAttr("disabled");
                             $("#start").attr("disabled", "disabled");
                         } else {
-                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -589,7 +488,7 @@ indexes.onajaxpageload=function(pageurl) {
                             $("#start").removeAttr("disabled");
                             $("#stop").attr("disabled", "disabled");
                         } else {
-                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -600,6 +499,10 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
         });
+		$("#reset").click(function(e) {
+			location.reload();
+			return false;
+		});
     }
     //-------------------------------------------------------------------------
     if (pageurl.indexOf("content.php?tab=library")!=-1) {
@@ -657,7 +560,7 @@ indexes.onajaxpageload=function(pageurl) {
             var $form = $("#libraryform");
             $("#refresh").click(function(e) {
                 $("#process").val("refresh");
-                $("#savingMsg").text("Starting Refresh...");
+                $("#savingMsg").text("<?php echo tr('status_message_refresh','Starting Refresh...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -672,10 +575,10 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Started!");
+                            $("#savingMsg").text("<?php echo tr('status_message_started','Started!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_rescan','Error starting rescan!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -687,7 +590,7 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -704,10 +607,11 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2").text(response);
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -736,7 +640,7 @@ indexes.onajaxpageload=function(pageurl) {
                 width: 570,
                 modal: true,
                 buttons: {
-                    "Select Folder": function() {
+                    "<?php echo tr('button_select_folder','Select Folder')?>": function() {
                         var bValid = true;
                         var tmp = $(".sel").attr('href');
                         var nextID = parseInt($("#lastFId").val())+1;
@@ -744,7 +648,7 @@ indexes.onajaxpageload=function(pageurl) {
                         addLibRow("libraryTableFolders",tmp,nextID);
                         $(this).dialog("close");
                     },
-                    Cancel: function() {
+                    <?php echo tr('button_cancel','Cancel')?>: function() {
                         $(this).dialog("close");
                     }
                 }
@@ -768,11 +672,11 @@ indexes.onajaxpageload=function(pageurl) {
                          height: 165,
                          modal: true,
                          buttons: {
-                         "Delete Folder": function() {
+                         "<?php echo tr('button_delete_folder','Delete Folder')?>": function() {
                              $(this).dialog("close");
                              $("#libraryTableFolders tr.library-row-highlighted").remove();
                          },
-                         Cancel: function() {
+                         <?php echo tr('button_cancel','Cancel')?>: function() {
                              $(this).dialog("close");
                              }
                          }
@@ -792,13 +696,14 @@ indexes.onajaxpageload=function(pageurl) {
                      $("#dialog-remove-library").dialog({
                          resizable: false,
                          height: 165,
+                         width: 420,
                          modal: true,
                          buttons: {
-                         "Delete Online Source": function() {
+                         "<?php echo tr('button_delete_online_source','Delete Online Source')?>": function() {
                              $(this).dialog("close");
                              $("#libraryTableOnlineSources tr.library-row-highlighted").remove();
                          },
-                         Cancel: function() {
+                         <?php echo tr('button_cancel','Cancel')?>: function() {
                              $(this).dialog("close");
                              }
                          }
@@ -814,7 +719,7 @@ indexes.onajaxpageload=function(pageurl) {
                 width: 620,
                 modal: true,
                 buttons: {
-                    "Add": function() {
+                    "<?php echo tr('button_add','Add')?>": function() {
                         var newID = 1 + parseInt($("#lastOSId").val());
                         $("#lastOSId").val(newID);
 
@@ -912,7 +817,7 @@ indexes.onajaxpageload=function(pageurl) {
 
                         $(this).dialog("close");
                     },
-                    Cancel: function() {
+                    <?php echo tr('button_cancel','Cancel')?>: function() {
                         $(this).dialog("close");
                     }
                 }
@@ -942,7 +847,7 @@ indexes.onajaxpageload=function(pageurl) {
                     $(":focus", $(this)).blur();
                 },
                 buttons: {
-                    "Add": function() {
+                    "<?php echo tr('button_add','Add')?>": function() {
                         var anSelected = fnGetSelected(oTable);
                         if ( anSelected.length !== 0 ) {
                             var sData = oTable.fnGetData(anSelected[0]);
@@ -1037,7 +942,7 @@ indexes.onajaxpageload=function(pageurl) {
                         }
                         $(this).dialog("close");
                     },
-                    Cancel: function() {
+                    <?php echo tr('button_cancel','Cancel')?>: function() {
                         $(this).dialog("close");
                     }
                 }
@@ -1104,7 +1009,7 @@ indexes.onajaxpageload=function(pageurl) {
                 width: 620,
                 modal: true,
                 buttons: {
-                    "Save": function() {
+                    "<?php echo tr('button_save','Save')?>": function() {
                         var osID = $("#osID").val();
                         $("input[name=os_url_"+osID+"]").val($("#editSourceURL").val());
                         if ($("#editName").val()=="") {
@@ -1131,7 +1036,7 @@ indexes.onajaxpageload=function(pageurl) {
                         // now close the form
                         $(this).dialog("close");
                     },
-                    Cancel: function() {
+                    <?php echo tr('button_cancel','Cancel')?>: function() {
                         $(this).dialog("close");
                     }
                 }
@@ -1147,7 +1052,7 @@ indexes.onajaxpageload=function(pageurl) {
                 });
 
                 if (sel_row == 0) {
-                    alert("No Item Selected");
+                    alert("<?php echo tr('status_message_item_selection','No Item Selected')?>");
                     return false;
                 }
 
@@ -1184,7 +1089,7 @@ indexes.onajaxpageload=function(pageurl) {
             $(".refresh-link").click(function(e) {
                 $("#process").val("OSrefresh");
                 var os_no = "os_no=" + $(this).attr("os_no") + "&process=OSrefresh";
-                $("#savingMsg").text("Starting Refresh...");
+                $("#savingMsg").text("<?php echo tr('status_message_refresh','Starting Refresh...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent(os_no)));
                 $("#debugInfoDate").text(Date());
@@ -1199,10 +1104,10 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Started!");
+                            $("#savingMsg").text("<?php echo tr('status_message_started','Started!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("errorCode").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_rescan','Error starting rescan!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1213,7 +1118,11 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
-
+			$("#reset").click(function(e) {
+				location.reload();
+				return false;
+			});
+			
         });
     }
     //-------------------------------------------------------------------------
@@ -1229,7 +1138,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#metadataform");
             $("#rescan").click(function(e) {
-                $("#savingMsg").text("Starting Rescan...");
+                $("#savingMsg").text("<?php echo tr('status_message_rescan','Starting Rescan...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -1243,10 +1152,10 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Started!");
+                            $("#savingMsg").text("<?php echo tr('status_message_started','Started!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
                         } else {
-                            $("#savingMsg").text("Error starting rescan! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_rescan','Error starting rescan!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1258,7 +1167,7 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -1273,10 +1182,11 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1287,33 +1197,50 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+			$("#reset").click(function(e) {
+				location.reload();
+				return false;
+			});
         });
     }
     //-------------------------------------------------------------------------
-    if (pageurl.indexOf("content.php?tab=transcoding")!=-1) {
-        var metTab1=new ddtabcontent("generalsettingstab")
+    if (pageurl.indexOf("content.php?tab=delivery")!=-1) {
+        /*var metTab1=new ddtabcontent("generalsettingstab")
         metTab1.setpersist(false)
         metTab1.setselectedClassTarget("link") //"link" or "linkparent"
         metTab1.init()
         var metTab2=new ddtabcontent("videosettingstab")
         metTab2.setpersist(false)
         metTab2.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab2.init()*/
+        var metTab1=new ddtabcontent("deliverytabs")
+        metTab1.setpersist(false)
+        metTab1.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab1.init()
+        var metTab2=new ddtabcontent("generalsettingstab")
+        metTab2.setpersist(false)
+        metTab2.setselectedClassTarget("link") //"link" or "linkparent"
         metTab2.init()
+		var metTab3=new ddtabcontent("videosettingstab")
+        metTab3.setpersist(false)
+        metTab3.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab3.init()
+
         $(document).ready(function(){
             $("#debugInfo").text("");
             $("#debugInfoDate").text("");
             $("#debugInfo2").text("");
             $("#debugInfo2Date").text("");
-            var $form = $("#transcodingform");
+            var $form = $("#deliveryform");
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/transcoding1.php',
+                    url: 'code/delivery1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
@@ -1321,10 +1248,11 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1353,12 +1281,12 @@ indexes.onajaxpageload=function(pageurl) {
                 width: 500,
                 modal: true,
                 buttons: {
-                    "Select Folder": function() {
+                    "<?php echo tr('button_select_folder','Select Folder')?>": function() {
                         var tmp = $(".sel").attr('href');
                         $("#location").val(tmp);
                         $(this).dialog("close");
                     },
-                    Cancel: function() {
+                    <?php echo tr('button_cancel','Cancel')?>: function() {
                         $(this).dialog("close");
                     }
                 }
@@ -1369,7 +1297,10 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#dialog-form").dialog("open");
                 return false;
             });
-
+			$("#reset").click(function(e) {
+				location.reload();
+				return false;
+			});
         });
     }
     //-------------------------------------------------------------------------
@@ -1381,7 +1312,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#presentationform");
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -1396,12 +1327,12 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
                             /* refresh in case language was changed */
                             location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1412,6 +1343,10 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+			$("#reset").click(function(e) {
+				location.reload();
+				return false;
+			});
         });
     }
     //-------------------------------------------------------------------------
@@ -1424,6 +1359,11 @@ indexes.onajaxpageload=function(pageurl) {
         rmtTab2.setpersist(false)
         rmtTab2.setselectedClassTarget("link") //"link" or "linkparent"
         rmtTab2.init()
+        var rmtTab3=new ddtabcontent("rmtInternetAccessTab")
+        rmtTab3.setpersist(false)
+        rmtTab3.setselectedClassTarget("link") //"link" or "linkparent"
+        rmtTab3.init()
+
         $(document).ready(function(){
             $("#debugInfo").text("");
             $("#debugInfoDate").text("");
@@ -1431,7 +1371,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#remoteform");
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -1446,10 +1386,12 @@ indexes.onajaxpageload=function(pageurl) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text(serializeXmlNode(response));
                         if ($(response).find("errorCode").text() == 0) {
-                            $("#savingMsg").text("Saved!");
+                            $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
-                            $("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
+                            $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1460,6 +1402,42 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+            
+            $("#checkPortMapping").click(function(e) {
+            	$("#process").val("checkPortMapping");
+                $("#savingMsg").text("<?php echo tr('status_message_check_port_mapping','Checking accessibility...!')?>");
+                $("#savingMsg").first().show();
+                $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
+                $("#debugInfoDate").text(Date());
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code/remote.php',
+                    data: $form.serialize(),
+                    dataType: 'xml',
+                    timeout: 10000,
+                    success: function(response) {
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(serializeXmlNode(response));
+                        if ($(response).find("errorCode").text() == 0) {
+                            $("#savingMsg").text("Available!");
+                            $("#savingMsg").delay(800).fadeOut("slow");
+                        } else {
+                            $("#savingMsg").text("<?php echo tr('status_message_error_check_port_mapping','Connection error!')?> (" + $(response).find("errorCode").text() + ")");
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        alert("Error: " + textStatus)
+                        $("#debugInfo2Date").text(Date());
+                        $("#debugInfo2").text(errorThrown);
+                    }
+                });
+                return false;
+            });
+			$("#reset").click(function(e) {
+				location.reload();
+				return false;
+			});
         });
     }
     //-------------------------------------------------------------------------
@@ -1475,7 +1453,7 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#settingsform");
             $("#submit").click(function(e) {
-                $("#savingMsg").text("Saving...");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
@@ -1489,8 +1467,9 @@ indexes.onajaxpageload=function(pageurl) {
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
                         $("#debugInfo2").text("Storage to Cookie successful");
-                        $("#savingMsg").text("Saved!");
+                        $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                         $("#savingMsg").delay(800).fadeOut("slow");
+						location.reload();
                     },
                     error: function(xhr, textStatus, errorThrown){
                         alert("Error: " + textStatus)
@@ -1500,6 +1479,10 @@ indexes.onajaxpageload=function(pageurl) {
                 });
                 return false;
             });
+			$("#reset").click(function(e) {
+				location.reload();
+				return false;
+			});
         });
     }
     //-------------------------------------------------------------------------
@@ -1511,7 +1494,7 @@ indexes.onajaxpageload=function(pageurl) {
             width: 500,
             modal: true,
             buttons: {
-                Close: function() {
+                <?php echo tr('button_close','Close')?>: function() {
                     $(this).dialog("close");
                     location.reload();
                 }
@@ -1532,9 +1515,9 @@ indexes.onajaxpageload=function(pageurl) {
                 $("#upload_target").load(function () {
                     result = $("#upload_target").contents().find("body").html();
                     if (result == "0") {
-                        $("#licenseResult").text("Successfully Imported License!");
+                        $("#licenseResult").text("<?php echo tr('status_message_import_license','Successfully Imported License!')?>");
                     } else {
-                        $("#licenseResult").text("Error! Invalid License!");
+                        $("#licenseResult").text("Error: <?php echo tr('status_message_error_import_license','Invalid License!')?>");
                     }
                 });
                 return false;

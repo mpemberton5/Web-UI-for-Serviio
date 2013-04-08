@@ -23,6 +23,6 @@ $section = getPostVar("section","");
 if ($section!="audio") {
     $section = "video";
 }
-$descriptiveMetadataExtractors = $serviio->getDescriptiveMetadataExtractors();
-$browsingCategoriesLanguages = $serviio->getBrowsingCategoriesLanguages();
+$descriptiveMetadataExtractors = $serviio->getReferenceData('descriptiveMetadataExtractors');
+$metadataLanguages = $serviio->getReferenceData('metadataLanguages');
 ?>

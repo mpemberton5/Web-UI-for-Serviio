@@ -3,7 +3,7 @@
 <img src="images/logo.png" alt="serviio" />
 <br>
 <?php $appdata = $serviio->getApplication(); ?>
-<b>Serviio v <?php $ret = $serviio->getApplication(); echo $ret['version'];?></b>
+<b>Serviio <?php $ret = $serviio->getApplication(); echo $ret['edition'];?> v <?php echo $ret['version'];?> <?php echo $ret['licenseType'];?> license</b>
 &nbsp;-&nbsp;<b>WebUI v <?php echo $webUIver;?></b>
 <br>
 <br>
@@ -17,7 +17,7 @@
     /*
     echo "<input name='uploadfile' type='file'><input type='submit' value='Upload License' readonly>";
     */
-    echo "<input id='license' name='license' type='button' value='Upload New License'>";
+    echo "<input id='license' name='license' type='button' value='Upload New License' class='ui-button ui-widget ui-state-default ui-corner-all btn-small' />";
 ?>
 <br>
 <br>
@@ -33,14 +33,14 @@ This product includes software developed by the <a href="http://www.visigoths.or
 This product includes <a href="http://www.restlet.org/">Restlet</a> which is licensed under <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPL v2.1</a>.<br>
 This product includes <a href="http://www.jthink.net/jaudiotagger/">Jaudiotagger</a> (an audio tagging library) which is licensed under <a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a>.<br>')?>
 </div>
-<div id="license-form" title="Load New License">
+<div id="license-form" title="<?php echo tr('dialog_load_license','Load New License')?>">
     <br />
     <form accept-charset="utf-8" method="post" enctype="multipart/form-data" action="license_ul.php" target="upload_target">
         <fieldset>
-            <label for="uploadFile">Choose File:</label>
+            <label for="uploadFile"><?php echo tr('dialog_choose_file','Choose File')?>:&nbsp;</label>
             <input name='uploadFile' id='uploadFile' size='45' type='file' />
             <br />
-            <input type="submit" value="Click to Import" />
+            <input type="submit" value="<?php echo tr('dialog_import','Click to Import')?>">
         </fieldset>
     </form>
     <br />

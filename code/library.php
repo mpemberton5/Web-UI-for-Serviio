@@ -108,4 +108,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $repo = $serviio->getRepository();
     $serviio->getApplication();
 }
+$accesses = $serviio->getReferenceData('accessGroups');
+$onlineQuality = $serviio->getReferenceData('onlineContentQualities');
+$feedTypes = $serviio->getReferenceData('onlineRepositoryTypes');
 ?>

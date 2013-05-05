@@ -134,7 +134,7 @@
                                     <input type="hidden" id="os_name_<?php echo $id?>" name="os_name_<?php echo $id?>" value="<?php echo $entry[4]?>">
                                     <input type="hidden" id="os_stat_<?php echo $id?>" name="os_stat_<?php echo $id?>" value="<?php echo $entry[5]?>">
                                 </td>
-                                <td align="center" ><a style="background-color: yellow;" class="refresh-link" os_no="<?php echo $id?>" href="">&nbsp;Refresh&nbsp;</a></td>
+                                <td align="center" ><a style="background-color: yellow;" class="refresh-link" os_no="<?php echo $id?>" href="">&nbsp;<?php echo tr('button_refresh','Refresh')?>&nbsp;</a></td>
                                 <td>
                                     <div class="os_switch" id="os_switch_<?php echo $id?>" style="cursor: pointer; ">
                                         <div class="iphone_switch_container" style="height:27px; width:94px; position: relative; overflow: hidden">
@@ -146,33 +146,33 @@
                                 <!--<td><select name="os_access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
 									<?php foreach ($accesses as $key=>$val) { ?>
 										<option value="<?php echo $key?>"<?php echo $key==max($entry[6])?" selected":""?>><?php echo $val?></option>
-									<?php } ?>
-                                </select></td>-->
-                                <?php
-					if ($serviio->licenseEdition=="PRO") {
-						echo '<td><select name="os_access_'.$id.'">';
-						foreach ($accesses as $key=>$val) {
-							echo '<option value="'.$key.'"'.($key==max($entry[6])?' selected':'').'>'.$val.'</option>';
-						}
-						echo '</select></td>';
-					}
-					else {
-						echo '<td><select name="os_access_'.$id.'" disabled="disabled" title="Only enabled with PRO license">';
-						echo '<option value="1">No_Restrictions</option>';
-						echo '</select></td>';
-						echo '<input type="hidden" id="os_access_'.$id.'" name="os_access_'.$id.'" value="1">';
-					}
-				?>
+									<?php } ?>-->
+									
+								<?php
+									if ($serviio->licenseEdition=="PRO") {
+										echo '<td><select name="os_access_'.$id.'">';
+										foreach ($accesses as $key=>$val) {
+											echo '<option value="'.$key.'"'.($key==max($entry[6])?' selected':'').'>'.$val.'</option>';
+										}
+										echo '</select></td>';
+									}
+									else {
+										echo '<td><select name="os_access_'.$id.'" disabled="disabled" title="Only enabled with PRO license">';
+										echo '<option value="1">No_Restrictions</option>';
+										echo '</select></td>';
+										echo '<input type="hidden" id="os_access_'.$id.'" name="os_access_'.$id.'" value="1">';
+									}
+								?>
 
                                 <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>" title="<?php echo $entry[1]?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
 
                                 <td style="vertical-align: top;" width="30"><span id="os_media_v_<?php echo $id?>">
                                     <?php if ($entry[2] == "VIDEO") {?>
-                                        <img src="images/film.png" alt="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>
+                                        <img src="images/film.png" alt="<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>" align="top">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_video','Video')?>
                                     <?php } else if ($entry[2] == "AUDIO") {?>
-                                        <img src="images/music-beam.png" alt="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>
+                                        <img src="images/music-beam.png" alt="<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>" align="top">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_audio','Audio')?>
                                     <?php } else if ($entry[2] == "IMAGE") {?>
-                                        <img src="images/camera-black.png" alt="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>
+                                        <img src="images/camera-black.png" alt="<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>" align="top">&nbsp;<?php echo tr('tab_online_sources_repository_table_share_images','Image')?>
                                     <?php } ?>
                                 </span></td>
 
@@ -239,7 +239,7 @@
 
     <div align="right">
         <span id="savingMsg" class="savingMsg"></span>
-        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick=indexes.expandit(1) class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
         <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </form>
@@ -349,18 +349,18 @@
 <table id="t1" width="100%" class="display noblink">
 <thead>
     <tr>
-        <th>Name</th>
-        <th>Region</th>
-        <th>URL</th>
-        <th>MediaType</th>
-        <th>ResourceType</th>
-        <th>plugin</th>
-        <th>language</th>
-        <th>nid</th>
-        <th>resolution</th>
-        <th>quality</th>
-        <th>reliability</th>
-        <th>installCount</th>
+        <th><?php echo tr('tab_online_sources_serviidb_name','Thumbnail URL')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_region','Thumbnail URL')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_url','Thumbnail URL')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_mediatype','MediaType')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_resourcetype','ResourceType')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_plugin','Plugin')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_language','Language')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_nid','Nid')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_resolution','Resolution')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_quality','Quality')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_reliability','Reliability')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_installcount','InstallCount')?></th>
     </tr>
 </thead>
 <tbody>

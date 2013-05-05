@@ -143,11 +143,26 @@
                                     </div>
                                 </td>
                                 <td align="left"><span id="os_type_v_<?php echo $id?>" name="os_type_v_<?php echo $id?>"><?php echo $entry[0]?></span></td>
-                                <td><select name="os_access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
+                                <!--<td><select name="os_access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
 									<?php foreach ($accesses as $key=>$val) { ?>
 										<option value="<?php echo $key?>"<?php echo $key==max($entry[6])?" selected":""?>><?php echo $val?></option>
 									<?php } ?>
-                                </select></td>
+                                </select></td>-->
+                                <?php
+					if ($serviio->licenseEdition=="PRO") {
+						echo '<td><select name="os_access_'.$id.'">';
+						foreach ($accesses as $key=>$val) {
+							echo '<option value="'.$key.'"'.($key==max($entry[6])?' selected':'').'>'.$val.'</option>';
+						}
+						echo '</select></td>';
+					}
+					else {
+						echo '<td><select name="os_access_'.$id.'" disabled="disabled" title="Only enabled with PRO license">';
+						echo '<option value="1">No_Restrictions</option>';
+						echo '</select></td>';
+						echo '<input type="hidden" id="os_access_'.$id.'" name="os_access_'.$id.'" value="1">';
+					}
+				?>
 
                                 <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>" title="<?php echo $entry[1]?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
 

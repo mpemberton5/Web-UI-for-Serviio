@@ -47,11 +47,26 @@
                                 </td>
                                 <td align="left"><?php echo $entry[0]?></td>
 
-                                <td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
+                                <!--<td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
 									<?php foreach ($accesses as $key=>$val) { ?>
 										<option value="<?php echo $key?>"<?php echo $key==max($entry[4])?" selected":""?>><?php echo $val?></option>
 									<?php } ?>
-                                </select></td>
+                                </select></td>-->
+                                <?php
+					if ($serviio->licenseEdition=="PRO") {
+						echo '<td><select name="access_'.$id.'">';
+						foreach ($accesses as $key=>$val) {
+							echo '<option value="'.$key.'"'.($key==max($entry[4])?' selected':'').'>'.$val.'</option>';
+						}
+						echo '</select></td>';
+					}
+					else {
+						echo '<td><select name="access_'.$id.'" disabled="disabled" title="Only enabled with PRO license">';
+						echo '<option value="1">No_Restrictions</option>';
+						echo '</select></td>';
+						echo '<input type="hidden" id="access_'.$id.'" name="access_'.$id.'" value="1">';
+					}
+				?>
 
                                 <?php for ($i=0;$i<count($types);$i++) { $type = $types[$i]; ?>
                                 <td><input type="checkbox" name="<?php echo $type."_".$id?>" value="1"<?php echo array_search($type,$entry[1])===false?"":" checked"?>></td>

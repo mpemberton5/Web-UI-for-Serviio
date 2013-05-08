@@ -364,8 +364,8 @@
 <table id="t1" width="100%" class="display noblink">
 <thead>
     <tr>
-        <th><?php echo tr('tab_online_sources_serviidb_name','Thumbnail URL')?></th>
-        <th><?php echo tr('tab_online_sources_serviidb_region','Thumbnail URL')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_name','Name')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_region','Region')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_url','Thumbnail URL')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_mediatype','MediaType')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_resourcetype','ResourceType')?></th>

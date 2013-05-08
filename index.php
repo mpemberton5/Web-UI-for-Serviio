@@ -870,9 +870,9 @@ indexes.onajaxpageload=function(pageurl) {
                             if (sData['resourceType'] == "RSS Atom Feed") {
                                 srcFeed = "FEED";
                             } else if (sData['resourceType'] == "Web Resource") {
-                                srcFeed = "FEED";
+                                srcFeed = "LIVE_STREAM";
                             } else if (sData['resourceType'] == "Live Stream") {
-                                srcFeed = "FEED";
+                                srcFeed = "WEB_RESOURCE";
                             }
                         $("#libraryTableOnlineSources").find('tbody')
                             .append($('<tr>').attr('align', 'center')

@@ -22,17 +22,21 @@ CHANGELOG:
                    - Added refresh after exiting license upload dialog
                    - Added Image tab under Metadata tab
                    - Tested to work with Serviio 1.1
-- 1.4 - 04/05/2013 - Various code enhancements
-                   - Language selection in console tab now working (fixed wrong cookie path)
-                   - Improved multilanguage support, added new language tags
-                   - Updated German translation
-                   - Page is reloaded to discard changes on reset button press
-                   - Media browser link now accessess the bound interface IP
-                   - Status tab lets you now chose the bound network interface (Serviio API 1.2)
-                   - Transcoding settings now working again (Serviio API 1.2)
-                   - Added new subtitle options (Serviio API 1.2)
-                   - Added new remote options (Serviio API 1.2)
-                   - Tested to work with Serviio 1.21
+- 1.4b1 - 04/05/2013 - Various code enhancements
+                     - Language selection in console tab now working (fixed wrong cookie path)
+                     - Improved multilanguage support, added new language tags
+                     - Updated German translation
+                     - Page is reloaded to discard changes on reset button press
+                     - Media browser link now accessess the bound interface IP
+                     - Status tab lets you now chose the bound network interface (Serviio API 1.2)
+                     - Transcoding settings now working again (Serviio API 1.2)
+                     - Added new subtitle options (Serviio API 1.2)
+                     - Added new remote options (Serviio API 1.2)
+                     - Tested to work with Serviio 1.21
+- 1.4b2 - 05/06/2013 - Fixed library changes not savable in free version
+                     - Improved multilanguage support
+                     - Updated German translation
+
 
 HISTORY:
 This app was originally written by acidumirae@gmail.com and kudos goes to his work.
@@ -47,7 +51,6 @@ Like the app?  Go to www.markpemberton.com and donate a few bucks for a good cup
 
 
 TODO:
-Change all buttons to jQuery UI buttons
 Change images in library screens
 Hide Remote tab if FREE edition
 Optionalize the location of the Online Resources tab (either on the main tab list or where it is now)

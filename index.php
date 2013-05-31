@@ -353,8 +353,9 @@ if ($message!="") {
         <li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
         <li><a href="content.php?tab=delivery" rel="indexcontainer"><?php echo tr('tab_delivery','Delivery')?></a></li>
         <li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
-        <li><a href="content.php?tab=remote" rel="indexcontainer"><?php echo tr('tab_remote','Remote')?></a></li>
+        <?php echo ($serviio->licenseEdition=="PRO"?'<li><a href="content.php?tab=remote" rel="indexcontainer">'.tr('tab_remote','Remote').'</a></li>':'')?>
         <li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>
+        <li><a href="content.php?tab=logs" rel="indexcontainer"><?php echo tr('tab_logs','Logs')?></a></li>
         <li><a href="content.php?tab=about" rel="indexcontainer"><?php echo tr('tab_about','About')?></a></li>
     </ul>
 
@@ -1486,6 +1487,17 @@ indexes.onajaxpageload=function(pageurl) {
         });
     }
     //-------------------------------------------------------------------------
+    if (pageurl.indexOf("content.php?tab=logs")!=-1) {
+        var conTabs=new ddtabcontent("logsFileTab")
+        conTabs.setpersist(false)
+        conTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        conTabs.init()
+        var conTabs=new ddtabcontent("logsContentTab")
+        conTabs.setpersist(false)
+        conTabs.setselectedClassTarget("link") //"link" or "linkparent"
+        conTabs.init()
+    }
+    //-------------------------------------------------------------------------
     if (pageurl.indexOf("content.php?tab=about")!=-1) {
 
         $("#license-form").dialog({
@@ -1554,7 +1566,7 @@ if ($debugLoc == "screen") {
 </div>
 <?php } ?>
 
-<div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
+<div align="center"><font size="1">Web UI for Serviio &copy; 2013 <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
 RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> // 
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 Table Sorting/Filtering &copy; <a href="http://www.javascripttoolbox.com/lib/table/source.php">Matt Kruse</a> //

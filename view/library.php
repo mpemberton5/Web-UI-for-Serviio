@@ -6,6 +6,7 @@
     <ul id="librarytabs" class="shadetabs">
     <li><a href="#" rel="libtab1" class="selected"><?php echo tr('tab_folders_shared_folders','Shared Folders')?></a></li>
     <li><a href="#" rel="libtab2"><?php echo tr('tab_folders_online_sources','Online Sources')?></a></li>
+    <li><a href="#" rel="libtab3"><?php echo tr('tab_folders_installed_plugins','Installed plugins')?></a></li>
     </ul>
     <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
 
@@ -47,11 +48,6 @@
                                 </td>
                                 <td align="left"><?php echo $entry[0]?></td>
 
-                                <!--<td><select name="access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
-									<?php foreach ($accesses as $key=>$val) { ?>
-										<option value="<?php echo $key?>"<?php echo $key==max($entry[4])?" selected":""?>><?php echo $val?></option>
-									<?php } ?>
-                                </select></td>-->
                                 <?php
 					if ($serviio->licenseEdition=="PRO") {
 						echo '<td><select name="access_'.$id.'">';
@@ -158,26 +154,22 @@
                                     </div>
                                 </td>
                                 <td align="left"><span id="os_type_v_<?php echo $id?>" name="os_type_v_<?php echo $id?>"><?php echo $entry[0]?></span></td>
-                                <!--<td><select name="os_access_<?php echo $id?>" <?php echo ($serviio->licenseEdition=="PRO"?'':'disabled="disabled" title="Enabled with PRO License"')?>>
-									<?php foreach ($accesses as $key=>$val) { ?>
-										<option value="<?php echo $key?>"<?php echo $key==max($entry[6])?" selected":""?>><?php echo $val?></option>
-									<?php } ?>-->
-									
-								<?php
-									if ($serviio->licenseEdition=="PRO") {
-										echo '<td><select name="os_access_'.$id.'">';
-										foreach ($accesses as $key=>$val) {
-											echo '<option value="'.$key.'"'.($key==max($entry[6])?' selected':'').'>'.$val.'</option>';
-										}
-										echo '</select></td>';
-									}
-									else {
-										echo '<td><select name="os_access_'.$id.'" disabled="disabled" title="Only enabled with PRO license">';
-										echo '<option value="1">No_Restrictions</option>';
-										echo '</select></td>';
-										echo '<input type="hidden" id="os_access_'.$id.'" name="os_access_'.$id.'" value="1">';
-									}
-								?>
+								
+					<?php
+						if ($serviio->licenseEdition=="PRO") {
+							echo '<td><select name="os_access_'.$id.'">';
+							foreach ($accesses as $key=>$val) {
+								echo '<option value="'.$key.'"'.($key==max($entry[6])?' selected':'').'>'.$val.'</option>';
+							}
+							echo '</select></td>';
+						}
+						else {
+							echo '<td><select name="os_access_'.$id.'" disabled="disabled" title="Only enabled with PRO license">';
+							echo '<option value="1">No_Restrictions</option>';
+							echo '</select></td>';
+							echo '<input type="hidden" id="os_access_'.$id.'" name="os_access_'.$id.'" value="1">';
+						}
+					?>
 
                                 <td align="left"><span id="os_name_v_<?php echo $id?>" name="os_name_v_<?php echo $id?>" title="<?php echo $entry[1]?>"><?php echo $entry[4]==""?$entry[1]:$entry[4]?></span></td>
 
@@ -240,16 +232,32 @@
                     <?php echo tr('tab_online_sources_preferred_online_content_quality','Preferred online content quality')?>:&nbsp;
                 </td><td>
                     <select name="onlinequality">
-                        <!--<option value="LOW"<?php echo $serviio->onlineContentPreferredQuality=="LOW"?" selected":""?>>Low</option>
-                        <option value="MEDIUM"<?php echo $serviio->onlineContentPreferredQuality=="MEDIUM"?" selected":""?>>Medium</option>
-                        <option value="HIGH"<?php echo $serviio->onlineContentPreferredQuality=="HIGH"?" selected":""?>>High</option>-->
-                        <?php foreach ($onlineQuality as $key=>$val) { ?>
-							<option value="<?php echo $key?>"<?php echo $key==$serviio->onlineContentPreferredQuality?" selected":""?>><?php echo $val?></option>
-						<?php } ?>
+			<?php foreach ($onlineQuality as $key=>$val) { ?>
+			<option value="<?php echo $key?>"<?php echo $key==$serviio->onlineContentPreferredQuality?" selected":""?>><?php echo $val?></option>
+			<?php } ?>
                     </select>
                 </td></tr>
             </table>
         </div>
+        
+        <div id="libtab3" class="tabcontent">
+		<?php $onlinePlugin = $serviio->getPlugins(); ?>
+		<table>
+			<tr>
+				<th align="left">Plugin name</th>
+				<th align="left">Version</th>
+			</tr>
+
+			<?php
+				foreach ($onlinePlugin as $key=>$val) {
+					echo '<tr>';
+					echo '<td>'.$val[0].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+					echo '<td>'.$val[1].'</td>';
+					echo '</tr>';
+				}
+			?>
+		</table>
+	</div>
     </div>
 
     <div align="right">
@@ -366,7 +374,7 @@
     <tr>
         <th><?php echo tr('tab_online_sources_serviidb_name','Name')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_region','Region')?></th>
-        <th><?php echo tr('tab_online_sources_serviidb_url','Thumbnail URL')?></th>
+        <th><?php echo tr('tab_online_sources_serviidb_url','URL')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_mediatype','MediaType')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_resourcetype','ResourceType')?></th>
         <th><?php echo tr('tab_online_sources_serviidb_plugin','Plugin')?></th>

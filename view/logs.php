@@ -31,7 +31,7 @@
 			<?php
 				if (!empty($serviio_log)) {
 				$log = $serviio_log;
-				$file = fopen( $log, "r") or exit('<strong><span style="color:#FF0000;text-align:left;"> echo tr('tab_log_open_error','Unable to open Serviio log file!') </span></strong>');
+				$file = fopen( $log, "r") or exit('<strong><span style="color:#FF0000;text-align:left;">'.tr('tab_log_open_error','Unable to open Serviio log file!').'</span></strong>');
 				//Output a line of the file until the end is reached
 				while(!feof($file))
 				{

@@ -21,13 +21,13 @@ if (is_array($titles) && count($titles)>0 && is_array($visibilities) && count($v
         $visibility = "";
         $subCategories = array();
         foreach ($entry as $sid=>$val) {
-            if ($sid!="'title'") {
+            if ($sid!="title") {
                 $subVisibility = $visibilities[$id][$sid];
                 $subCategories[$sid] = array($val, $subVisibility);
             }
         }
-        $title = $titles[$id]["'title'"];
-        $visibility = $visibilities[$id]["'visibility'"];
+        $title = $titles[$id][title];
+        $visibility = $visibilities[$id][visibility];
         $categories[$id] = array($title, $visibility, $subCategories);
     }
 }

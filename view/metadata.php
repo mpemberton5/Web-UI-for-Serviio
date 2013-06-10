@@ -1,6 +1,6 @@
 <form method="post" action="" id="metadataform" name="metadata" accept-charset="utf-8">
     <input type="hidden" name="tab" value="metadata" />
-    <input type="hidden" name="section" value="<?php echo $section?>" />
+    <input type="hidden" id="process" name="process" value="">
     <br>
     <?php echo tr('tab_metadata_description','Media files metadata is constantly monitored and stored. By default all embedded metadata (tags) are extracted from media files. Please select additional extracting methods.')?>
     <br>

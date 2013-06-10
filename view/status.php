@@ -1,5 +1,6 @@
 <form id="statusform" method="post" action="" accept-charset="utf-8">
-<input type="hidden" name="tab" value="status">
+	<input type="hidden" name="tab" value="status">
+	<input type="hidden" id="process" name="process" value="">
 
 <br>
 <ul id="serverstatustab" class="shadetabs">

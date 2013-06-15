@@ -1,5 +1,6 @@
 <form method="post" action="" id="settingsform" accept-charset="utf-8">
 <input type="hidden" name="tab" value="settings">
+<input type="hidden" id="process" name="process" value="">
 <br />
 <ul id="consolesettingstab" class="shadetabs">
     <li><a href="#" rel="conset1" class="selected"><?php echo tr('tab_console_settings','Console settings')?></a></li>

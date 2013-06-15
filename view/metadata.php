@@ -1,6 +1,6 @@
 <form method="post" action="" id="metadataform" name="metadata" accept-charset="utf-8">
     <input type="hidden" name="tab" value="metadata" />
-    <input type="hidden" name="section" value="<?php echo $section?>" />
+    <input type="hidden" id="process" name="process" value="">
     <br>
     <?php echo tr('tab_metadata_description','Media files metadata is constantly monitored and stored. By default all embedded metadata (tags) are extracted from media files. Please select additional extracting methods.')?>
     <br>
@@ -33,7 +33,7 @@
                 <br>
                 <br>
                 <input type="checkbox" name="download_cover" value="1"<?php echo $serviio->videoOnlineArtExtractorEnabled=="true"?" checked":""?>> <?php echo tr('tab_metadata_video_online_retrieve_poster','Retrieve DVD cover image or poster if available')?><br>
-                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('tab_metadata_button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('<?php echo tr('status_message_force_rescan_metadata','Are you sure you want to force rescan video metadata?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></div>
+                <div align="center"><input type="submit" id="rescan" name="rescan" value="<?php echo tr('button_force_video_metadata','Rescan video metadata')?>" onclick="return confirm('<?php echo tr('status_message_force_rescan_metadata','Are you sure you want to force rescan video metadata?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" ></div>
                 <br>
                 <br>
                 <?php echo tr('tab_metadata_metadata_languages_description','Some metadata extractors enable retrieving metadata in a certain language. Select the preferred language.')?>

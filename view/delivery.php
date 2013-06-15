@@ -4,8 +4,8 @@
     <br>
     
     <ul id="deliverytabs" class="shadetabs">
-	    <li><a href="#" rel="deltab1" class="selected"><?php echo tr('tab_delivery_transcoding_transcoding','Transcoding')?></a></li>
-		<li><a href="#" rel="deltab2"><?php echo tr('tab_delivery_transcoding_subtitles','Subtitles')?></a></li>
+	    <li><a href="#" rel="deltab1" class="selected"><?php echo tr('tab_delivery_transcoding','Transcoding')?></a></li>
+		<li><a href="#" rel="deltab2"><?php echo tr('tab_delivery_subtitles','Subtitles')?></a></li>
     </ul>
     <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     	

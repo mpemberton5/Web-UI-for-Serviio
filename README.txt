@@ -2,7 +2,7 @@ Web UI for Serviio
 Front End for Serviio
 
 Requirements: HTTP server, PHP5 (with XML simple and cURL), JavaScript-enabled web browser.
-Serviio 1.0.0 or higher required.
+Serviio 1.2.0 or higher required.
 
 TODO:
 - better error management
@@ -22,17 +22,30 @@ CHANGELOG:
                    - Added refresh after exiting license upload dialog
                    - Added Image tab under Metadata tab
                    - Tested to work with Serviio 1.1
-- 1.4 - 04/05/2013 - Various code enhancements
-                   - Language selection in console tab now working (fixed wrong cookie path)
-                   - Improved multilanguage support, added new language tags
-                   - Updated German translation
-                   - Page is reloaded to discard changes on reset button press
-                   - Media browser link now accessess the bound interface IP
-                   - Status tab lets you now chose the bound network interface (Serviio API 1.2)
-                   - Transcoding settings now working again (Serviio API 1.2)
-                   - Added new subtitle options (Serviio API 1.2)
-                   - Added new remote options (Serviio API 1.2)
-                   - Tested to work with Serviio 1.21
+- 1.4b1 - 04/05/2013 - Various code enhancements
+                     - Language selection in console tab now working (fixed wrong cookie path)
+                     - Improved multilanguage support, added new language tags
+                     - Updated German translation
+                     - Page is reloaded to discard changes on reset button press
+                     - Media browser link now accessess the bound interface IP
+                     - Status tab lets you now chose the bound network interface (Serviio API 1.2)
+                     - Transcoding settings now working again (Serviio API 1.2)
+                     - Added new subtitle options (Serviio API 1.2)
+                     - Added new remote options (Serviio API 1.2)
+                     - Tested to work with Serviio 1.21
+- 1.4b2 - 05/06/2013 - Fixed library changes not savable in free version
+                     - Improved multilanguage support
+                     - Updated German translation
+                     - Resources added from ServiiDB now have the correct feed type
+                     - Remote tab not visible in free version of Serviio
+                     - Installed plugins are now shown as separate tab under Library
+                     - Added tab to display Serviio log information via variable defined in config.php
+- 1.4b3 - 06/10/2013 - Selected language is now taken from Serviio instead of cookie usage
+                     - Code cleanup
+                     - Re-activated check for compatible Serviio version
+                     - Unified button behavior
+                     - Minor bugfixes
+
 
 HISTORY:
 This app was originally written by acidumirae@gmail.com and kudos goes to his work.
@@ -47,10 +60,7 @@ Like the app?  Go to www.markpemberton.com and donate a few bucks for a good cup
 
 
 TODO:
-Change all buttons to jQuery UI buttons
 Change images in library screens
-Hide Remote tab if FREE edition
 Optionalize the location of the Online Resources tab (either on the main tab list or where it is now)
 If adding from Online Source, check for duplicates
-Add Installed Plugins tab?  Or just have it as an option under About?
 sorting of OS items?

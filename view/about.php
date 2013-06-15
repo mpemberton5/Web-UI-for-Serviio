@@ -17,7 +17,7 @@
     /*
     echo "<input name='uploadfile' type='file'><input type='submit' value='Upload License' readonly>";
     */
-    echo "<input id='license' name='license' type='button' value='Upload New License' class='ui-button ui-widget ui-state-default ui-corner-all btn-small' />";
+    echo "<input id='license' name='license' type='button' value='".tr('button_upload_license','Upload New License')."' class='ui-button ui-widget ui-state-default ui-corner-all btn-small' />";
 ?>
 <br>
 <br>

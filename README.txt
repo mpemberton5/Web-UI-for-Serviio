@@ -40,6 +40,11 @@ CHANGELOG:
                      - Remote tab not visible in free version of Serviio
                      - Installed plugins are now shown as separate tab under Library
                      - Added tab to display Serviio log information via variable defined in config.php
+- 1.4b3 - 06/10/2013 - Selected language is now taken from Serviio instead of cookie usage
+                     - Code cleanup
+                     - Re-activated check for compatible Serviio version
+                     - Unified button behavior
+                     - Minor bugfixes
 
 
 HISTORY:

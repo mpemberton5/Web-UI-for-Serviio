@@ -504,6 +504,33 @@ class ServiioService extends RestRequest
         $this->numberOfFilesForDynamicCategories = $numberOfFilesForDynamicCategories;
         return $categories;
     }
+    
+    /**
+     */
+
+    public function getPlugins()
+    {
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/plugins');
+        parent::setVerb('GET');
+        parent::execute();
+        $xml = simplexml_load_string(parent::getResponseBody());
+        if ($xml===false) {
+            $this->error = "Cannot get plugins";
+            return false;
+        }
+		
+	$i = 0;
+		
+	$onlinePlugin = array();
+	foreach ($xml->onlinePlugin as $entry) {
+		$name = (string)$entry->name; // Plugin name
+		$version = (string)$entry->version; // Plugin version
+		$onlinePlugin[$i] = array($name, $version);
+		$i = $i + 1;
+	}
+               
+        return $onlinePlugin;
+    }
 
     /**
      */

@@ -1,5 +1,6 @@
 <form method="post" action="" id="presentationform" name="presentation" accept-charset="utf-8">
     <input type="hidden" name="tab" value="presentation">
+    <input type="hidden" id="process" name="process" value="">
     <br>
     <?php echo tr('tab_presentation_description','You can modify the categories of the browsing menu on your device. Choose categories to be visible, \'transparent\' or disabled.')?>
     <br>
@@ -18,8 +19,8 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><?php echo $category[0]?><input type="hidden" name="titles['<?php echo $id?>']['title']" value="<?php echo $category[0]?>"></td>
-                            <td><select name="visibility['<?php echo $id?>']['visibility']">
+                            <td><?php echo $category[0]?><input type="hidden" name="titles[<?php echo $id?>][title]" value="<?php echo $category[0]?>"></td>
+                            <td><select name="visibility[<?php echo $id?>][visibility]">
                             <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
                             <option value="<?php echo $key?>"<?php echo $key==$category[1]?" selected":""?>><?php echo $val?></option>
                             <?php } ?>
@@ -28,8 +29,8 @@
                         <?php $ctr = 1;?>
                         <?php foreach ($category[2] as $subId=>$subCategory) { ?>
                         <tr <?php echo $ctr%2?'':'class="odd"'?>>
-                            <td> &nbsp; &nbsp; &nbsp; - <?php echo $subCategory[0]?><input type="hidden" name="titles['<?php echo $id?>']['<?php echo $subId?>']" value="<?php echo $subCategory[0]?>"></td>
-                            <td><select name="visibility['<?php echo $id?>']['<?php echo $subId?>']">
+                            <td> &nbsp; &nbsp; &nbsp; - <?php echo $subCategory[0]?><input type="hidden" name="titles[<?php echo $id?>][<?php echo $subId?>]" value="<?php echo $subCategory[0]?>"></td>
+                            <td><select name="visibility[<?php echo $id?>][<?php echo $subId?>]">
                             <?php foreach ($categoryVisibilityTypes as $key=>$val) { ?>
                             <option value="<?php echo $key?>"<?php echo $key==$subCategory[1]?" selected":""?>><?php echo $val?></option>
                             <?php } ?>

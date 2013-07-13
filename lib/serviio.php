@@ -21,7 +21,8 @@ class ServiioService extends RestRequest
     public $profiles;
     public $renderers;
     public $boundNICName;
-
+	public $defaultAccessGroupId;
+	public $rendererEnabledByDefault;
     public $audioLocalArtExtractorEnabled;
     public $videoLocalArtExtractorEnabled;
     public $videoOnlineArtExtractorEnabled;
@@ -43,6 +44,7 @@ class ServiioService extends RestRequest
 	public $embeddedSubtitlesExtractionEnabled;
 	public $hardSubsEnabled;
 	public $hardSubsForced;
+	public $hardSubsCharacterEncoding;
 
     public $numberOfCPUCores;
 
@@ -84,6 +86,8 @@ class ServiioService extends RestRequest
         }
         $serverStatus = (string)$xml->serverStatus;
         $boundNICName = (string)$xml->boundNICName;
+		$defaultAccessGroupId = (string)$xml->defaultAccessGroupId;
+		$rendererEnabledByDefault = (string)$xml->rendererEnabledByDefault;
         $this->renderers = array();
         foreach ($xml->renderers->renderer as $item) {
             $uuid = (string)$item->uuid;
@@ -93,10 +97,45 @@ class ServiioService extends RestRequest
             $status = (string)$item->status;
             $enabled = (string)$item->enabled;
             $accessGroupId = (string)$item->accessGroupId;
+			
             $this->renderers[$uuid] = array($ipAddress, $name, $profileId, $status, $enabled, $accessGroupId);
         }
         //return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "bound_nic"=>$bound_nic);
-        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "boundNICName"=>$boundNICName);
+        return array("serverStatus"=>$serverStatus, "renderers"=>$this->renderers, "boundNICName"=>$boundNICName,"defaultAccessGroupId"=>$defaultAccessGroupId,"rendererEnabledByDefault"=>$rendererEnabledByDefault);
+    }
+	
+	public function postdefault($id,$render)
+    {
+		parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/status');
+        parent::setVerb('GET');
+        parent::execute();
+        $xml = simplexml_load_string(parent::getResponseBody());
+        if ($xml===false) {
+            $this->error = "Cannot get status";
+            return false;
+        }
+		
+		$defaultAccessGroupId = (string)$xml->defaultAccessGroupId;
+		
+		$bul=$xml->defaultAccessGroupId=$id;
+		$bul2=$xml->rendererEnabledByDefault=$render;
+
+      
+
+        /*
+        header("Content-Type: text/plain");
+        $xmlDoc->formatOutput = true;
+        $requestBody = $xmlDoc->saveXML();
+        return $requestBody;
+        */
+		parent::flush();
+        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/status');
+        parent::setVerb('PUT');
+        parent::setRequestBody($xml->saveXML());
+        parent::execute();
+		
+        return print_r($bul);
+		
     }
 
     /**
@@ -459,14 +498,16 @@ class ServiioService extends RestRequest
         $embeddedSubtitlesExtractionEnabled = (string)$subtitles->embeddedSubtitlesExtractionEnabled;
         $hardSubsEnabled = (string)$subtitles->hardSubsEnabled;
         $hardSubsForced = (string)$subtitles->hardSubsForced;
+		$hardSubsCharacterEncoding = (string)$subtitles->hardSubsCharacterEncoding;
 		$preferredLanguage = (string)$subtitles->preferredLanguage;
 		$this->subtitlesEnabled = $subtitlesEnabled;
         $this->embeddedSubtitlesExtractionEnabled = $embeddedSubtitlesExtractionEnabled;
         $this->hardSubsEnabled = $hardSubsEnabled;
         $this->hardSubsForced = $hardSubsForced;
         $this->preferredLanguage = $preferredLanguage;
+		$this->hardSubsCharacterEncoding=$hardSubsCharacterEncoding;
         
-        return array($audioDownmixing, $threadsNumber, $transcodingFolderLocation, $bestVideoQuality, $transcodingEnabled, $subtitlesEnabled, $embeddedSubtitlesExtractionEnabled, $hardSubsEnabled, $hardSubsForced, $preferredLanguage);
+        return array($audioDownmixing, $threadsNumber, $transcodingFolderLocation, $bestVideoQuality, $transcodingEnabled, $subtitlesEnabled, $embeddedSubtitlesExtractionEnabled, $hardSubsEnabled, $hardSubsForced, $preferredLanguage,$hardSubsCharacterEncoding);
     }
 
     /**
@@ -503,33 +544,6 @@ class ServiioService extends RestRequest
         $this->showParentCategoryTitle = $showParentCategoryTitle;
         $this->numberOfFilesForDynamicCategories = $numberOfFilesForDynamicCategories;
         return $categories;
-    }
-    
-    /**
-     */
-
-    public function getPlugins()
-    {
-        parent::setUrl('http://'.$this->host.':'.$this->port.'/rest/plugins');
-        parent::setVerb('GET');
-        parent::execute();
-        $xml = simplexml_load_string(parent::getResponseBody());
-        if ($xml===false) {
-            $this->error = "Cannot get plugins";
-            return false;
-        }
-		
-	$i = 0;
-		
-	$onlinePlugin = array();
-	foreach ($xml->onlinePlugin as $entry) {
-		$name = (string)$entry->name; // Plugin name
-		$version = (string)$entry->version; // Plugin version
-		$onlinePlugin[$i] = array($name, $version);
-		$i = $i + 1;
-	}
-               
-        return $onlinePlugin;
     }
 
     /**
@@ -610,6 +624,7 @@ class ServiioService extends RestRequest
         parent::execute();
         return print_r(parent::getResponseBody());
     }
+	
 
     /**
      */
@@ -695,10 +710,13 @@ class ServiioService extends RestRequest
         parent::execute();
         return print_r(parent::getResponseBody());
     }
+	
+	
+	
 
     /**
      */
-    public function putDelivery($transcoding, $location, $cores, $audio, $quality, $subtitles, $subtitlesextraction, $hardsubsenabled, $hardsubsforced, $language)
+    public function putDelivery($transcoding, $location, $cores, $audio, $quality, $subtitles, $subtitlesextraction, $hardsubsenabled, $hardsubsforced, $language,$encode)
     {
         // create the xml document
         $xmlDoc = new DOMDocument();
@@ -728,6 +746,7 @@ class ServiioService extends RestRequest
         $delivery1->appendChild($xmlDoc->createElement("hardSubsEnabled", $hardsubsenabled));
         $delivery1->appendChild($xmlDoc->createElement("hardSubsForced", $hardsubsforced));
         $delivery1->appendChild($xmlDoc->createElement("preferredLanguage", $language));
+		$delivery1->appendChild($xmlDoc->createElement("hardSubsCharacterEncoding", $encode));
 
         /*
         header("Content-Type: text/plain");

@@ -1,6 +1,5 @@
 <form id="statusform" method="post" action="" accept-charset="utf-8">
-	<input type="hidden" name="tab" value="status">
-	<input type="hidden" id="process" name="process" value="">
+<input type="hidden" name="tab" value="status">
 
 <br>
 <ul id="serverstatustab" class="shadetabs">
@@ -10,8 +9,8 @@
     <div id="svrstat1" class="tabcontent">
         <?php echo tr('tab_status_description','Start/Stop the UPnP/DLNA server. The actual Serviio process is not affected.')?><br>
         <br>
-        <input type="submit" name="start" id="start" value="<?php echo tr('button_start_server','Start server')?>" <?php echo $startDisabled?> onclick="return confirm('<?php echo tr('status_message_start_server','Are you sure you want to start the server?')?>');" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
-        <input type="submit" name="stop" id="stop" value="<?php echo tr('button_stop_server','Stop server')?>" <?php echo $stopDisabled?> onclick="return confirm('<?php echo tr('status_message_stop_server','Are you sure you want to stop the server?')?>');" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" name="start" id="start" value="<?php echo tr('tab_status_button_start_server','Start server')?>" <?php echo $startDisabled?> onclick="return confirm('<?php echo tr('status_message_start_server','Are you sure you want to start the server?')?>');" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+        <input type="submit" name="stop" id="stop" value="<?php echo tr('tab_status_button_stop_server','Stop server')?>" <?php echo $stopDisabled?> onclick="return confirm('<?php echo tr('status_message_stop_server','Are you sure you want to stop the server?')?>');" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     </div>
 </div>
 
@@ -76,17 +75,45 @@
     </td>
 </tr>
 </table>
-<script type="text/javascript">
+<p>
+  <script type="text/javascript">
 <!--
 var profiles = new Array();
 <?php foreach ($profiles as $key=>$val) { ?>
 profiles['<?php echo $key?>'] = '<?php echo $val?>';
 <?php } ?>
 // -->
-</script>
+  </script>
+</p>
+
     </div>
 </div>
-
+<ul id="cetustab" class="shadetabs">
+<li><a href="#" rel="netset001" class="selected">Settings</a></li>
+</ul>
+<div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
+    <div id="netset001" class="tabcontent">
+    <div id="waitmin"><img src="images/loading.gif" width="16" height="16" />&nbsp;&nbsp;&nbsp; Please wait</div>
+<form method="post" action="default_access_group.php" id="accessgroup">
+Enable access for new devices: 
+<?php
+if($statusResponse["rendererEnabledByDefault"]=="true")
+{
+?>
+<input id="enablenew" name="enablenew" checked="checked" type="checkbox" value="true" />
+<?php }else{?>
+<input id="enablenew" name="enablenew" type="checkbox" value="" />
+<?php } ?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default Access group: 
+<select name="cetus" id="cetus">
+<?php foreach ($accesses as $key2=>$val2) { ?>
+<option value="<?php echo $key2?>"<?php echo $key2==$statusResponse["defaultAccessGroupId"]?" selected":""?>><?php echo $val2?></option>
+<?php } ?>
+</select>
+<input type="submit" id="submit_celtic" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+</form>
+  </div>
+</div>
 <ul id="networksettingtab" class="shadetabs">
 <li><a href="#" rel="netset1" class="selected"><?php echo tr('tab_status_network_settings','Network Settings')?></a></li>
 </ul>

@@ -56,11 +56,9 @@
 		<span id="checkPortMappingMsg" class="checkPortMappingMsg"></span>
     </div>
 </div>
-<a href="http://<?php echo $serviio_host;?>:<?php echo $serviio_port;?>/mediabrowser" target="_blank"><b>Open MediaBrowser</b></a>
-
 <div style="float: left;">
 	<?php foreach ($interfaces as $key=>$val) { ?>
-	<?php if($key==$boundNIC['boundNICName']) echo '<a href="http://'.substr($val, 0, -7).':23424/mediabrowser/" target="_blank">Open MediaBrowser</a>'; ?>
+	<?php echo '<a href="http://'.substr($val, 0, -7).':23424/mediabrowser/" target="_blank">Open MediaBrowser</a>'; ?>
 	<?php }?>
 </div>
 <div align="right" style="float: right;">

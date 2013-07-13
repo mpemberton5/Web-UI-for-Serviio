@@ -4,8 +4,8 @@
     <br>
     
     <ul id="deliverytabs" class="shadetabs">
-	    <li><a href="#" rel="deltab1" class="selected"><?php echo tr('tab_delivery_transcoding','Transcoding')?></a></li>
-		<li><a href="#" rel="deltab2"><?php echo tr('tab_delivery_subtitles','Subtitles')?></a></li>
+	    <li><a href="#" rel="deltab1" class="selected"><?php echo tr('tab_delivery_transcoding_transcoding','Transcoding')?></a></li>
+		<li><a href="#" rel="deltab2"><?php echo tr('tab_delivery_transcoding_subtitles','Subtitles')?></a></li>
     </ul>
     <div style="border:1px solid gray; width:98%; margin-bottom: 1em; padding: 10px">
     	
@@ -56,25 +56,27 @@
     	</div>
     
 		<div id="deltab2" class="tabcontent">
-	    	<?php echo tr('tab_delivery_subtitles_general_subtitles_description','When enabled, subtitles stored in external files or embedded in the video files will be served during video playback. If the device requires it or if forced, subtitles can be burned-in onto the video stream, which triggers complete transcoding of the file.')?><br>
-		    <br>
-            <input type="checkbox" name="subtitles" value="1"<?php echo $serviio->subtitlesEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_enable_subtitles','Enable subtitles')?>
-            <br>
-            <input type="checkbox" name="subtitlesextraction" value="1"<?php echo $serviio->embeddedSubtitlesExtractionEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_embedded_subtitles_extraction_enabled','Enable extraction of subtitles embedded in video files')?>
-            <br>
-            <input type="checkbox" name="hardsubsenabled" value="1"<?php echo $serviio->hardSubsEnabled=="true"||$serviio->hardSubsForced=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_hard_subs_enabled','Enable burned-in subtitles')?>
-				<select id="hardSubs" name="hardsubs" <?php echo $serviio->hardSubsEnabled=="false"&&$serviio->hardSubsForced=="false"?"disabled":""?>>
-					<option value="enabled"<?php echo $serviio->hardSubsEnabled=="true"?" selected":""?>><?php echo tr('tab_delivery_subtitles_hard_subs_required','Only when required')?></option>
-					<option value="forced"<?php echo $serviio->hardSubsForced=="true"?" selected":""?>><?php echo tr('tab_delivery_subtitles_hard_subs_always','Always')?></option>
-				</select>
-			<br>
-			<br>
-            
-            <?php echo tr('tab_delivery_subtitles_preferred_languages','Define a list of preferred languages codes, separated with comma. Subtitles for the specified language codes will have preference.')?><br>
-            <br>
-            <?php echo tr('tab_delivery_subtitles_language_codes','Preferred language')?>:&nbsp;
-			<input type="text" name="language" value="<?php echo $serviio->preferredLanguage?>" maxlength="64">
-            <br>
+	    	<p><?php echo tr('tab_delivery_subtitles_general_subtitles_description','When enabled, subtitles stored in external files or embedded in the video files will be served during video playback. If the device requires it or if forced, subtitles can be burned-in onto the video stream, which triggers complete transcoding of the file.')?><br>
+	    	  <br>
+	    	  <input type="checkbox" name="subtitles" value="1"<?php echo $serviio->subtitlesEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_enable_subtitles','Enable subtitles')?>
+	    	  <br>
+	    	  <input type="checkbox" name="subtitlesextraction" value="1"<?php echo $serviio->embeddedSubtitlesExtractionEnabled=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_embedded_subtitles_extraction_enabled','Enable extraction of subtitles embedded in video files')?>
+	    	  <br>
+	    	  <input type="checkbox" name="hardsubsenabled" value="1"<?php echo $serviio->hardSubsEnabled=="true"||$serviio->hardSubsForced=="true"?" checked":""?>> <?php echo tr('tab_delivery_subtitles_hard_subs_enabled','Enable burned-in subtitles')?>
+	    	  <select id="hardSubs" name="hardsubs" <?php echo $serviio->hardSubsEnabled=="false"&&$serviio->hardSubsForced=="false"?"disabled":""?>>
+	    	    <option value="enabled"<?php echo $serviio->hardSubsEnabled=="true"?" selected":""?>><?php echo tr('tab_delivery_subtitles_hard_subs_required','Only when required')?></option>
+	    	    <option value="forced"<?php echo $serviio->hardSubsForced=="true"?" selected":""?>><?php echo tr('tab_delivery_subtitles_hard_subs_always','Always')?></option>
+    	      </select>
+	    	  <br>
+	    	  <br>
+	    	  
+	    	  <?php echo tr('tab_delivery_subtitles_preferred_languages','Define a list of preferred languages codes, separated with comma. Subtitles for the specified language codes will have preference.')?><br>
+	    	  <br>
+	    	  <?php echo tr('tab_delivery_subtitles_language_codes','Preferred language')?>:&nbsp;
+	    	  <input type="text" name="language" value="<?php echo $serviio->preferredLanguage?>" maxlength="64">
+    	  </p>
+	    	<p>Subtitle character encoding	<input type="text" name="hardSubsCharacterEncoding" value="<?php echo $serviio->hardSubsCharacterEncoding?>" maxlength="64">    	  <br>
+    	  </p>
 		</div>
     
     </div>

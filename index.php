@@ -4,12 +4,15 @@ include("config.php");
 include("lib/RestRequest.inc.php");
 include("lib/serviio.php");
 
+if (isset($_COOKIE["language"]) && array_key_exists($_COOKIE["language"],$languages)) {
+    $language = $_COOKIE["language"];
+}
+
 // initiate call to service
 $serviio = new ServiioService($serviio_host,$serviio_port);
 
-$settings = $serviio->getConsoleSettings();
-$language = $settings["language"];
 $appInfo = $serviio->getApplication();
+$profiles = $serviio->getReferenceData('profiles');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -261,7 +264,7 @@ function deleteProfileRow(tableID) {
     if (deleted) {
         // OK
     } else {
-        alert('<?php echo tr('status_message_error_remove_renderers','Please select renderers in the Rem. column')?>');
+        alert('<?php echo tr('status_message_remove_renderers','Please select renderers in the Rem. column')?>');
     }
     } catch(e) {
         alert(e);
@@ -323,11 +326,11 @@ $(document).ready(function(){
 
 <?php
 // Application version check
-// - temporarily disabled
+/* - temporarily disabled
 $message = "";
 if ($appInfo["version"]!=$version_req) {
     if ($message=="") {
-        $message = "WARNING: Web UI is optimized for Serviio v".$version_req." but v".$appInfo["version"]." was found. There may be a loss of functionality. Please consider updating.";
+        $message = "WARNING: There is a version mismatch between Serviio and Web UI. There may be a loss of functionality.";
     }
 } elseif ($appInfo["updateVersionAvailable"] > $appInfo["version"] && $appInfo["updateVersionAvailable"] != "") {
     if ($message=="") {
@@ -339,19 +342,19 @@ if ($message!="") {
 <center><font color="red"><b><?php echo $message!=""?$message:""?></b></font></center>
 <?php
 }
+*/
 ?>
 <br />
 
 <div style="padding-left: 10px;">
     <ul id="indextabs" class="shadetabs">
         <li><a href="content.php?tab=status" rel="indexcontainer" class="selected"><?php echo tr('tab_status','Status')?></a></li>
-        <li><a href="content.php?tab=library" rel="indexcontainer"><?php echo tr('tab_library','Library')?></a></li>
+        <li><a href="content.php?tab=library" rel="indexcontainer"><?php echo tr('tab_folders','Library')?></a></li>
         <li><a href="content.php?tab=metadata" rel="indexcontainer"><?php echo tr('tab_metadata','Metadata')?></a></li>
         <li><a href="content.php?tab=delivery" rel="indexcontainer"><?php echo tr('tab_delivery','Delivery')?></a></li>
         <li><a href="content.php?tab=presentation" rel="indexcontainer"><?php echo tr('tab_presentation','Presentation')?></a></li>
-        <?php echo ($serviio->licenseEdition=="PRO"?'<li><a href="content.php?tab=remote" rel="indexcontainer">'.tr('tab_remote','Remote').'</a></li>':'')?>
+        <li><a href="content.php?tab=remote" rel="indexcontainer"><?php echo tr('tab_remote','Remote')?></a></li>
         <li><a href="content.php?tab=settings" rel="indexcontainer"><?php echo tr('tab_console_settings','Console Settings')?></a></li>
-        <li><a href="content.php?tab=logs" rel="indexcontainer"><?php echo tr('tab_logs','Logs')?></a></li>
         <li><a href="content.php?tab=about" rel="indexcontainer"><?php echo tr('tab_about','About')?></a></li>
     </ul>
 
@@ -379,6 +382,10 @@ indexes.onajaxpageload=function(pageurl) {
         nsTabs.setpersist(true)
         nsTabs.setselectedClassTarget("link") //"link" or "linkparent"
         nsTabs.init()
+		var nsTabs2=new ddtabcontent("cetustab")
+        nsTabs2.setpersist(true)
+        nsTabs2.setselectedClassTarget("link") //"link" or "linkparent"
+        nsTabs2.init()
         $(document).ready(function(){
 
             $(".os_switch").each(function(i, domEle) {
@@ -411,7 +418,6 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#statusform");
             $("#submit").click(function(e) {
-				$("#process").val("save");
                 $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -419,7 +425,7 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/status.php',
+                    url: 'code/status1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 15000,
@@ -429,6 +435,7 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+    						location.reload();
                         } else {
                             $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
@@ -442,13 +449,50 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
         });
+		var $form2 = $("#accessgroup");
+		$("#waitmin").hide();
+		var renderenab="false";
+		 $("#submit_celtic").click(function() {
+			//alert($('#enablenew').val());
+			if ($('#enablenew').is(":checked"))
+			{
+			  renderenab="true";
+			}else
+			{
+				renderenab="false";
+			}
+			$.ajax({
+					 type: "POST",
+					 url: "code/default_access_group.php",
+					 data: { 
+							id: $('#cetus').val(),
+							render: renderenab 
+							
+						},
+					 beforeSend: function() {
+						 //alert(renderenab);
+										 $("#waitmin").show();
+										   
+										},
+					 success: function(data){
+						 $("#waitmin").hide();
+						
+						location.reload();
+			return false;
+					 
+					
+			 }
+			 });
+               
+                return false;
+        });
         $("#start").click(function() {
                 $("#debugInfoDate").text(Date());
                 //e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/status.php',
-                    data: 'process=start',
+                    url: 'code/status2.php',
+                    data: 'type=start',
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
@@ -474,8 +518,8 @@ indexes.onajaxpageload=function(pageurl) {
                 //e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/status.php',
-                    data: 'process=stop',
+                    url: 'code/status2.php',
+                    data: 'type=stop',
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
@@ -587,11 +631,11 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
             $("#submit").click(function(e) {
-                $("#process").val("save");
-				$("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
+                $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
                 $("#debugInfoDate").text(Date());
+                $("#process").val("save");
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
@@ -606,6 +650,7 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
                             $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
@@ -866,9 +911,9 @@ indexes.onajaxpageload=function(pageurl) {
                             if (sData['resourceType'] == "RSS Atom Feed") {
                                 srcFeed = "FEED";
                             } else if (sData['resourceType'] == "Web Resource") {
-                                srcFeed = "WEB_RESOURCE";
+                                srcFeed = "FEED";
                             } else if (sData['resourceType'] == "Live Stream") {
-                                srcFeed = "LIVE_STREAM";
+                                srcFeed = "FEED";
                             }
                         $("#libraryTableOnlineSources").find('tbody')
                             .append($('<tr>').attr('align', 'center')
@@ -954,7 +999,7 @@ indexes.onajaxpageload=function(pageurl) {
                         "iDisplayLength": 7,
                         "sPaginationType": "full_numbers",
                         "bProcessing": true,
-                        "sAjaxSource": "code/library.php?process=serviidb",
+                        "sAjaxSource": "code/library.php?type=serviidb",
                         "sAjaxDataProp": "items",
                         "sDom": '<"H"Cfr>t<"F"ip>',
                         "aoColumns": [
@@ -1134,7 +1179,6 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#metadataform");
             $("#rescan").click(function(e) {
-				$("#process").val("rescan");
                 $("#savingMsg").text("<?php echo tr('status_message_rescan','Starting Rescan...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -1142,7 +1186,7 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/metadata.php',
+                    url: 'code/metadata2.php',
                     dataType: 'xml',
                     timeout: 10000,
                     success: function(response) {
@@ -1164,7 +1208,6 @@ indexes.onajaxpageload=function(pageurl) {
                 return false;
             });
             $("#submit").click(function(e) {
-				$("#process").val("save");
                 $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -1172,7 +1215,7 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/metadata.php',
+                    url: 'code/metadata1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
@@ -1182,6 +1225,7 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
                             $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
@@ -1202,6 +1246,14 @@ indexes.onajaxpageload=function(pageurl) {
     }
     //-------------------------------------------------------------------------
     if (pageurl.indexOf("content.php?tab=delivery")!=-1) {
+        /*var metTab1=new ddtabcontent("generalsettingstab")
+        metTab1.setpersist(false)
+        metTab1.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab1.init()
+        var metTab2=new ddtabcontent("videosettingstab")
+        metTab2.setpersist(false)
+        metTab2.setselectedClassTarget("link") //"link" or "linkparent"
+        metTab2.init()*/
         var metTab1=new ddtabcontent("deliverytabs")
         metTab1.setpersist(false)
         metTab1.setselectedClassTarget("link") //"link" or "linkparent"
@@ -1222,7 +1274,6 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#deliveryform");
             $("#submit").click(function(e) {
-				$("#process").val("save");
                 $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -1230,7 +1281,7 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/delivery.php',
+                    url: 'code/delivery1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
@@ -1240,6 +1291,7 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
                             $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
                         }
@@ -1301,7 +1353,6 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#presentationform");
             $("#submit").click(function(e) {
-				$("#process").val("save");
                 $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -1309,7 +1360,7 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/presentation.php',
+                    url: 'code/presentation1.php',
                     data: $form.serialize(),
                     dataType: 'xml',
                     timeout: 10000,
@@ -1361,7 +1412,6 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#remoteform");
             $("#submit").click(function(e) {
-				$("#process").val("save");
                 $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -1379,6 +1429,7 @@ indexes.onajaxpageload=function(pageurl) {
                         if ($(response).find("errorCode").text() == 0) {
                             $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                             $("#savingMsg").delay(800).fadeOut("slow");
+							location.reload();
                         } else {
                             //$("#savingMsg").text("Error saving data! (" + $(response).find("parameter").text() + ")");
                             $("#savingMsg").text("<?php echo tr('status_message_error_save_data','Error saving data!')?> (" + $(response).find("errorCode").text() + ")");
@@ -1443,7 +1494,6 @@ indexes.onajaxpageload=function(pageurl) {
             $("#debugInfo2Date").text("");
             var $form = $("#settingsform");
             $("#submit").click(function(e) {
-				$("#process").val("save");
                 $("#savingMsg").text("<?php echo tr('status_message_saving','Saving...')?>");
                 $("#savingMsg").first().show();
                 $("#debugInfo").text(parseUrl(decodeURIComponent($form.serialize())));
@@ -1451,16 +1501,15 @@ indexes.onajaxpageload=function(pageurl) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'code/settings.php',
+                    url: 'code/settings1.php',
                     data: $form.serialize(),
-                    dataType: 'xml',
+                    dataType: 'text',
                     timeout: 10000,
                     success: function(response) {
                         $("#debugInfo2Date").text(Date());
-                        $("#debugInfo2").text(serializeXmlNode(response));
+                        $("#debugInfo2").text("Storage to Cookie successful");
                         $("#savingMsg").text("<?php echo tr('status_message_saved','Saved!')?>");
                         $("#savingMsg").delay(800).fadeOut("slow");
-						/* refresh in case language was changed */
 						location.reload();
                     },
                     error: function(xhr, textStatus, errorThrown){
@@ -1476,17 +1525,6 @@ indexes.onajaxpageload=function(pageurl) {
 				return false;
 			});
         });
-    }
-    //-------------------------------------------------------------------------
-    if (pageurl.indexOf("content.php?tab=logs")!=-1) {
-        var conTabs=new ddtabcontent("logsFileTab")
-        conTabs.setpersist(false)
-        conTabs.setselectedClassTarget("link") //"link" or "linkparent"
-        conTabs.init()
-        var conTabs=new ddtabcontent("logsContentTab")
-        conTabs.setpersist(false)
-        conTabs.setselectedClassTarget("link") //"link" or "linkparent"
-        conTabs.init()
     }
     //-------------------------------------------------------------------------
     if (pageurl.indexOf("content.php?tab=about")!=-1) {
@@ -1557,7 +1595,7 @@ if ($debugLoc == "screen") {
 </div>
 <?php } ?>
 
-<div align="center"><font size="1">Web UI for Serviio &copy; 2013 <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
+<div align="center"><font size="1">Web UI for Serviio &copy; 2012 <a href="https://github.com/mpemberton5/Web-UI-for-Serviio">Mark Pemberton</a><br>
 RESTfull class &copy; <a href="http://www.gen-x-design.com/">Ian Selby</a> // 
 AJAX File Browser &copy; <a href="http://gscripts.net/free-php-scripts/Listing_Script/AJAX_File_Browser/details.html">Free PHP Scripts</a> //
 Table Sorting/Filtering &copy; <a href="http://www.javascripttoolbox.com/lib/table/source.php">Matt Kruse</a> //

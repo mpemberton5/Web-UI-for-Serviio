@@ -56,15 +56,14 @@
 		<span id="checkPortMappingMsg" class="checkPortMappingMsg"></span>
     </div>
 </div>
-
 <div style="float: left;">
 	<?php foreach ($interfaces as $key=>$val) { ?>
-	<?php if($key==$boundNIC['boundNICName']) echo '<a href="http://'.substr($val, 0, -7).':23424/mediabrowser/" target="_blank">'.tr('tab_remote_open_mediabrowser','Open MediaBrowser').'</a>'; ?>
+	<?php echo '<a href="http://'.substr($val, 0, -7).':23424/mediabrowser/" target="_blank">Open MediaBrowser</a>'; ?>
 	<?php }?>
 </div>
 <div align="right" style="float: right;">
     <span id="savingMsg" class="savingMsg"></span>
-    <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick=indexes.expandit(5) class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
+    <input type="submit" id="reset" name="reset" value="<?php echo tr('button_reset','Reset')?>" onclick="return confirm('<?php echo tr('status_message_reset','Are you sure you want to reset changes?')?>')" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
     <input type="submit" id="submit" name="save" value="<?php echo tr('button_save','Save')?>" class="ui-button ui-widget ui-state-default ui-corner-all btn-small" />
 </div>
 <br />
